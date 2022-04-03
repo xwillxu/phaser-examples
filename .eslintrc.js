@@ -1,6 +1,6 @@
 module.exports = {
 	root: true,
-	parserOptions: { 
+	parserOptions: {
 		ecmaVersion: 6,
 		sourceType: 'module'
 	},
