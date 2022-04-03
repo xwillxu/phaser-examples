@@ -36,4 +36,11 @@ export default class Scene extends Phaser.Scene
 
         emitter.startFollow(logo)
     }
+
+    collectStar(player, star) {
+		star.disableBody(true, true);
+
+		this.score += 10;
+		this.scoreText.setText('Score: ' + this.score);
+	}
 }
