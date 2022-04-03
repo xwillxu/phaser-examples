@@ -4,7 +4,7 @@
 	"description": "A template project for Phaser 3 using Parceljs",
 	"scripts": {
 		"start": "parcel src/index.html -p 8000",
-		"build": "npm install -g parcel-bundler & parcel build src/index.html --out-dir dist",
+		"build": "parcel build src/index.html --out-dir dist",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"author": "supertommy",
