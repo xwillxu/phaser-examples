@@ -1,8 +1,4 @@
 import Phaser from 'phaser'
-import map_json from '../../assets/tilemaps/maps/matter-platformer.json'
-import map_tile_image from '../../assets/tilemaps/tiles/kenney_redux_64x64.png'
-import player_image from '../../assets/sprites/dude-cropped.png'
-import box_image from '../../assets/sprites/box-item-boxed.png'
 
 var config = {
 	type: Phaser.AUTO,
@@ -67,10 +63,11 @@ var SmoothedHorionztalControl = new Phaser.Class({
 
 function preload ()
 {
-	this.load.tilemapTiledJSON('map', map_json);
-	this.load.image('kenney_redux_64x64', map_tile_image);
-	this.load.spritesheet('player', player_image, { frameWidth: 32, frameHeight: 42 });
-	this.load.image('box', box_image);
+	this.load.setBaseURL('https://labs.phaser.io')
+	this.load.tilemapTiledJSON('map', 'assets/tilemaps/maps/matter-platformer.json');
+	this.load.image('kenney_redux_64x64', 'assets/tilemaps/tiles/kenney_redux_64x64.png');
+	this.load.spritesheet('player', 'assets/sprites/dude-cropped.png', { frameWidth: 32, frameHeight: 42 });
+	this.load.image('box', 'assets/sprites/box-item-boxed.png');
 }
 
 function create ()
