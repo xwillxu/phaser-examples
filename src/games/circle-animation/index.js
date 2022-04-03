@@ -1,12 +1,13 @@
+import Phaser from 'phaser'
+
+import Scene from './Scene'
+
 var config = {
     width: 800,
     height: 600,
     type: Phaser.AUTO,
     parent: 'phaser-example',
-    scene: {
-        create: create,
-        update: update
-    }
+    scene: [Scene]
 };
 
-var game = new Phaser.Game(config);
+export default new Phaser.Game(config)
