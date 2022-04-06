@@ -11,6 +11,26 @@ export default class Scene extends Phaser.Scene {
 
     create() {
 
+        var rec_graphic = this.add.graphics({ fillStyle: { color: 0x0048DD } });
+
+        var rect = new Phaser.Geom.Rectangle(0, 0, 800, 600);
+
+        rec_graphic.fillRectShape(rect);
+
+        this.input.on('pointermove', function (pointer) {
+
+            rec_graphic.clear();
+
+            if (rect.contains(pointer.x, pointer.y)) {
+                rec_graphic.fillStyle(0x0048DD);
+            }
+            else {
+                rec_graphic.fillStyle(0x0048DD);
+            }
+
+            rec_graphic.fillRectShape(rect);
+
+        });
 
 
         graphics = this.add.graphics({ lineStyle: { color: 0x08D4FF }, fillStyle: { color: 0x08D4FF } });
