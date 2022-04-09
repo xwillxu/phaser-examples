@@ -1,9 +1,17 @@
 import Phaser from 'phaser'
+import phaser_test_1 from '../../assets/phaser_test_1.json'
+import texture from '../../assets/texture.png'
+import player_image from '../../assets/dude-cropped.png'
+import box_image from '../../assets/box-item-boxed.png'
 
 var config = {
 	type: Phaser.AUTO,
-	width: 800,
-	height: 600,
+	scale: {
+		mode: Phaser.Scale.FIT,
+		autoCenter: Phaser.Scale.CENTER_BOTH,
+		width: 800,
+		height: 600
+	},
 	backgroundColor: '#000000',
 	parent: 'phaser-example',
 	physics: {
@@ -58,17 +66,17 @@ var SmoothedHorionztalControl = new Phaser.Class({
 });
 
 function preload() {
-	this.load.setBaseURL('https://labs.phaser.io')
-	this.load.tilemapTiledJSON('map', 'assets/tilemaps/maps/matter-platformer.json');
-	this.load.image('kenney_redux_64x64', 'assets/tilemaps/tiles/kenney_redux_64x64.png');
-	this.load.spritesheet('player', 'assets/sprites/dude-cropped.png', { frameWidth: 32, frameHeight: 42 });
-	this.load.image('box', 'assets/sprites/box-item-boxed.png');
+	// this.load.setBaseURL('https://labs.phaser.io')
+	this.load.tilemapTiledJSON('map', phaser_test_1);
+	this.load.image('Texture', texture);
+	this.load.spritesheet('player', player_image, { frameWidth: 32, frameHeight: 42 });
+	this.load.image('box', box_image);
 }
 
 function create() {
 	var map = this.make.tilemap({ key: 'map' });
-	var tileset = map.addTilesetImage('kenney_redux_64x64');
-	var layer = map.createLayer(0, tileset, 0, 0);
+	var tileset = map.addTilesetImage('Texture');
+	var layer = map.createLayer('ground', tileset, 0, 0);
 
 	// Set up the layer to have matter bodies. Any colliding tiles will be given a Matter body.
 	map.setCollisionByProperty({ collides: true });
