@@ -211,7 +211,7 @@ function create() {
     smoothMoveCameraTowards(playerController.matterSprite);
 
 
-    var button = this.add.image(800 - 16, 16, 'box', 0).setOrigin(1, 0).setInteractive();
+    var button = this.add.image(800 - 16, 16, 'fullscreen', 0).setOrigin(1, 0).setInteractive();
 
     button.on('pointerup', function () {
 
