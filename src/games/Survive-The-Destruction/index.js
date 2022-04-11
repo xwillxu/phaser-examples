@@ -3,6 +3,7 @@ import phaser_test_1 from '../../assets/phaser_test_1.json'
 import texture from '../../assets/texture.png'
 import player_image from '../../assets/dude-cropped.png'
 import box_image from '../../assets/box-item-boxed.png'
+import fullscreen_image from '../../assets/Fullscreen.png'
 
 var config = {
     type: Phaser.AUTO,
@@ -67,6 +68,8 @@ var SmoothedHorionztalControl = new Phaser.Class({
 
 function preload() {
     // this.load.setBaseURL('https://labs.phaser.io')
+
+    this.load.spritesheet('fullscreen', fullscreen_image, { frameWidth: 64, frameHeight: 64 });
     this.load.tilemapTiledJSON('map', phaser_test_1);
     this.load.image('Texture', texture);
     this.load.spritesheet('player', player_image, { frameWidth: 32, frameHeight: 42 });
@@ -207,6 +210,41 @@ function create() {
     cam.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
     smoothMoveCameraTowards(playerController.matterSprite);
 
+
+    var button = this.add.image(800 - 16, 16, 'fullscreen', 0).setOrigin(1, 0).setInteractive();
+
+    button.on('pointerup', function () {
+
+        if (this.scale.isFullscreen) {
+            button.setFrame(0);
+
+            this.scale.stopFullscreen();
+        }
+        else {
+            button.setFrame(1);
+
+            this.scale.startFullscreen();
+        }
+
+    }, this);
+
+    var FKey = this.input.keyboard.addKey('Space');
+
+    FKey.on('down', function () {
+
+        if (this.scale.isFullscreen) {
+            button.setFrame(0);
+            this.scale.stopFullscreen();
+        }
+        else {
+            button.setFrame(1);
+            this.scale.startFullscreen();
+        }
+
+    }, this);
+
+
+
     this.anims.create({
         key: 'left',
         frames: this.anims.generateFrameNumbers('player', { start: 0, end: 3 }),
@@ -283,6 +321,7 @@ function create() {
         backgroundColor: '#ffffff',
         fill: '#000000'
     });
+
     text.setScrollFactor(0);
     updateText();
 }
