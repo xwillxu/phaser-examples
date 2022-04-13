@@ -23,13 +23,31 @@ export default class Scene extends Phaser.Scene {
     create() {
         // Create
 
-        const map = this.make.tilemap({ key: 'map' })
-        var abc = 'daddy'
-        var def = 'xwill'
-        var line = 'loves'
-        var sentence = abc + ' ' + line + ' ' + def
+        this.score = 0
 
-        console.log(sentence, 'Map Data', "Daddy Is Teaching Xwill Javascript")
+        var map = this.make.tilemap({ key: 'map' })
+        var tileset = map.addTilesetImage('texture')
+        var layer = map.createLayer('Tile Layer 1', tileset, 0, 0)
+
+        this.matter.world.convertTilemapLayer(layer)
+        this.matter.world.setBounds(map.widthInPixels, map.heightInPixels);
+
+        console.log(layer)
+
+        const animals = [
+            { 'name': 'Shark', 'text': 'is dangerous' },
+            { 'name': 'Orca', 'text': 'is cute' },
+            { 'name': 'Moray Eel', 'text': 'is sneaky' },
+            { 'name': 'Octopus', 'text': 'is smart' },
+        ]
+
+
+        for (const animal of animals) {
+            console.log(animal.name + ' ' + animal.text)
+        }
+
+
+
     }
 
     update() {

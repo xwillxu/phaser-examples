@@ -7,6 +7,14 @@ var config = {
     height: 600,
     type: Phaser.AUTO,
     parent: 'phaser-example',
+    physics: {
+        default: 'matter',
+        matter: {
+            gravity: { y: 1 },
+            enableSleep: false,
+            debug: true
+        }
+    },
     scene: [Scene]
 };
 
