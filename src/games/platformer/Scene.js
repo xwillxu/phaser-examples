@@ -29,28 +29,41 @@ export default class Scene extends Phaser.Scene {
         var tileset = map.addTilesetImage('texture')
         var layer = map.createLayer('Tile Layer 1', tileset, 0, 0)
 
+        map.setCollisionByProperty({ collides: true });
+
         this.matter.world.convertTilemapLayer(layer)
         this.matter.world.setBounds(map.widthInPixels, map.heightInPixels);
 
-        console.log(layer)
-
-        const animals = [
-            { 'name': 'Shark', 'text': 'is dangerous' },
-            { 'name': 'Orca', 'text': 'is cute' },
-            { 'name': 'Moray Eel', 'text': 'is sneaky' },
-            { 'name': 'Octopus', 'text': 'is smart' },
-        ]
 
 
-        for (const animal of animals) {
-            console.log(animal.name + ' ' + animal.text)
-        }
+        this.matter.world.createDebugGraphic();
+        this.matter.world.drawDebug = true;
 
+        this.playerSprite = this.matter.add.sprite(0, 0, 'player', 4)
+
+        var M = Phaser.Physics.Matter.Matter;
+
+        var playerBody = M.Bodies.rectangle(100, 100, 32, 42)
+
+        this.playerSprite.setBody(playerBody)
+        this.playerSprite.setFixedRotation()
+        this.playerSprite.setPosition(100, 100)
+
+        this.matter.add.image(600, 2500, 'box')
+
+
+        this.anims.create({
+            key: 'idle',
+            frames: this.anims.generateFrameNumbers('player', { start: 4, end: 4 }),
+            frameRate: 10,
+            repeat: -1
+        });
 
 
     }
 
     update() {
         // Update
+        this.playerSprite.anims.play('idle', true);
     }
 }
