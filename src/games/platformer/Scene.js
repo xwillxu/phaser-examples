@@ -20,6 +20,36 @@ export default class Scene extends Phaser.Scene {
         this.load.image('texture', texture)
     }
 
+    setupKeys() {
+        this.cursors = this.input.keyboard.createCursorKeys()
+        this.WKey = this.input.keyboard.addKey('W');
+        this.AKey = this.input.keyboard.addKey('A');
+        this.SKey = this.input.keyboard.addKey('S');
+        this.DKey = this.input.keyboard.addKey('D');
+
+        this.AKey.on('down', function () {
+            this.move_left()
+        }, this);
+
+        this.DKey.on('down', function () {
+            this.move_right()
+        }, this);
+
+    }
+
+    move_left() {
+        this.playerSprite.setVelocityX(-this.speed)
+
+    }
+
+    move_right() {
+        this.playerSprite.setVelocityX(this.speed)
+    }
+
+    setupCamera() {
+        this.cameras.main.startFollow(this.playerSprite)
+    }
+
     create() {
         // Create
 
@@ -51,6 +81,8 @@ export default class Scene extends Phaser.Scene {
 
         this.matter.add.image(600, 2500, 'box')
 
+        this.speed = 5
+
 
         this.anims.create({
             key: 'idle',
@@ -60,10 +92,25 @@ export default class Scene extends Phaser.Scene {
         });
 
 
+        // Setup Stuff
+        this.setupKeys();
+        this.setupCamera();
+
+
     }
 
     update() {
         // Update
         this.playerSprite.anims.play('idle', true);
+
+        if (this.cursors.left.isDown) {
+            this.move_left()
+        }
+
+        if (this.cursors.right.isDown) {
+            this.move_right()
+        }
+
+
     }
 }
