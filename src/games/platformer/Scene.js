@@ -24,8 +24,11 @@ export default class Scene extends Phaser.Scene {
         this.cursors = this.input.keyboard.createCursorKeys()
         this.WKey = this.input.keyboard.addKey('W');
         this.AKey = this.input.keyboard.addKey('A');
-        this.SKey = this.input.keyboard.addKey('S');
         this.DKey = this.input.keyboard.addKey('D');
+
+        this.WKey.on('down', function () {
+            this.jump()
+        }, this);
 
         this.AKey.on('down', function () {
             this.move_left()
@@ -39,15 +42,38 @@ export default class Scene extends Phaser.Scene {
 
     move_left() {
         this.playerSprite.setVelocityX(-this.speed)
-
     }
 
     move_right() {
         this.playerSprite.setVelocityX(this.speed)
     }
 
+    jump() {
+        this.playerSprite.setVelocityY(-this.speed)
+    }
+
     setupCamera() {
         this.cameras.main.startFollow(this.playerSprite)
+    }
+
+    setupCollision() {
+        this.matter.world.on('collisionstart', function (event) {
+            var bodyA = event.pairs[0].bodyA;
+            var bodyB = event.pairs[0].bodyB;
+            if (bodyA == this.playerSprite.body) {
+                const tile = bodyB.gameObject.tile
+                if (tile && tile.properties.die) {
+                    console.log('Die')
+                }
+            }
+            if (bodyB == this.playerSprite.body) {
+                const tile = bodyA.gameObject.tile
+                console.log(tile)
+                if (tile && tile.properties.die) {
+                    console.log('Die')
+                }
+            }
+        }, this)
     }
 
     create() {
@@ -57,14 +83,12 @@ export default class Scene extends Phaser.Scene {
 
         var map = this.make.tilemap({ key: 'map' })
         var tileset = map.addTilesetImage('texture')
-        var layer = map.createLayer('Tile Layer 1', tileset, 0, 0)
 
         map.setCollisionByProperty({ collides: true });
+        var layer = map.createLayer('Tile Layer 1', tileset, 0, 0)
 
         this.matter.world.convertTilemapLayer(layer)
         this.matter.world.setBounds(map.widthInPixels, map.heightInPixels);
-
-
 
         this.matter.world.createDebugGraphic();
         this.matter.world.drawDebug = true;
@@ -95,7 +119,7 @@ export default class Scene extends Phaser.Scene {
         // Setup Stuff
         this.setupKeys();
         this.setupCamera();
-
+        this.setupCollision();
 
     }
 
@@ -110,6 +134,11 @@ export default class Scene extends Phaser.Scene {
         if (this.cursors.right.isDown) {
             this.move_right()
         }
+
+        if (this.cursors.up.isDown) {
+            this.jump()
+        }
+
 
 
     }
