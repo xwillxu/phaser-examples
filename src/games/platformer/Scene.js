@@ -26,15 +26,29 @@ export default class Scene extends Phaser.Scene {
         this.AKey = this.input.keyboard.addKey('A');
         this.DKey = this.input.keyboard.addKey('D');
 
+
+
         this.WKey.on('down', function () {
+            if (this.playerDead) {
+                return
+
+            }
             this.jump()
         }, this);
 
         this.AKey.on('down', function () {
+            if (this.playerDead) {
+                return
+
+            }
             this.move_left()
         }, this);
 
         this.DKey.on('down', function () {
+            if (this.playerDead) {
+                return
+
+            }
             this.move_right()
         }, this);
 
@@ -64,6 +78,7 @@ export default class Scene extends Phaser.Scene {
                 const tile = bodyB.gameObject.tile
                 if (tile && tile.properties.die) {
                     console.log('Die')
+                    this.die()
                 }
             }
             if (bodyB == this.playerSprite.body) {
@@ -71,15 +86,30 @@ export default class Scene extends Phaser.Scene {
                 console.log(tile)
                 if (tile && tile.properties.die) {
                     console.log('Die')
+                    this.die()
                 }
             }
         }, this)
+    }
+
+    die() {
+        var text = this.add.text(16, 16, 'Die', {
+            fontSize: '20px',
+            padding: { x: 20, y: 10 },
+            backgroundColor: '#ffffff',
+            fill: '#000000'
+        });
+
+        text.setScrollFactor(0);
+
+        this.playerDead = true
     }
 
     create() {
         // Create
 
         this.score = 0
+        this.playerDead = false
 
         var map = this.make.tilemap({ key: 'map' })
         var tileset = map.addTilesetImage('texture')
@@ -121,11 +151,18 @@ export default class Scene extends Phaser.Scene {
         this.setupCamera();
         this.setupCollision();
 
+
     }
 
     update() {
         // Update
+        if (this.playerDead) {
+            return
+
+        }
+
         this.playerSprite.anims.play('idle', true);
+
 
         if (this.cursors.left.isDown) {
             this.move_left()
