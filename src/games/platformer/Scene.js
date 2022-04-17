@@ -83,7 +83,6 @@ export default class Scene extends Phaser.Scene {
             }
             if (bodyB == this.playerSprite.body) {
                 const tile = bodyA.gameObject.tile
-                console.log(tile)
                 if (tile && tile.properties.die) {
                     console.log('Die')
                     this.die()
@@ -92,12 +91,36 @@ export default class Scene extends Phaser.Scene {
         }, this)
     }
 
+    scoreDetector() {
+        this.matter.world.on('collisionstart', function (event) {
+            var bodyA = event.pairs[0].bodyA;
+            var bodyB = event.pairs[0].bodyB;
+            if (bodyA == this.playerSprite.body) {
+                const tile = bodyB.gameObject.tile
+                if (tile && tile.properties.score) {
+                    console.log('Score')
+                    this.scoreAdd(bodyB)
+
+
+                }
+            }
+            if (bodyB == this.playerSprite.body) {
+                const tile = bodyA.gameObject.tile
+                if (tile && tile.properties.score) {
+                    console.log('Score')
+                    this.scoreAdd(bodyA)
+
+                }
+            }
+        }, this)
+    }
+
     die() {
-        var text = this.add.text(16, 16, 'Die', {
-            fontSize: '20px',
+        var text = this.add.text(350, 250, 'Die', {
+            fontSize: '50px',
             padding: { x: 20, y: 10 },
             backgroundColor: '#ffffff',
-            fill: '#000000'
+            fill: 'red'
         });
 
         text.setScrollFactor(0);
@@ -105,13 +128,37 @@ export default class Scene extends Phaser.Scene {
         this.playerDead = true
     }
 
+    scoreAdd(body) {
+        // Remove from the tilemap
+        this.map.removeTile(body.gameObject.tile)
+
+        // Remove from the world
+        this.matter.world.remove(body)
+
+        // Increase Score
+        this.score += 10
+    }
+
+
     create() {
         // Create
 
         this.score = 0
+
+        this.scoreText = this.add.text(16, 16, `Score: ${this.score}`, {
+            fontSize: '20px',
+            padding: { x: 20, y: 10 },
+            backgroundColor: '#ffffff',
+            fill: '#000000'
+        });
+
+        this.scoreText.setScrollFactor(0);
+
+
         this.playerDead = false
 
-        var map = this.make.tilemap({ key: 'map' })
+        const map = this.make.tilemap({ key: 'map' })
+        this.map = map
         var tileset = map.addTilesetImage('texture')
 
         map.setCollisionByProperty({ collides: true });
@@ -131,11 +178,11 @@ export default class Scene extends Phaser.Scene {
 
         this.playerSprite.setBody(playerBody)
         this.playerSprite.setFixedRotation()
-        this.playerSprite.setPosition(100, 100)
+        this.playerSprite.setPosition(200, 200)
 
         this.matter.add.image(600, 2500, 'box')
 
-        this.speed = 5
+        this.speed = 7
 
 
         this.anims.create({
@@ -150,7 +197,7 @@ export default class Scene extends Phaser.Scene {
         this.setupKeys();
         this.setupCamera();
         this.setupCollision();
-
+        this.scoreDetector();
 
     }
 
@@ -176,7 +223,7 @@ export default class Scene extends Phaser.Scene {
             this.jump()
         }
 
-
+        this.scoreText.setText(`Score: ${this.score}`)
 
     }
 }
