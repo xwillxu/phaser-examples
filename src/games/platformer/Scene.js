@@ -20,6 +20,13 @@ export default class Scene extends Phaser.Scene {
 
             this.currentLevel = props.level
         }
+
+        if (props.score === undefined) {
+            this.score = 0
+        } else {
+            this.score = props.score
+        }
+
     }
 
 
@@ -142,6 +149,30 @@ export default class Scene extends Phaser.Scene {
         this.playerDead = true
     }
 
+    levelDetector() {
+        this.matter.world.on('collisionstart', function (event) {
+            var bodyA = event.pairs[0].bodyA;
+            var bodyB = event.pairs[0].bodyB;
+            if (bodyA == this.playerSprite.body) {
+                const tile = bodyB.gameObject.tile
+                if (tile && tile.properties.next_map) {
+                    console.log('Next Map')
+                    this.nextLevel()
+
+
+                }
+            }
+            if (bodyB == this.playerSprite.body) {
+                const tile = bodyA.gameObject.tile
+                if (tile && tile.properties.next_map) {
+                    console.log('Next Map')
+                    this.nextLevel()
+
+                }
+            }
+        }, this)
+    }
+
     scoreAdd(body) {
         // Remove from the tilemap
         this.map.removeTile(body.gameObject.tile)
@@ -153,11 +184,16 @@ export default class Scene extends Phaser.Scene {
         this.score += 10
     }
 
+    nextLevel() {
+
+        this.scene.restart({ level: this.currentLevel + 1, score: this.score })
+
+    }
+
 
     create() {
         // Create
 
-        this.score = 0
 
         this.scoreText = this.add.text(16, 16, `Score: ${this.score}`, {
             fontSize: '20px',
@@ -214,11 +250,8 @@ export default class Scene extends Phaser.Scene {
         this.setupCamera();
         this.setupCollision();
         this.scoreDetector();
+        this.levelDetector();
 
-        this.time.addEvent({
-            delay: 2500,
-            callback: () => this.scene.restart({ level: this.currentLevel + 1 })
-        })
     }
 
     update() {
