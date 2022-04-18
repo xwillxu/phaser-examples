@@ -185,9 +185,26 @@ export default class Scene extends Phaser.Scene {
     }
 
     nextLevel() {
+        if (this.currentLevel >= 2) {
+            this.youWon()
+            return
+        }
 
         this.scene.restart({ level: this.currentLevel + 1, score: this.score })
 
+    }
+
+    youWon() {
+        var text = this.add.text(350, 250, 'Win', {
+            fontSize: '50px',
+            padding: { x: 20, y: 10 },
+            backgroundColor: '#ffffff',
+            fill: 'green'
+        });
+
+        text.setScrollFactor(0);
+
+        this.playerDead = true
     }
 
 
