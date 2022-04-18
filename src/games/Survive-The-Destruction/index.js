@@ -20,7 +20,7 @@ var config = {
         matter: {
             gravity: { y: 1 },
             enableSleep: false,
-            debug: false
+            debug: true
         }
     },
     scene: {
@@ -87,7 +87,7 @@ function create() {
 
     this.matter.world.setBounds(map.widthInPixels, map.heightInPixels);
     this.matter.world.createDebugGraphic();
-    this.matter.world.drawDebug = false;
+    this.matter.world.drawDebug = true;
 
     cursors = this.input.keyboard.createCursorKeys();
     smoothedControls = new SmoothedHorionztalControl(0.0005);
@@ -310,10 +310,7 @@ function create() {
         playerController.blocked.bottom = playerController.numTouching.bottom > 0 ? true : false;
     });
 
-    this.input.on('pointerdown', function () {
-        this.matter.world.drawDebug = !this.matter.world.drawDebug;
-        this.matter.world.debugGraphic.visible = this.matter.world.drawDebug;
-    }, this);
+
 
     text = this.add.text(16, 16, '', {
         fontSize: '20px',

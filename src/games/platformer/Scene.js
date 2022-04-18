@@ -1,6 +1,8 @@
 import Phaser from 'phaser'
 
-import map from '../../assets/Platformer-Template.json'
+import map0 from '../../assets/Platformer-Template.json'
+import map1 from '../../assets/Platformer-Template2.json'
+import map2 from '../../assets/Platformer-Template3.json'
 import texture from '../../assets/texture.png'
 import player_image from '../../assets/dude-cropped.png'
 import box_image from '../../assets/box-item-boxed.png'
@@ -11,11 +13,30 @@ export default class Scene extends Phaser.Scene {
         super("Platformer Template")
     }
 
+    init(props) {
+        if (props.level === undefined) {
+            this.currentLevel = 0
+        } else {
+
+            this.currentLevel = props.level
+        }
+
+        if (props.score === undefined) {
+            this.score = 0
+        } else {
+            this.score = props.score
+        }
+
+    }
+
+
     preload() {
         // Preload
 
         this.load.image('box', box_image)
-        this.load.tilemapTiledJSON('map', map)
+        this.load.tilemapTiledJSON('map0', map0)
+        this.load.tilemapTiledJSON('map1', map1)
+        this.load.tilemapTiledJSON('map2', map2)
         this.load.spritesheet('player', player_image, { frameWidth: 32, frameHeight: 42 });
         this.load.image('texture', texture)
     }
@@ -128,6 +149,30 @@ export default class Scene extends Phaser.Scene {
         this.playerDead = true
     }
 
+    levelDetector() {
+        this.matter.world.on('collisionstart', function (event) {
+            var bodyA = event.pairs[0].bodyA;
+            var bodyB = event.pairs[0].bodyB;
+            if (bodyA == this.playerSprite.body) {
+                const tile = bodyB.gameObject.tile
+                if (tile && tile.properties.next_map) {
+                    console.log('Next Map')
+                    this.nextLevel()
+
+
+                }
+            }
+            if (bodyB == this.playerSprite.body) {
+                const tile = bodyA.gameObject.tile
+                if (tile && tile.properties.next_map) {
+                    console.log('Next Map')
+                    this.nextLevel()
+
+                }
+            }
+        }, this)
+    }
+
     scoreAdd(body) {
         // Remove from the tilemap
         this.map.removeTile(body.gameObject.tile)
@@ -139,11 +184,33 @@ export default class Scene extends Phaser.Scene {
         this.score += 10
     }
 
+    nextLevel() {
+        if (this.currentLevel >= 2) {
+            this.youWon()
+            return
+        }
+
+        this.scene.restart({ level: this.currentLevel + 1, score: this.score })
+
+    }
+
+    youWon() {
+        var text = this.add.text(350, 250, 'Win', {
+            fontSize: '50px',
+            padding: { x: 20, y: 10 },
+            backgroundColor: '#ffffff',
+            fill: 'green'
+        });
+
+        text.setScrollFactor(0);
+
+        this.playerDead = true
+    }
+
 
     create() {
         // Create
 
-        this.score = 0
 
         this.scoreText = this.add.text(16, 16, `Score: ${this.score}`, {
             fontSize: '20px',
@@ -154,10 +221,10 @@ export default class Scene extends Phaser.Scene {
 
         this.scoreText.setScrollFactor(0);
 
-
         this.playerDead = false
 
-        const map = this.make.tilemap({ key: 'map' })
+        const mapKey = 'map' + this.currentLevel
+        const map = this.make.tilemap({ key: mapKey })
         this.map = map
         var tileset = map.addTilesetImage('texture')
 
@@ -182,7 +249,7 @@ export default class Scene extends Phaser.Scene {
 
         this.matter.add.image(600, 2500, 'box')
 
-        this.speed = 7
+        this.speed = 12
 
 
         this.anims.create({
@@ -193,11 +260,14 @@ export default class Scene extends Phaser.Scene {
         });
 
 
+
+
         // Setup Stuff
         this.setupKeys();
         this.setupCamera();
         this.setupCollision();
         this.scoreDetector();
+        this.levelDetector();
 
     }
 
@@ -224,6 +294,8 @@ export default class Scene extends Phaser.Scene {
         }
 
         this.scoreText.setText(`Score: ${this.score}`)
+
+
 
     }
 }
