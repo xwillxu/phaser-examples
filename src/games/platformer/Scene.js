@@ -1,6 +1,8 @@
 import Phaser from 'phaser'
 
-import map from '../../assets/Platformer-Template.json'
+import map0 from '../../assets/Platformer-Template.json'
+import map1 from '../../assets/Platformer-Template2.json'
+import map2 from '../../assets/Platformer-Template3.json'
 import texture from '../../assets/texture.png'
 import player_image from '../../assets/dude-cropped.png'
 import box_image from '../../assets/box-item-boxed.png'
@@ -11,11 +13,23 @@ export default class Scene extends Phaser.Scene {
         super("Platformer Template")
     }
 
+    init(props) {
+        if (props.level === undefined) {
+            this.currentLevel = 0
+        } else {
+
+            this.currentLevel = props.level
+        }
+    }
+
+
     preload() {
         // Preload
 
         this.load.image('box', box_image)
-        this.load.tilemapTiledJSON('map', map)
+        this.load.tilemapTiledJSON('map0', map0)
+        this.load.tilemapTiledJSON('map1', map1)
+        this.load.tilemapTiledJSON('map2', map2)
         this.load.spritesheet('player', player_image, { frameWidth: 32, frameHeight: 42 });
         this.load.image('texture', texture)
     }
@@ -154,10 +168,10 @@ export default class Scene extends Phaser.Scene {
 
         this.scoreText.setScrollFactor(0);
 
-
         this.playerDead = false
 
-        const map = this.make.tilemap({ key: 'map' })
+        const mapKey = 'map' + this.currentLevel
+        const map = this.make.tilemap({ key: mapKey })
         this.map = map
         var tileset = map.addTilesetImage('texture')
 
@@ -182,7 +196,7 @@ export default class Scene extends Phaser.Scene {
 
         this.matter.add.image(600, 2500, 'box')
 
-        this.speed = 7
+        this.speed = 12
 
 
         this.anims.create({
@@ -193,12 +207,18 @@ export default class Scene extends Phaser.Scene {
         });
 
 
+
+
         // Setup Stuff
         this.setupKeys();
         this.setupCamera();
         this.setupCollision();
         this.scoreDetector();
 
+        this.time.addEvent({
+            delay: 2500,
+            callback: () => this.scene.restart({ level: this.currentLevel + 1 })
+        })
     }
 
     update() {
@@ -224,6 +244,8 @@ export default class Scene extends Phaser.Scene {
         }
 
         this.scoreText.setText(`Score: ${this.score}`)
+
+
 
     }
 }
