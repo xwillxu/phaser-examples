@@ -3,8 +3,12 @@ import Phaser from 'phaser'
 import Scene from './Scene'
 
 var config = {
-    width: 800,
-    height: 600,
+    scale: {
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+        width: 1600,
+        height: 800
+    },
     type: Phaser.AUTO,
     parent: 'phaser-example',
     physics: {
