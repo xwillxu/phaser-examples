@@ -249,7 +249,7 @@ export default class Scene extends Phaser.Scene {
 
         this.matter.add.image(600, 2500, 'box')
 
-        this.speed = 12
+        this.speed = 20
 
 
         this.anims.create({
