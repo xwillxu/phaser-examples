@@ -75,16 +75,20 @@ export default class Scene extends Phaser.Scene {
 
     }
 
+
     move_left() {
         this.playerSprite.setVelocityX(-this.speed)
+        this.playerSprite.anims.play('left', true);
     }
 
     move_right() {
         this.playerSprite.setVelocityX(this.speed)
+        this.playerSprite.anims.play('right', true);
     }
 
     jump() {
         this.playerSprite.setVelocityY(-this.speed)
+        this.playerSprite.anims.play('idle', true);
     }
 
     setupCamera() {
@@ -207,6 +211,32 @@ export default class Scene extends Phaser.Scene {
         this.playerDead = true
     }
 
+    setupAnimation() {
+
+
+        this.anims.create({
+            key: 'left',
+            frames: this.anims.generateFrameNumbers('player', { start: 0, end: 3 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'right',
+            frames: this.anims.generateFrameNumbers('player', { start: 5, end: 8 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'idle',
+            frames: this.anims.generateFrameNumbers('player', { start: 4, end: 4 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+    }
+
 
     create() {
         // Create
@@ -249,23 +279,14 @@ export default class Scene extends Phaser.Scene {
 
         this.matter.add.image(600, 2500, 'box')
 
-        this.speed = 12
-
-
-        this.anims.create({
-            key: 'idle',
-            frames: this.anims.generateFrameNumbers('player', { start: 4, end: 4 }),
-            frameRate: 10,
-            repeat: -1
-        });
-
-
+        this.speed = 6
 
 
         // Setup Stuff
         this.setupKeys();
         this.setupCamera();
         this.setupCollision();
+        this.setupAnimation();
         this.scoreDetector();
         this.levelDetector();
 
@@ -278,19 +299,25 @@ export default class Scene extends Phaser.Scene {
 
         }
 
-        this.playerSprite.anims.play('idle', true);
-
+        let isIdle = true
 
         if (this.cursors.left.isDown) {
             this.move_left()
+            isIdle = false
         }
 
         if (this.cursors.right.isDown) {
             this.move_right()
+            isIdle = false
         }
 
         if (this.cursors.up.isDown) {
             this.jump()
+            isIdle = false
+        }
+
+        if (isIdle) {
+            this.playerSprite.anims.play('idle', true);
         }
 
         this.scoreText.setText(`Score: ${this.score}`)
