@@ -3,7 +3,7 @@ import Phaser from 'phaser'
 import map0 from '../../assets/Platformer-Template.json'
 import map1 from '../../assets/Platformer-Template2.json'
 import map2 from '../../assets/Platformer-Template3.json'
-import texture from '../../assets/texture.png'
+import texture from '../../assets/texture.extruded.png'
 import player_image from '../../assets/dude-cropped.png'
 import box_image from '../../assets/box-item-boxed.png'
 
@@ -226,7 +226,7 @@ export default class Scene extends Phaser.Scene {
         const mapKey = 'map' + this.currentLevel
         const map = this.make.tilemap({ key: mapKey })
         this.map = map
-        var tileset = map.addTilesetImage('texture')
+        var tileset = map.addTilesetImage('texture', 'texture', 128, 128, 1, 2)
 
         map.setCollisionByProperty({ collides: true });
         var layer = map.createLayer('Tile Layer 1', tileset, 0, 0)
@@ -235,7 +235,7 @@ export default class Scene extends Phaser.Scene {
         this.matter.world.setBounds(map.widthInPixels, map.heightInPixels);
 
         this.matter.world.createDebugGraphic();
-        this.matter.world.drawDebug = true;
+        this.matter.world.drawDebug = false;
 
         this.playerSprite = this.matter.add.sprite(0, 0, 'player', 4)
 
