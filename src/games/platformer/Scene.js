@@ -237,6 +237,35 @@ export default class Scene extends Phaser.Scene {
 
     }
 
+    mouseClick() {
+        this.input.on('pointerdown', function (pointer) {
+
+            console.log('Down', pointer)
+
+            this.shoot(pointer.worldX, pointer.worldY)
+
+        }, this);
+    }
+
+    shoot(targetX, targetY) {
+
+        const projectile_sprite = this.matter.add.sprite(this.playerSprite.x, this.playerSprite.y, 'box', 0, {
+            isSensor: true,
+        })
+        projectile_sprite.setScale(0.2, 0.2)
+        const velocity = this.speed * 4
+
+        let xDist = targetX - this.playerSprite.x;
+        let yDist = targetY - this.playerSprite.y;
+        let angle = Math.atan2(yDist, xDist);
+        let velocityX = Math.cos(angle) * velocity
+        let velocityY = Math.sin(angle) * velocity
+        console.log(xDist, yDist, angle, velocityX, velocityY)
+
+        projectile_sprite.setVelocityX(velocityX)
+        projectile_sprite.setVelocityY(velocityY)
+    }
+
 
     create() {
         // Create
@@ -279,7 +308,8 @@ export default class Scene extends Phaser.Scene {
 
         this.matter.add.image(600, 2500, 'box')
 
-        this.speed = 6
+        this.speed = 10
+
 
 
         // Setup Stuff
@@ -289,6 +319,7 @@ export default class Scene extends Phaser.Scene {
         this.setupAnimation();
         this.scoreDetector();
         this.levelDetector();
+        this.mouseClick();
 
     }
 
