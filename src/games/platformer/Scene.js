@@ -95,31 +95,12 @@ export default class Scene extends Phaser.Scene {
         this.cameras.main.startFollow(this.playerSprite)
     }
 
-    setupCollision() {
-        this.matter.world.on('collisionstart', function (event) {
-            var bodyA = event.pairs[0].bodyA;
-            var bodyB = event.pairs[0].bodyB;
-            if (bodyA == this.playerSprite.body) {
-                const tile = bodyB.gameObject.tile
-                if (tile && tile.properties.die) {
-                    console.log('Die')
-                    this.die()
-                }
-            }
-            if (bodyB == this.playerSprite.body) {
-                const tile = bodyA.gameObject.tile
-                if (tile && tile.properties.die) {
-                    console.log('Die')
-                    this.die()
-                }
-            }
-        }, this)
-    }
+
 
     scoreDetector() {
         this.matter.world.on('collisionstart', function (event) {
-            var bodyA = event.pairs[0].bodyA;
-            var bodyB = event.pairs[0].bodyB;
+            let bodyA = event.pairs[0].bodyA;
+            let bodyB = event.pairs[0].bodyB;
             if (bodyA == this.playerSprite.body) {
                 const tile = bodyB.gameObject.tile
                 if (tile && tile.properties.score) {
@@ -141,7 +122,7 @@ export default class Scene extends Phaser.Scene {
     }
 
     die() {
-        var text = this.add.text(350, 250, 'Die', {
+        let text = this.add.text(350, 250, 'Die', {
             fontSize: '50px',
             padding: { x: 20, y: 10 },
             backgroundColor: '#ffffff',
@@ -155,8 +136,8 @@ export default class Scene extends Phaser.Scene {
 
     levelDetector() {
         this.matter.world.on('collisionstart', function (event) {
-            var bodyA = event.pairs[0].bodyA;
-            var bodyB = event.pairs[0].bodyB;
+            let bodyA = event.pairs[0].bodyA;
+            let bodyB = event.pairs[0].bodyB;
             if (bodyA == this.playerSprite.body) {
                 const tile = bodyB.gameObject.tile
                 if (tile && tile.properties.next_map) {
@@ -199,7 +180,7 @@ export default class Scene extends Phaser.Scene {
     }
 
     youWon() {
-        var text = this.add.text(350, 250, 'Win', {
+        let text = this.add.text(350, 250, 'Win', {
             fontSize: '50px',
             padding: { x: 20, y: 10 },
             backgroundColor: '#ffffff',
@@ -240,8 +221,6 @@ export default class Scene extends Phaser.Scene {
     mouseClick() {
         this.input.on('pointerdown', function (pointer) {
 
-            console.log('Down', pointer)
-
             this.shoot(pointer.worldX, pointer.worldY)
 
         }, this);
@@ -250,9 +229,9 @@ export default class Scene extends Phaser.Scene {
     shoot(targetX, targetY) {
 
         const projectile_sprite = this.matter.add.sprite(this.playerSprite.x, this.playerSprite.y, 'box', 0, {
-            isSensor: true,
+            isSensor: true, label: 'bullet'
         })
-        projectile_sprite.setScale(0.2, 0.2)
+        projectile_sprite.setScale(0.5, 0.5)
         const velocity = this.speed * 4
 
         let xDist = targetX - this.playerSprite.x;
@@ -260,12 +239,66 @@ export default class Scene extends Phaser.Scene {
         let angle = Math.atan2(yDist, xDist);
         let velocityX = Math.cos(angle) * velocity
         let velocityY = Math.sin(angle) * velocity
-        console.log(xDist, yDist, angle, velocityX, velocityY)
 
         projectile_sprite.setVelocityX(velocityX)
         projectile_sprite.setVelocityY(velocityY)
     }
 
+    enemy() {
+        const offset = 100
+        const posX = Math.random() * 1100 + offset
+        const posY = Math.random() * 800 + offset
+        const enemy = this.matter.add.sprite(posX, posY, 'box', 0, {
+            isSensor: false, label: 'enemy'
+        })
+        enemy.setScale(1, 1)
+
+        const velocity = Math.random() * 200 - 100
+        enemy.setVelocityX(velocity)
+
+    }
+
+    setupCollision() {
+        this.matter.world.on('collisionstart', function (event) {
+            let bodyA = event.pairs[0].bodyA;
+            let bodyB = event.pairs[0].bodyB;
+            if (bodyA == this.playerSprite.body) {
+                const tile = bodyB.gameObject.tile
+                if (tile && tile.properties.die) {
+                    console.log('Die')
+                    this.die()
+                }
+            }
+            if (bodyB == this.playerSprite.body) {
+                const tile = bodyA.gameObject.tile
+                if (tile && tile.properties.die) {
+                    console.log('Die')
+                    this.die()
+                }
+            }
+
+            if (bodyA.label == 'bullet' && bodyB.label == 'enemy') {
+                bodyA.gameObject.destroy()
+                bodyB.gameObject.destroy()
+                this.matter.world.remove(bodyA)
+                this.matter.world.remove(bodyB)
+                console.log('hit')
+
+            }
+
+            if (bodyB.label == 'bullet' && bodyA.label == 'enemy') {
+                bodyA.gameObject.destroy()
+                bodyB.gameObject.destroy()
+                this.matter.world.remove(bodyA)
+                this.matter.world.remove(bodyB)
+                console.log('ai')
+
+            }
+
+        }, this)
+
+
+    }
 
     create() {
         // Create
@@ -285,10 +318,10 @@ export default class Scene extends Phaser.Scene {
         const mapKey = 'map' + this.currentLevel
         const map = this.make.tilemap({ key: mapKey })
         this.map = map
-        var tileset = map.addTilesetImage('texture', 'texture', 128, 128, 1, 2)
+        let tileset = map.addTilesetImage('texture', 'texture', 128, 128, 1, 2)
 
         map.setCollisionByProperty({ collides: true });
-        var layer = map.createLayer('Tile Layer 1', tileset, 0, 0)
+        let layer = map.createLayer('Tile Layer 1', tileset, 0, 0)
 
         this.matter.world.convertTilemapLayer(layer)
         this.matter.world.setBounds(map.widthInPixels, map.heightInPixels);
@@ -298,19 +331,22 @@ export default class Scene extends Phaser.Scene {
 
         this.playerSprite = this.matter.add.sprite(0, 0, 'player', 4)
 
-        var M = Phaser.Physics.Matter.Matter;
+        let M = Phaser.Physics.Matter.Matter;
 
-        var playerBody = M.Bodies.rectangle(100, 100, 32, 42)
+        let playerBody = M.Bodies.rectangle(100, 100, 32, 42)
 
         this.playerSprite.setBody(playerBody)
         this.playerSprite.setFixedRotation()
         this.playerSprite.setPosition(200, 200)
 
-        this.matter.add.image(600, 2500, 'box')
-
         this.speed = 10
 
+        // Spawn Enemys
+        for (let x = 0; x < 10; x++) {
+            this.enemy()
+            console.log(x)
 
+        }
 
         // Setup Stuff
         this.setupKeys();
