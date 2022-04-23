@@ -12,7 +12,7 @@ import box_image from '../../assets/box-item-boxed.png'
 
 export default class Scene extends Phaser.Scene {
     constructor() {
-        super("Platformer Template")
+        super("Game")
     }
 
     init(props) {
@@ -133,10 +133,14 @@ export default class Scene extends Phaser.Scene {
 
         text.setScrollFactor(0);
 
-        this.playerDead = true
-        var self = this
+        const self = this
 
-        setTimeout(function () { self.scene.start('die') }, 3000)
+        if (this.playerDead == false) {
+            setTimeout(function () { self.scene.start('die') }, 3000)
+        }
+
+        this.playerDead = true
+
     }
 
     levelDetector() {
