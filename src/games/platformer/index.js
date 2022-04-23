@@ -1,8 +1,9 @@
 import Phaser from 'phaser'
 
+// Add All The Different Scenes
 import Scene from './Scene'
-
 import SceneDie from './SceneDie'
+import SceneStart from './SceneStart'
 
 var config = {
     scale: {
@@ -22,7 +23,7 @@ var config = {
             debug: true
         }
     },
-    scene: [Scene, SceneDie,]
+    scene: [SceneStart, Scene, SceneDie]
 };
 
 export default new Phaser.Game(config)

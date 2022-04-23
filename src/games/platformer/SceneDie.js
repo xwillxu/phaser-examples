@@ -40,15 +40,10 @@ export default class SceneDie extends Phaser.Scene {
 
             this.setTint(0xff0000);
 
-            setTimeout(function () { self.scene.start('Game') }, 100)
+            setTimeout(function () { self.scene.start('game') }, 100)
 
         });
 
-        // this.restartButton.on('pointerout', function (pointer) {
-
-        //     this.clearTint();
-
-        // });
 
         this.restartButton.on('pointerup', function (pointer) {
 

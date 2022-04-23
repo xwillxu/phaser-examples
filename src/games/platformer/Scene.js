@@ -12,7 +12,7 @@ import box_image from '../../assets/box-item-boxed.png'
 
 export default class Scene extends Phaser.Scene {
     constructor() {
-        super("Game")
+        super("game")
     }
 
     init(props) {
