@@ -2,6 +2,8 @@ import Phaser from 'phaser'
 
 import Scene from './Scene'
 
+import SceneDie from './SceneDie'
+
 var config = {
     scale: {
         mode: Phaser.Scale.FIT,
@@ -10,6 +12,7 @@ var config = {
         height: 800
     },
     type: Phaser.AUTO,
+    backgroundColor: '#ffffff',
     parent: 'phaser-example',
     physics: {
         default: 'matter',
@@ -19,7 +22,7 @@ var config = {
             debug: true
         }
     },
-    scene: [Scene]
+    scene: [Scene, SceneDie,]
 };
 
 export default new Phaser.Game(config)

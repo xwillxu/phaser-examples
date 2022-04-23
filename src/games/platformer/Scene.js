@@ -8,6 +8,8 @@ import player_image from '../../assets/dude-cropped.png'
 import box_image from '../../assets/box-item-boxed.png'
 
 
+
+
 export default class Scene extends Phaser.Scene {
     constructor() {
         super("Platformer Template")
@@ -122,7 +124,7 @@ export default class Scene extends Phaser.Scene {
     }
 
     die() {
-        let text = this.add.text(350, 250, 'Die', {
+        let text = this.add.text(730, 375, 'Die', {
             fontSize: '50px',
             padding: { x: 20, y: 10 },
             backgroundColor: '#ffffff',
@@ -132,6 +134,9 @@ export default class Scene extends Phaser.Scene {
         text.setScrollFactor(0);
 
         this.playerDead = true
+        var self = this
+
+        setTimeout(function () { self.scene.start('die') }, 3000)
     }
 
     levelDetector() {
@@ -220,8 +225,10 @@ export default class Scene extends Phaser.Scene {
 
     mouseClick() {
         this.input.on('pointerdown', function (pointer) {
+            if (this.playerDead == false) {
+                this.shoot(pointer.worldX, pointer.worldY)
+            }
 
-            this.shoot(pointer.worldX, pointer.worldY)
 
         }, this);
     }
@@ -229,10 +236,10 @@ export default class Scene extends Phaser.Scene {
     shoot(targetX, targetY) {
 
         const projectile_sprite = this.matter.add.sprite(this.playerSprite.x, this.playerSprite.y, 'box', 0, {
-            isSensor: true, label: 'bullet'
+            isSensor: false, label: 'bullet'
         })
         projectile_sprite.setScale(0.5, 0.5)
-        const velocity = this.speed * 4
+        const velocity = this.speed * 2
 
         let xDist = targetX - this.playerSprite.x;
         let yDist = targetY - this.playerSprite.y;
@@ -302,6 +309,7 @@ export default class Scene extends Phaser.Scene {
 
     create() {
         // Create
+        this.cameras.main.backgroundColor = Phaser.Display.Color.HexStringToColor("#3498db");
 
 
         this.scoreText = this.add.text(16, 16, `Score: ${this.score}`, {
