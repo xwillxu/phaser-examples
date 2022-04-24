@@ -277,15 +277,31 @@ export default class Scene extends Phaser.Scene {
 
     enemy() {
         const offset = 100
-        const posX = Math.random() * 1100 + offset
-        const posY = Math.random() * 800 + offset
+        let posX = Math.random() * 6656 + offset
+        let posY = Math.random() * 3328 + offset
+
+        // Get the position of all the tiles if overlapping redo. 
+        let canSpawn = false
+        while (canSpawn == false) {
+            const tile = this.map.getTileAtWorldXY(posX, posY)
+
+            if (tile == null) {
+                canSpawn = true
+                break;
+            }
+            posX = Math.random() * 6656 + offset
+            posY = Math.random() * 3328 + offset
+
+        }
+
         const enemy = this.matter.add.sprite(posX, posY, 'slime', 0, {
-            isSensor: false, label: 'enemy'
+            isSensor: false, label: 'enemy', friction: 0, restitution: 1, frictionAir: 0
         })
         enemy.setScale(1, 1)
 
-        const velocity = Math.random() * 200 - 100
+        const velocity = Math.random() * 20 - 10
         enemy.setVelocityX(velocity)
+        enemy.setFixedRotation()
         enemy.anims.play('slimeanims', false)
 
     }
@@ -336,7 +352,7 @@ export default class Scene extends Phaser.Scene {
 
     createEnemy() {
         // Spawn Enemys
-        for (let x = 0; x < 10; x++) {
+        for (let x = 0; x < 25; x++) {
             this.enemy()
             console.log(x)
 
