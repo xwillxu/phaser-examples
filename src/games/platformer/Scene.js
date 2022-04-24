@@ -6,6 +6,8 @@ import map2 from '../../assets/Platformer-Template3.json'
 import texture from '../../assets/texture.extruded.png'
 import player_image from '../../assets/dude-cropped.png'
 import box_image from '../../assets/box-item-boxed.png'
+import slimeBlue from '../../assets/slimeBlue.png'
+import slimeBlue_move from '../../assets/slimeBlue_move.png'
 
 
 
@@ -36,6 +38,8 @@ export default class Scene extends Phaser.Scene {
         // Preload
 
         this.load.image('box', box_image)
+        this.load.image('slime', slimeBlue)
+        this.load.image('slime2', slimeBlue_move)
         this.load.tilemapTiledJSON('map0', map0)
         this.load.tilemapTiledJSON('map1', map1)
         this.load.tilemapTiledJSON('map2', map2)
@@ -225,6 +229,18 @@ export default class Scene extends Phaser.Scene {
             repeat: -1
         });
 
+
+        // Slime Animation
+        this.anims.create({
+            key: 'slimeanims',
+            frames: [
+                { key: 'slime' },
+                { key: 'slime2' },
+            ],
+            frameRate: 2,
+            repeat: Infinity
+        });
+
     }
 
     mouseClick() {
@@ -253,19 +269,24 @@ export default class Scene extends Phaser.Scene {
 
         projectile_sprite.setVelocityX(velocityX)
         projectile_sprite.setVelocityY(velocityY)
+
+        const self = this
+
+        setTimeout(function () { self.destroy(projectile_sprite) }, 3000)
     }
 
     enemy() {
         const offset = 100
         const posX = Math.random() * 1100 + offset
         const posY = Math.random() * 800 + offset
-        const enemy = this.matter.add.sprite(posX, posY, 'box', 0, {
+        const enemy = this.matter.add.sprite(posX, posY, 'slime', 0, {
             isSensor: false, label: 'enemy'
         })
         enemy.setScale(1, 1)
 
         const velocity = Math.random() * 200 - 100
         enemy.setVelocityX(velocity)
+        enemy.anims.play('slimeanims', false)
 
     }
 
@@ -307,9 +328,22 @@ export default class Scene extends Phaser.Scene {
             }
 
         }, this)
+    }
+    destroy(body) {
+        body.destroy()
+        this.matter.world.remove(body)
+    }
 
+    createEnemy() {
+        // Spawn Enemys
+        for (let x = 0; x < 10; x++) {
+            this.enemy()
+            console.log(x)
+
+        }
 
     }
+
 
     create() {
         // Create
@@ -353,13 +387,6 @@ export default class Scene extends Phaser.Scene {
 
         this.speed = 10
 
-        // Spawn Enemys
-        for (let x = 0; x < 10; x++) {
-            this.enemy()
-            console.log(x)
-
-        }
-
         // Setup Stuff
         this.setupKeys();
         this.setupCamera();
@@ -368,6 +395,7 @@ export default class Scene extends Phaser.Scene {
         this.scoreDetector();
         this.levelDetector();
         this.mouseClick();
+        this.createEnemy();
 
     }
 
