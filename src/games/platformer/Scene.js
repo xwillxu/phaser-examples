@@ -8,6 +8,8 @@ import player_image from '../../assets/dude-cropped.png'
 import box_image from '../../assets/box-item-boxed.png'
 import slimeBlue from '../../assets/slimeBlue.png'
 import slimeBlue_move from '../../assets/slimeBlue_move.png'
+import gameover from '../../assets/gameover1.wav'
+
 
 
 
@@ -45,6 +47,7 @@ export default class Scene extends Phaser.Scene {
         this.load.tilemapTiledJSON('map2', map2)
         this.load.spritesheet('player', player_image, { frameWidth: 32, frameHeight: 42 });
         this.load.image('texture', texture)
+        this.load.audio('gameover', gameover)
     }
 
     setupKeys() {
@@ -102,31 +105,6 @@ export default class Scene extends Phaser.Scene {
     }
 
 
-
-    scoreDetector() {
-        this.matter.world.on('collisionstart', function (event) {
-            let bodyA = event.pairs[0].bodyA;
-            let bodyB = event.pairs[0].bodyB;
-            if (bodyA == this.playerSprite.body) {
-                const tile = bodyB.gameObject.tile
-                if (tile && tile.properties.score) {
-                    console.log('Score')
-                    this.scoreAdd(bodyB)
-
-
-                }
-            }
-            if (bodyB == this.playerSprite.body) {
-                const tile = bodyA.gameObject.tile
-                if (tile && tile.properties.score) {
-                    console.log('Score')
-                    this.scoreAdd(bodyA)
-
-                }
-            }
-        }, this)
-    }
-
     die() {
         let text = this.add.text(730, 375, 'Die', {
             fontSize: '50px',
@@ -136,6 +114,8 @@ export default class Scene extends Phaser.Scene {
         });
 
         text.setScrollFactor(0);
+        let sound = this.sound.add('gameover')
+        sound.play()
 
         const self = this
 
@@ -147,29 +127,6 @@ export default class Scene extends Phaser.Scene {
 
     }
 
-    levelDetector() {
-        this.matter.world.on('collisionstart', function (event) {
-            let bodyA = event.pairs[0].bodyA;
-            let bodyB = event.pairs[0].bodyB;
-            if (bodyA == this.playerSprite.body) {
-                const tile = bodyB.gameObject.tile
-                if (tile && tile.properties.next_map) {
-                    console.log('Next Map')
-                    this.nextLevel()
-
-
-                }
-            }
-            if (bodyB == this.playerSprite.body) {
-                const tile = bodyA.gameObject.tile
-                if (tile && tile.properties.next_map) {
-                    console.log('Next Map')
-                    this.nextLevel()
-
-                }
-            }
-        }, this)
-    }
 
     scoreAdd(body) {
         // Remove from the tilemap
@@ -277,8 +234,8 @@ export default class Scene extends Phaser.Scene {
 
     enemy() {
         const offset = 100
-        let posX = Math.random() * 6656 + offset
-        let posY = Math.random() * 3328 + offset
+        let posX = Math.random() * 7936 + offset
+        let posY = Math.random() * 4608 + offset
 
         // Get the position of all the tiles if overlapping redo. 
         let canSpawn = false
@@ -289,8 +246,8 @@ export default class Scene extends Phaser.Scene {
                 canSpawn = true
                 break;
             }
-            posX = Math.random() * 6656 + offset
-            posY = Math.random() * 3328 + offset
+            posX = Math.random() * 7936 + offset
+            posY = Math.random() * 4608 + offset
 
         }
 
@@ -312,15 +269,15 @@ export default class Scene extends Phaser.Scene {
             let bodyB = event.pairs[0].bodyB;
             if (bodyA == this.playerSprite.body) {
                 const tile = bodyB.gameObject.tile
+
                 if (tile && tile.properties.die) {
-                    console.log('Die')
                     this.die()
                 }
             }
             if (bodyB == this.playerSprite.body) {
                 const tile = bodyA.gameObject.tile
+
                 if (tile && tile.properties.die) {
-                    console.log('Die')
                     this.die()
                 }
             }
@@ -330,7 +287,8 @@ export default class Scene extends Phaser.Scene {
                 bodyB.gameObject.destroy()
                 this.matter.world.remove(bodyA)
                 this.matter.world.remove(bodyB)
-                console.log('hit')
+                this.score += 10
+
 
             }
 
@@ -339,8 +297,41 @@ export default class Scene extends Phaser.Scene {
                 bodyB.gameObject.destroy()
                 this.matter.world.remove(bodyA)
                 this.matter.world.remove(bodyB)
-                console.log('ai')
+                this.score += 10
 
+            }
+            // Score Detector
+            if (bodyA == this.playerSprite.body) {
+                const tile = bodyB.gameObject.tile
+                if (tile && tile.properties.score) {
+                    this.scoreAdd(bodyB)
+
+
+                }
+            }
+            if (bodyB == this.playerSprite.body) {
+                const tile = bodyA.gameObject.tile
+                if (tile && tile.properties.score) {
+                    this.scoreAdd(bodyA)
+
+                }
+            }
+
+            // Level Detector
+            if (bodyA == this.playerSprite.body) {
+                const tile = bodyB.gameObject.tile
+                if (tile && tile.properties.next_map) {
+                    this.nextLevel()
+
+
+                }
+            }
+            if (bodyB == this.playerSprite.body) {
+                const tile = bodyA.gameObject.tile
+                if (tile && tile.properties.next_map) {
+                    this.nextLevel()
+
+                }
             }
 
         }, this)
@@ -352,9 +343,8 @@ export default class Scene extends Phaser.Scene {
 
     createEnemy() {
         // Spawn Enemys
-        for (let x = 0; x < 25; x++) {
+        for (let x = 0; x < 10; x++) {
             this.enemy()
-            console.log(x)
 
         }
 
@@ -408,8 +398,6 @@ export default class Scene extends Phaser.Scene {
         this.setupCamera();
         this.setupCollision();
         this.setupAnimation();
-        this.scoreDetector();
-        this.levelDetector();
         this.mouseClick();
         this.createEnemy();
 

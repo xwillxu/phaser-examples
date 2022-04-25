@@ -35,8 +35,6 @@ export default class SceneStart extends Phaser.Scene {
 
             setTimeout(function () { self.scene.start('game') }, 100)
 
-            console.log('clickdown')
-
         });
 
 
