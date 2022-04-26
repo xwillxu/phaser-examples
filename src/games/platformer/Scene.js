@@ -130,7 +130,7 @@ export default class Scene extends Phaser.Scene {
 
     scoreAdd(body) {
         // Remove from the tilemap
-        this.map.removeTile(body.gameObject.tile)
+        this.map.removeTile(body.gameObject?.tile)
 
         // Remove from the world
         this.matter.world.remove(body)
@@ -265,77 +265,102 @@ export default class Scene extends Phaser.Scene {
 
     setupCollision() {
         this.matter.world.on('collisionstart', function (event) {
-            let bodyA = event.pairs[0].bodyA;
-            let bodyB = event.pairs[0].bodyB;
-            if (bodyA == this.playerSprite.body) {
-                const tile = bodyB.gameObject.tile
+            console.log(event.pairs.length)
+            for (const pair of event.pairs) {
+                let bodyA = pair.bodyA;
+                let bodyB = pair.bodyB;
 
-                if (tile && tile.properties.die) {
-                    this.die()
+                if (bodyA == this.playerSprite.body) {
+                    const tile = bodyB.gameObject?.tile
+
+                    if (tile && tile.properties.die) {
+                        this.die()
+                    }
                 }
-            }
-            if (bodyB == this.playerSprite.body) {
-                const tile = bodyA.gameObject.tile
+                if (bodyB == this.playerSprite.body) {
+                    const tile = bodyA.gameObject?.tile
 
-                if (tile && tile.properties.die) {
-                    this.die()
+                    if (tile && tile.properties.die) {
+                        this.die()
+                    }
                 }
-            }
 
-            if (bodyA.label == 'bullet' && bodyB.label == 'enemy') {
-                bodyA.gameObject.destroy()
-                bodyB.gameObject.destroy()
-                this.matter.world.remove(bodyA)
-                this.matter.world.remove(bodyB)
-                this.score += 10
-
-
-            }
-
-            if (bodyB.label == 'bullet' && bodyA.label == 'enemy') {
-                bodyA.gameObject.destroy()
-                bodyB.gameObject.destroy()
-                this.matter.world.remove(bodyA)
-                this.matter.world.remove(bodyB)
-                this.score += 10
-
-            }
-            // Score Detector
-            if (bodyA == this.playerSprite.body) {
-                const tile = bodyB.gameObject.tile
-                if (tile && tile.properties.score) {
-                    this.scoreAdd(bodyB)
-
+                if (bodyA.label == 'bullet' && bodyB.label == 'enemy') {
+                    bodyA.gameObject?.destroy()
+                    bodyB.gameObject?.destroy()
+                    this.matter.world.remove(bodyA)
+                    this.matter.world.remove(bodyB)
+                    this.score += 10
 
                 }
-            }
-            if (bodyB == this.playerSprite.body) {
-                const tile = bodyA.gameObject.tile
-                if (tile && tile.properties.score) {
-                    this.scoreAdd(bodyA)
 
-                }
-            }
-
-            // Level Detector
-            if (bodyA == this.playerSprite.body) {
-                const tile = bodyB.gameObject.tile
-                if (tile && tile.properties.next_map) {
-                    this.nextLevel()
-
-
-                }
-            }
-            if (bodyB == this.playerSprite.body) {
-                const tile = bodyA.gameObject.tile
-                if (tile && tile.properties.next_map) {
-                    this.nextLevel()
+                if (bodyB.label == 'bullet' && bodyA.label == 'enemy') {
+                    bodyA.gameObject?.destroy()
+                    bodyB.gameObject?.destroy()
+                    this.matter.world.remove(bodyA)
+                    this.matter.world.remove(bodyB)
+                    this.score += 10
 
                 }
             }
 
         }, this)
     }
+
+    levelDetector() {
+        this.matter.world.on('collisionstart', function (event) {
+            console.log(event.pairs.length)
+            for (const pair of event.pairs) {
+                let bodyA = pair.bodyA;
+                let bodyB = pair.bodyB;
+
+                if (bodyA == this.playerSprite.body) {
+                    const tile = bodyB.gameObject?.tile
+                    if (tile && tile.properties.next_map) {
+                        this.nextLevel()
+
+
+                    }
+                }
+                if (bodyB == this.playerSprite.body) {
+                    const tile = bodyA.gameObject?.tile
+                    if (tile && tile.properties.next_map) {
+                        this.nextLevel()
+
+                    }
+                }
+            }
+
+        }, this)
+    }
+
+    scoreDetector() {
+        this.matter.world.on('collisionstart', function (event) {
+            console.log(event.pairs.length)
+            for (const pair of event.pairs) {
+                let bodyA = pair.bodyA;
+                let bodyB = pair.bodyB;
+                if (bodyA == this.playerSprite.body) {
+                    const tile = bodyB.gameObject?.tile
+                    if (tile && tile.properties.score) {
+                        this.scoreAdd(bodyB)
+
+
+                    }
+                }
+                if (bodyB == this.playerSprite.body) {
+                    const tile = bodyA.gameObject?.tile
+                    if (tile && tile.properties.score) {
+                        this.scoreAdd(bodyA)
+
+                    }
+                }
+            }
+
+        }, this)
+    }
+
+
     destroy(body) {
         body.destroy()
         this.matter.world.remove(body)
@@ -343,7 +368,7 @@ export default class Scene extends Phaser.Scene {
 
     createEnemy() {
         // Spawn Enemys
-        for (let x = 0; x < 10; x++) {
+        for (let x = 0; x < 50; x++) {
             this.enemy()
 
         }
@@ -397,6 +422,11 @@ export default class Scene extends Phaser.Scene {
         this.setupKeys();
         this.setupCamera();
         this.setupCollision();
+<<<<<<< HEAD
+=======
+        this.scoreDetector();
+        this.levelDetector();
+>>>>>>> 56988b8... Fix: No Collision Bug. Reason: WE LOOP ALL THE EVENT PAIRS
         this.setupAnimation();
         this.mouseClick();
         this.createEnemy();
