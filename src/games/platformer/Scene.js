@@ -422,11 +422,8 @@ export default class Scene extends Phaser.Scene {
         this.setupKeys();
         this.setupCamera();
         this.setupCollision();
-<<<<<<< HEAD
-=======
         this.scoreDetector();
         this.levelDetector();
->>>>>>> 56988b8... Fix: No Collision Bug. Reason: WE LOOP ALL THE EVENT PAIRS
         this.setupAnimation();
         this.mouseClick();
         this.createEnemy();
