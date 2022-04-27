@@ -9,6 +9,7 @@ import box_image from '../../assets/box-item-boxed.png'
 import slimeBlue from '../../assets/slimeBlue.png'
 import slimeBlue_move from '../../assets/slimeBlue_move.png'
 import gameover from '../../assets/gameover1.wav'
+import backmusic from '../../assets/background-music.wav'
 
 
 
@@ -48,6 +49,7 @@ export default class Scene extends Phaser.Scene {
         this.load.spritesheet('player', player_image, { frameWidth: 32, frameHeight: 42 });
         this.load.image('texture', texture)
         this.load.audio('gameover', gameover)
+        this.load.audio('back-music', backmusic)
     }
 
     setupKeys() {
@@ -418,6 +420,8 @@ export default class Scene extends Phaser.Scene {
 
         this.speed = 10
 
+
+
         // Setup Stuff
         this.setupKeys();
         this.setupCamera();
@@ -427,6 +431,16 @@ export default class Scene extends Phaser.Scene {
         this.setupAnimation();
         this.mouseClick();
         this.createEnemy();
+
+        let music = this.sound.add('back-music')
+
+        if (this.currentLevel == 0) {
+            music.play()
+
+            setInterval(function () {
+                music.play()
+            }, 15500)
+        }
 
     }
 
@@ -459,6 +473,7 @@ export default class Scene extends Phaser.Scene {
         }
 
         this.scoreText.setText(`Score: ${this.score}`)
+        this.scoreText.depth = 100
 
 
 
