@@ -108,6 +108,11 @@ export default class Scene extends Phaser.Scene {
 
 
     die() {
+
+        clearInterval(this.musicPlay)
+
+        this.music.stop()
+
         let text = this.add.text(730, 375, 'Die', {
             fontSize: '50px',
             padding: { x: 20, y: 10 },
@@ -267,7 +272,7 @@ export default class Scene extends Phaser.Scene {
 
     setupCollision() {
         this.matter.world.on('collisionstart', function (event) {
-            console.log(event.pairs.length)
+
             for (const pair of event.pairs) {
                 let bodyA = pair.bodyA;
                 let bodyB = pair.bodyB;
@@ -311,7 +316,6 @@ export default class Scene extends Phaser.Scene {
 
     levelDetector() {
         this.matter.world.on('collisionstart', function (event) {
-            console.log(event.pairs.length)
             for (const pair of event.pairs) {
                 let bodyA = pair.bodyA;
                 let bodyB = pair.bodyB;
@@ -338,7 +342,6 @@ export default class Scene extends Phaser.Scene {
 
     scoreDetector() {
         this.matter.world.on('collisionstart', function (event) {
-            console.log(event.pairs.length)
             for (const pair of event.pairs) {
                 let bodyA = pair.bodyA;
                 let bodyB = pair.bodyB;
@@ -362,6 +365,22 @@ export default class Scene extends Phaser.Scene {
         }, this)
     }
 
+    playMusic() {
+        this.music = this.sound.add('back-music')
+
+        const self = this
+
+        if (this.currentLevel == 0) {
+            this.music.play()
+
+            this.musicPlay = setInterval(function () {
+                self.music.play()
+            }, 15500)
+
+            console.log(this.musicPlay)
+
+        }
+    }
 
     destroy(body) {
         body.destroy()
@@ -431,16 +450,8 @@ export default class Scene extends Phaser.Scene {
         this.setupAnimation();
         this.mouseClick();
         this.createEnemy();
+        this.playMusic();
 
-        let music = this.sound.add('back-music')
-
-        if (this.currentLevel == 0) {
-            music.play()
-
-            setInterval(function () {
-                music.play()
-            }, 15500)
-        }
 
     }
 
