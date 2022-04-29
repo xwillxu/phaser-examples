@@ -377,8 +377,6 @@ export default class Scene extends Phaser.Scene {
                 self.music.play()
             }, 15500)
 
-            console.log(this.musicPlay)
-
         }
     }
 

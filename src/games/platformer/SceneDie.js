@@ -40,7 +40,7 @@ export default class SceneDie extends Phaser.Scene {
 
             this.setTint(0xff0000);
 
-            setTimeout(function () { self.scene.start('game') }, 100)
+            setTimeout(function () { self.scene.start('game', { level: 0, score: 0 }) }, 100)
 
         });
 
