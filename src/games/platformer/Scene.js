@@ -98,8 +98,10 @@ export default class Scene extends Phaser.Scene {
     }
 
     jump() {
-        this.playerSprite.setVelocityY(-this.speed)
+        const speed = this.speed * 1.3
+        this.playerSprite.setVelocityY(-speed)
         this.playerSprite.anims.play('idle', true);
+        this.canJump = false
     }
 
     setupCamera() {
@@ -153,7 +155,6 @@ export default class Scene extends Phaser.Scene {
         }
 
         this.scene.restart({ level: this.currentLevel + 1, score: this.score })
-
     }
 
     youWon() {
@@ -309,6 +310,21 @@ export default class Scene extends Phaser.Scene {
                     this.score += 10
 
                 }
+
+                if (bodyA == this.playerSprite.body) {
+                    const tile = bodyB.gameObject?.tile
+
+                    if (tile && tile.properties.collides) {
+                        this.canJump = true
+                    }
+                }
+                if (bodyB == this.playerSprite.body) {
+                    const tile = bodyA.gameObject?.tile
+
+                    if (tile && tile.properties.collides) {
+                        this.canJump = true
+                    }
+                }
             }
 
         }, this)
@@ -323,14 +339,15 @@ export default class Scene extends Phaser.Scene {
                 if (bodyA == this.playerSprite.body) {
                     const tile = bodyB.gameObject?.tile
                     if (tile && tile.properties.next_map) {
+                        console.log('Next level')
                         this.nextLevel()
-
 
                     }
                 }
                 if (bodyB == this.playerSprite.body) {
                     const tile = bodyA.gameObject?.tile
                     if (tile && tile.properties.next_map) {
+                        console.log('Next level')
                         this.nextLevel()
 
                     }
@@ -437,7 +454,7 @@ export default class Scene extends Phaser.Scene {
 
         this.speed = 10
 
-
+        this.canJump = false
 
         // Setup Stuff
         this.setupKeys();
@@ -473,8 +490,11 @@ export default class Scene extends Phaser.Scene {
         }
 
         if (this.cursors.up.isDown) {
-            this.jump()
-            isIdle = false
+            if (this.canJump != false) {
+                this.jump()
+                isIdle = false
+            }
+
         }
 
         if (isIdle) {
