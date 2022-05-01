@@ -58,30 +58,34 @@ export default class Scene extends Phaser.Scene {
         this.AKey = this.input.keyboard.addKey('A');
         this.DKey = this.input.keyboard.addKey('D');
 
+        this.keystate = {
+            'W': false, 'A': false, 'D': false
+        }
+
 
 
         this.WKey.on('down', function () {
-            if (this.playerDead) {
-                return
+            this.keystate.W = true
+        }, this);
 
-            }
-            this.jump()
+        this.WKey.on('up', function () {
+            this.keystate.W = false
         }, this);
 
         this.AKey.on('down', function () {
-            if (this.playerDead) {
-                return
+            this.keystate.A = true
+        }, this);
 
-            }
-            this.move_left()
+        this.AKey.on('up', function () {
+            this.keystate.A = false
         }, this);
 
         this.DKey.on('down', function () {
-            if (this.playerDead) {
-                return
+            this.keystate.D = true
+        }, this);
 
-            }
-            this.move_right()
+        this.DKey.on('up', function () {
+            this.keystate.D = false
         }, this);
 
     }
@@ -115,7 +119,7 @@ export default class Scene extends Phaser.Scene {
 
         this.music.stop()
 
-        let text = this.add.text(730, 375, 'Die', {
+        let text = this.add.text(700, 375, 'Game Over', {
             fontSize: '50px',
             padding: { x: 20, y: 10 },
             backgroundColor: '#ffffff',
@@ -479,17 +483,17 @@ export default class Scene extends Phaser.Scene {
 
         let isIdle = true
 
-        if (this.cursors.left.isDown) {
+        if (this.cursors.left.isDown || this.keystate.A == true) {
             this.move_left()
             isIdle = false
         }
 
-        if (this.cursors.right.isDown) {
+        if (this.cursors.right.isDown || this.keystate.D == true) {
             this.move_right()
             isIdle = false
         }
 
-        if (this.cursors.up.isDown) {
+        if (this.cursors.up.isDown || this.keystate.W == true) {
             if (this.canJump != false) {
                 this.jump()
                 isIdle = false
