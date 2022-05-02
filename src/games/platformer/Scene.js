@@ -1,4 +1,5 @@
 import Phaser from 'phaser'
+import SpriteWithHealthBar from './SpriteWithHealthBar'
 
 import map0 from '../../assets/Platformer-Template.json'
 import map1 from '../../assets/Platformer-Template2.json'
@@ -10,6 +11,7 @@ import slimeBlue from '../../assets/slimeBlue.png'
 import slimeBlue_move from '../../assets/slimeBlue_move.png'
 import gameover from '../../assets/gameover1.wav'
 import backmusic from '../../assets/background-music.wav'
+import HealthBar from './HealthBar'
 
 
 
@@ -263,7 +265,7 @@ export default class Scene extends Phaser.Scene {
 
         }
 
-        const enemy = this.matter.add.sprite(posX, posY, 'slime', 0, {
+        const enemy = new SpriteWithHealthBar(this, posX, posY, 'slime', 0, {
             isSensor: false, label: 'enemy', friction: 0, restitution: 1, frictionAir: 0
         })
         enemy.setScale(1, 1)
@@ -273,6 +275,7 @@ export default class Scene extends Phaser.Scene {
         enemy.setFixedRotation()
         enemy.anims.play('slimeanims', false)
 
+        this.enemyList.push(enemy)
     }
 
     setupCollision() {
@@ -297,22 +300,33 @@ export default class Scene extends Phaser.Scene {
                     }
                 }
 
+                let enemyHit = null
+
                 if (bodyA.label == 'bullet' && bodyB.label == 'enemy') {
+                    enemyHit = bodyB
                     bodyA.gameObject?.destroy()
-                    bodyB.gameObject?.destroy()
                     this.matter.world.remove(bodyA)
-                    this.matter.world.remove(bodyB)
                     this.score += 10
 
                 }
 
                 if (bodyB.label == 'bullet' && bodyA.label == 'enemy') {
-                    bodyA.gameObject?.destroy()
+                    enemyHit = bodyA
                     bodyB.gameObject?.destroy()
-                    this.matter.world.remove(bodyA)
                     this.matter.world.remove(bodyB)
                     this.score += 10
 
+                }
+
+                // Process enemy hp bar
+                if (enemyHit) {
+                    const result = enemyHit.gameObject?.damage(50)
+                    if (result === true) {
+                        enemyHit.gameObject?.removeHp()
+                        // Enemy has zero hp now
+                        enemyHit.gameObject?.destroy()
+                        this.matter.world.remove(enemyHit)
+                    }
                 }
 
                 if (bodyA == this.playerSprite.body) {
@@ -420,6 +434,7 @@ export default class Scene extends Phaser.Scene {
         // Create
         this.cameras.main.backgroundColor = Phaser.Display.Color.HexStringToColor("#3498db");
 
+        this.enemyList = []
 
         this.scoreText = this.add.text(16, 16, `Score: ${this.score}`, {
             fontSize: '20px',
@@ -508,7 +523,9 @@ export default class Scene extends Phaser.Scene {
         this.scoreText.setText(`Score: ${this.score}`)
         this.scoreText.depth = 100
 
-
+        for (const enemy of this.enemyList) {
+            enemy.update()
+        }
 
     }
 }
