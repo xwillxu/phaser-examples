@@ -11,11 +11,6 @@ import slimeBlue from '../../assets/slimeBlue.png'
 import slimeBlue_move from '../../assets/slimeBlue_move.png'
 import gameover from '../../assets/gameover1.wav'
 import backmusic from '../../assets/background-music.wav'
-import HealthBar from './HealthBar'
-
-
-
-
 
 export default class Scene extends Phaser.Scene {
     constructor() {
@@ -151,7 +146,7 @@ export default class Scene extends Phaser.Scene {
         this.matter.world.remove(body)
 
         // Increase Score
-        this.score += 10
+        this.score += 50
     }
 
     nextLevel() {
@@ -306,7 +301,6 @@ export default class Scene extends Phaser.Scene {
                     enemyHit = bodyB
                     bodyA.gameObject?.destroy()
                     this.matter.world.remove(bodyA)
-                    this.score += 10
 
                 }
 
@@ -314,18 +308,21 @@ export default class Scene extends Phaser.Scene {
                     enemyHit = bodyA
                     bodyB.gameObject?.destroy()
                     this.matter.world.remove(bodyB)
-                    this.score += 10
 
                 }
 
                 // Process enemy hp bar
                 if (enemyHit) {
-                    const result = enemyHit.gameObject?.damage(50)
+                    const result = enemyHit.gameObject?.damage(25)
                     if (result === true) {
                         enemyHit.gameObject?.removeHp()
                         // Enemy has zero hp now
                         enemyHit.gameObject?.destroy()
                         this.matter.world.remove(enemyHit)
+                        // Earn Score
+                        this.score += 20
+                        // Respawn Enemy
+                        this.enemy()
                     }
                 }
 
@@ -357,7 +354,6 @@ export default class Scene extends Phaser.Scene {
                 if (bodyA == this.playerSprite.body) {
                     const tile = bodyB.gameObject?.tile
                     if (tile && tile.properties.next_map) {
-                        console.log('Next level')
                         this.nextLevel()
 
                     }
@@ -365,7 +361,6 @@ export default class Scene extends Phaser.Scene {
                 if (bodyB == this.playerSprite.body) {
                     const tile = bodyA.gameObject?.tile
                     if (tile && tile.properties.next_map) {
-                        console.log('Next level')
                         this.nextLevel()
 
                     }
@@ -491,6 +486,9 @@ export default class Scene extends Phaser.Scene {
 
     update() {
         // Update
+        for (const enemy of this.enemyList) {
+            enemy.update()
+        }
         if (this.playerDead) {
             return
 
@@ -523,9 +521,7 @@ export default class Scene extends Phaser.Scene {
         this.scoreText.setText(`Score: ${this.score}`)
         this.scoreText.depth = 100
 
-        for (const enemy of this.enemyList) {
-            enemy.update()
-        }
+
 
     }
 }

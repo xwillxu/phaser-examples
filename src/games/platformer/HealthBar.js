@@ -2,8 +2,10 @@ export default class HealthBar {
     constructor(scene, x, y) {
         this.bar = new Phaser.GameObjects.Graphics(scene);
 
-        this.x = x;
-        this.y = y;
+        this.offsetX = 40
+        this.offsetY = 50
+        this.x = x - this.offsetX;
+        this.y = y - this.offsetY;
         this.value = 100;
         this.p = 76 / 100;
 
@@ -13,14 +15,13 @@ export default class HealthBar {
     }
 
     destroy() {
-        console.log('bar destroy')
         this.bar.clear()
         this.bar.destroy()
     }
 
     update(x, y) {
-        this.x = x;
-        this.y = y;
+        this.x = x - this.offsetX;
+        this.y = y - this.offsetY;
         this.draw()
     }
 
