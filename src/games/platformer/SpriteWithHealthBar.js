@@ -12,9 +12,7 @@ export default class SpriteWithHealthBar extends Phaser.Physics.Matter.Sprite {
         this.setTexture(key);
         this.setFrame(frame);
 
-        let hx = 100
-
-        this.hp = new HealthBar(scene, x - hx, y - 110);
+        this.hp = new HealthBar(scene, x, y);
 
     }
 
@@ -27,7 +25,6 @@ export default class SpriteWithHealthBar extends Phaser.Physics.Matter.Sprite {
     }
 
     removeHp() {
-        console.log('sprite remove hp')
         this.hp.destroy()
     }
 
