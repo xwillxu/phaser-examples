@@ -4,10 +4,12 @@ import SpriteWithHealthBar from './SpriteWithHealthBar'
 import map0 from '../../assets/Platformer-Template.json'
 import map1 from '../../assets/Platformer-Template2.json'
 import map2 from '../../assets/Platformer-Template3.json'
+import bossMap from '../../assets/Boss-Map.json'
 import texture from '../../assets/texture.extruded.png'
 import player_image from '../../assets/dude-cropped.png'
 import box_image from '../../assets/box-item-boxed.png'
 import slimeBlue from '../../assets/slimeBlue.png'
+import bossSprite from '../../assets/SlimeMonster.png'
 import slimeBlue_move from '../../assets/slimeBlue_move.png'
 import gameover from '../../assets/gameover1.wav'
 import backmusic from '../../assets/background-music.wav'
@@ -38,11 +40,13 @@ export default class Scene extends Phaser.Scene {
         // Preload
 
         this.load.image('box', box_image)
+        this.load.image('boss', bossSprite)
         this.load.image('slime', slimeBlue)
         this.load.image('slime2', slimeBlue_move)
         this.load.tilemapTiledJSON('map0', map0)
         this.load.tilemapTiledJSON('map1', map1)
         this.load.tilemapTiledJSON('map2', map2)
+        this.load.tilemapTiledJSON('map3', bossMap)
         this.load.spritesheet('player', player_image, { frameWidth: 32, frameHeight: 42 });
         this.load.image('texture', texture)
         this.load.audio('gameover', gameover)
@@ -150,7 +154,7 @@ export default class Scene extends Phaser.Scene {
     }
 
     nextLevel() {
-        if (this.currentLevel >= 2) {
+        if (this.currentLevel >= 3) {
             this.youWon()
             return
         }
@@ -271,6 +275,66 @@ export default class Scene extends Phaser.Scene {
         enemy.anims.play('slimeanims', false)
 
         this.enemyList.push(enemy)
+    }
+
+    createBoss() {
+        // debugger
+        if (this.currentLevel >= 3) {
+            console.log('next level')
+            const offset = 256
+            let posX = Math.random() * 3334 + offset
+            let posY = Math.random() * 3334 + offset
+
+            // Get the position of all the tiles if overlapping redo. 
+            let canSpawn = false
+            while (canSpawn == false) {
+                const tile = this.map.getTileAtWorldXY(posX, posY)
+
+                if (tile == null) {
+                    canSpawn = true
+                    break;
+                }
+                posX = Math.random() * 3334 + offset
+                posY = Math.random() * 3334 + offset
+
+            }
+
+            this.boss = new SpriteWithHealthBar(this, posX, posY, 'boss', 0, {
+                isSensor: false, label: 'enemy', friction: 0, restitution: 1, frictionAir: 0
+            })
+
+            console.log('boss created')
+            this.boss.setScale(0.5, 0.5)
+
+            const velocity = Math.random() * 20 - 10
+            this.boss.setVelocityX(velocity)
+            this.boss.setFixedRotation()
+
+
+
+
+        }
+    }
+
+    bossBullet(targetX, targetY) {
+        const projectile_sprite = this.matter.add.sprite(this.playerSprite.x, this.playerSprite.y, 'box', 0, {
+            isSensor: false, label: 'bullet'
+        })
+        projectile_sprite.setScale(0.5, 0.5)
+        const velocity = this.speed * 2
+
+        let xDist = targetX - this.playerSprite.x;
+        let yDist = targetY - this.playerSprite.y;
+        let angle = Math.atan2(yDist, xDist);
+        let velocityX = Math.cos(angle) * velocity
+        let velocityY = Math.sin(angle) * velocity
+
+        projectile_sprite.setVelocityX(velocityX)
+        projectile_sprite.setVelocityY(velocityY)
+
+        const self = this
+
+        setTimeout(function () { self.destroy(projectile_sprite) }, 3000)
     }
 
     setupCollision() {
@@ -480,12 +544,15 @@ export default class Scene extends Phaser.Scene {
         this.mouseClick();
         this.createEnemy();
         this.playMusic();
+        this.createBoss();
 
 
     }
 
     update() {
         // Update
+        this.boss?.update()
+
         for (const enemy of this.enemyList) {
             enemy.update()
         }
