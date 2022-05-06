@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
 import SpriteWithHealthBar from './SpriteWithHealthBar'
+import BossSprite from './BossSprite'
 
 import map0 from '../../assets/Platformer-Template.json'
 import map1 from '../../assets/Platformer-Template2.json'
@@ -10,6 +11,7 @@ import player_image from '../../assets/dude-cropped.png'
 import box_image from '../../assets/box-item-boxed.png'
 import slimeBlue from '../../assets/slimeBlue.png'
 import bossSprite from '../../assets/SlimeMonster.png'
+import bossLaser from '../../assets/laser.png'
 import slimeBlue_move from '../../assets/slimeBlue_move.png'
 import gameover from '../../assets/gameover1.wav'
 import backmusic from '../../assets/background-music.wav'
@@ -41,6 +43,7 @@ export default class Scene extends Phaser.Scene {
 
         this.load.image('box', box_image)
         this.load.image('boss', bossSprite)
+        this.load.image('laser', bossLaser)
         this.load.image('slime', slimeBlue)
         this.load.image('slime2', slimeBlue_move)
         this.load.tilemapTiledJSON('map0', map0)
@@ -154,10 +157,6 @@ export default class Scene extends Phaser.Scene {
     }
 
     nextLevel() {
-        if (this.currentLevel >= 3) {
-            this.youWon()
-            return
-        }
 
         this.scene.restart({ level: this.currentLevel + 1, score: this.score })
     }
@@ -172,7 +171,13 @@ export default class Scene extends Phaser.Scene {
 
         text.setScrollFactor(0);
 
+        const self = this
+
+        setTimeout(function () { self.scene.start('die') }, 3000)
+
         this.playerDead = true
+
+
     }
 
     setupAnimation() {
@@ -299,8 +304,8 @@ export default class Scene extends Phaser.Scene {
 
             }
 
-            this.boss = new SpriteWithHealthBar(this, posX, posY, 'boss', 0, {
-                isSensor: false, label: 'enemy', friction: 0, restitution: 1, frictionAir: 0
+            this.boss = new BossSprite(this, posX, posY, 'boss', 0, {
+                isSensor: false, label: 'boss', friction: 0, restitution: 1, frictionAir: 0
             })
 
             console.log('boss created')
@@ -316,15 +321,18 @@ export default class Scene extends Phaser.Scene {
         }
     }
 
-    bossBullet(targetX, targetY) {
-        const projectile_sprite = this.matter.add.sprite(this.playerSprite.x, this.playerSprite.y, 'box', 0, {
-            isSensor: false, label: 'bullet'
+    bossBullet() {
+        if (!this.boss || !this.boss.body) {
+            return
+        }
+        const projectile_sprite = this.matter.add.sprite(this.boss.x, this.boss.y, 'laser', 0, {
+            isSensor: true, label: 'bossbullet', ignoreGravity: true, frictionAir: 0
         })
-        projectile_sprite.setScale(0.5, 0.5)
+        projectile_sprite.setScale(0.05, 0.05)
         const velocity = this.speed * 2
 
-        let xDist = targetX - this.playerSprite.x;
-        let yDist = targetY - this.playerSprite.y;
+        let xDist = this.playerSprite.x - this.boss.x;
+        let yDist = this.playerSprite.y - this.boss.y;
         let angle = Math.atan2(yDist, xDist);
         let velocityX = Math.cos(angle) * velocity
         let velocityY = Math.sin(angle) * velocity
@@ -332,9 +340,15 @@ export default class Scene extends Phaser.Scene {
         projectile_sprite.setVelocityX(velocityX)
         projectile_sprite.setVelocityY(velocityY)
 
+        const degree = angle * (180 / Math.PI)
+
+        projectile_sprite.setAngle(degree)
+
         const self = this
 
-        setTimeout(function () { self.destroy(projectile_sprite) }, 3000)
+        setTimeout(function () { self.destroy(projectile_sprite) }, 2000)
+
+
     }
 
     setupCollision() {
@@ -387,6 +401,37 @@ export default class Scene extends Phaser.Scene {
                         this.score += 20
                         // Respawn Enemy
                         this.enemy()
+                    }
+                }
+
+                let bossHit = null
+
+                if (bodyA.label == 'bullet' && bodyB.label == 'boss') {
+                    bossHit = bodyB
+                    bodyA.gameObject?.destroy()
+                    this.matter.world.remove(bodyA)
+
+                }
+
+                if (bodyB.label == 'bullet' && bodyA.label == 'boss') {
+                    bossHit = bodyA
+                    bodyB.gameObject?.destroy()
+                    this.matter.world.remove(bodyB)
+
+                }
+
+                // Process enemy hp bar
+                if (bossHit) {
+                    const result = bossHit.gameObject?.damage(2)
+                    if (result === true) {
+                        bossHit.gameObject?.removeHp()
+                        // Enemy has zero hp now
+                        bossHit.gameObject?.destroy()
+                        this.matter.world.remove(bossHit)
+                        // Earn Score
+                        this.score += 500
+                        // Respawn Enemy
+                        this.youWon()
                     }
                 }
 
@@ -549,9 +594,10 @@ export default class Scene extends Phaser.Scene {
 
     }
 
-    update() {
+    update(time) {
         // Update
         this.boss?.update()
+        this.boss?.shoot(this, time)
 
         for (const enemy of this.enemyList) {
             enemy.update()
@@ -560,6 +606,8 @@ export default class Scene extends Phaser.Scene {
             return
 
         }
+
+
 
         let isIdle = true
 
