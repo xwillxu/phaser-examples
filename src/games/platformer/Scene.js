@@ -231,7 +231,7 @@ export default class Scene extends Phaser.Scene {
     shoot(targetX, targetY) {
 
         const projectile_sprite = this.matter.add.sprite(this.playerSprite.x, this.playerSprite.y, 'box', 0, {
-            isSensor: false, label: 'bullet'
+            isSensor: false, label: 'bullet', ignoreGravity: false, gravityScale: { x: 0, y: 0 }
         })
         projectile_sprite.setScale(0.5, 0.5)
         const velocity = this.speed * 2
@@ -272,6 +272,8 @@ export default class Scene extends Phaser.Scene {
         const enemy = new SpriteWithHealthBar(this, posX, posY, 'slime', 0, {
             isSensor: false, label: 'enemy', friction: 0, restitution: 1, frictionAir: 0
         })
+
+        enemy.setMass(0.1)
         enemy.setScale(1, 1)
 
         const velocity = Math.random() * 20 - 10
@@ -308,6 +310,7 @@ export default class Scene extends Phaser.Scene {
                 isSensor: false, label: 'boss', friction: 0, restitution: 1, frictionAir: 0
             })
 
+            this.boss.setMass(0.5)
             console.log('boss created')
             this.boss.setScale(0.5, 0.5)
 
@@ -321,35 +324,7 @@ export default class Scene extends Phaser.Scene {
         }
     }
 
-    bossBullet() {
-        if (!this.boss || !this.boss.body) {
-            return
-        }
-        const projectile_sprite = this.matter.add.sprite(this.boss.x, this.boss.y, 'laser', 0, {
-            isSensor: true, label: 'bossbullet', ignoreGravity: true, frictionAir: 0
-        })
-        projectile_sprite.setScale(0.05, 0.05)
-        const velocity = this.speed * 2
 
-        let xDist = this.playerSprite.x - this.boss.x;
-        let yDist = this.playerSprite.y - this.boss.y;
-        let angle = Math.atan2(yDist, xDist);
-        let velocityX = Math.cos(angle) * velocity
-        let velocityY = Math.sin(angle) * velocity
-
-        projectile_sprite.setVelocityX(velocityX)
-        projectile_sprite.setVelocityY(velocityY)
-
-        const degree = angle * (180 / Math.PI)
-
-        projectile_sprite.setAngle(degree)
-
-        const self = this
-
-        setTimeout(function () { self.destroy(projectile_sprite) }, 2000)
-
-
-    }
 
     setupCollision() {
         this.matter.world.on('collisionstart', function (event) {
@@ -433,6 +408,36 @@ export default class Scene extends Phaser.Scene {
                         // Respawn Enemy
                         this.youWon()
                     }
+                }
+
+                if (bodyA.label == 'bullet' && bodyB.label == 'bossbullet') {
+                    bodyA.gameObject?.destroy()
+                    this.matter.world.remove(bodyA)
+                    bodyB.gameObject?.destroy()
+                    this.matter.world.remove(bodyB)
+
+                }
+
+                if (bodyB.label == 'bullet' && bodyA.label == 'bossbullet') {
+                    bodyB.gameObject?.destroy()
+                    this.matter.world.remove(bodyB)
+                    bodyA.gameObject?.destroy()
+                    this.matter.world.remove(bodyA)
+
+                }
+
+                if (bodyA == this.playerSprite.body && bodyB.label == 'bossbullet') {
+                    this.die()
+                    bodyB.gameObject?.destroy()
+                    this.matter.world.remove(bodyB)
+
+                }
+
+                if (bodyB == this.playerSprite.body && bodyA.label == 'bossbullet') {
+                    this.die()
+                    bodyA.gameObject?.destroy()
+                    this.matter.world.remove(bodyA)
+
                 }
 
                 if (bodyA == this.playerSprite.body) {
