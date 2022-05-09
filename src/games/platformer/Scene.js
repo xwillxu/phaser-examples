@@ -229,26 +229,28 @@ export default class Scene extends Phaser.Scene {
     }
 
     shoot(targetX, targetY) {
+        for (let x = 0; x < 25; x++) {
+            const projectile_sprite = this.matter.add.sprite(this.playerSprite.x, this.playerSprite.y, 'box', 0, {
+                isSensor: false, label: 'bullet', ignoreGravity: true, gravityScale: { x: 0, y: 0 }, frictionAir: 0
+            })
+            projectile_sprite.setScale(0.5, 0.5)
+            const velocity = this.speed * 2
 
-        const projectile_sprite = this.matter.add.sprite(this.playerSprite.x, this.playerSprite.y, 'box', 0, {
-            isSensor: false, label: 'bullet', ignoreGravity: false, gravityScale: { x: 0, y: 0 }
-        })
-        projectile_sprite.setScale(0.5, 0.5)
-        const velocity = this.speed * 2
+            let xDist = targetX - this.playerSprite.x;
+            let yDist = targetY - this.playerSprite.y;
+            let angle = Math.atan2(yDist, xDist) + x / 1
+            let velocityX = Math.cos(angle) * velocity
+            let velocityY = Math.sin(angle) * velocity
 
-        let xDist = targetX - this.playerSprite.x;
-        let yDist = targetY - this.playerSprite.y;
-        let angle = Math.atan2(yDist, xDist);
-        let velocityX = Math.cos(angle) * velocity
-        let velocityY = Math.sin(angle) * velocity
+            projectile_sprite.setVelocityX(velocityX)
+            projectile_sprite.setVelocityY(velocityY)
 
-        projectile_sprite.setVelocityX(velocityX)
-        projectile_sprite.setVelocityY(velocityY)
+            const self = this
 
-        const self = this
-
-        setTimeout(function () { self.destroy(projectile_sprite) }, 3000)
+            setTimeout(function () { self.destroy(projectile_sprite) }, 3000)
+        }
     }
+
 
     enemy() {
         const offset = 100
@@ -273,7 +275,7 @@ export default class Scene extends Phaser.Scene {
             isSensor: false, label: 'enemy', friction: 0, restitution: 1, frictionAir: 0
         })
 
-        enemy.setMass(0.1)
+        enemy.setMass(0.5)
         enemy.setScale(1, 1)
 
         const velocity = Math.random() * 20 - 10
@@ -290,7 +292,7 @@ export default class Scene extends Phaser.Scene {
             console.log('next level')
             const offset = 256
             let posX = Math.random() * 3334 + offset
-            let posY = Math.random() * 3334 + offset
+            let posY = Math.random() * 1000 + offset
 
             // Get the position of all the tiles if overlapping redo. 
             let canSpawn = false
@@ -302,24 +304,23 @@ export default class Scene extends Phaser.Scene {
                     break;
                 }
                 posX = Math.random() * 3334 + offset
-                posY = Math.random() * 3334 + offset
+                posY = Math.random() * 1000 + offset
 
             }
 
-            this.boss = new BossSprite(this, posX, posY, 'boss', 0, {
-                isSensor: false, label: 'boss', friction: 0, restitution: 1, frictionAir: 0
+            const boss = new BossSprite(this, posX, posY, 'boss', 0, {
+                isSensor: false, label: 'boss', friction: 0, restitution: 0.1, frictionAir: 0
             })
 
-            this.boss.setMass(0.5)
-            console.log('boss created')
-            this.boss.setScale(0.5, 0.5)
+            boss.setMass(50)
+            boss.setScale(0.5, 0.5)
 
             const velocity = Math.random() * 20 - 10
-            this.boss.setVelocityX(velocity)
-            this.boss.setFixedRotation()
+            boss.setVelocityX(velocity)
+            boss.setFixedRotation()
 
 
-
+            this.bossList.push(boss)
 
         }
     }
@@ -396,8 +397,9 @@ export default class Scene extends Phaser.Scene {
                 }
 
                 // Process enemy hp bar
+
                 if (bossHit) {
-                    const result = bossHit.gameObject?.damage(2)
+                    const result = bossHit.gameObject?.damage(20)
                     if (result === true) {
                         bossHit.gameObject?.removeHp()
                         // Enemy has zero hp now
@@ -405,8 +407,17 @@ export default class Scene extends Phaser.Scene {
                         this.matter.world.remove(bossHit)
                         // Earn Score
                         this.score += 500
-                        // Respawn Enemy
-                        this.youWon()
+
+                        this.bossKilled += 1
+                        // Killed 10 Bosses? You Win!
+                        if (this.bossKilled >= 10) {
+                            this.youWon()
+                        }
+
+                        else {
+                            // Respawn Enemy
+                            this.createBoss()
+                        }
                     }
                 }
 
@@ -538,12 +549,19 @@ export default class Scene extends Phaser.Scene {
 
     }
 
+    loopBoss() {
+        for (let x = 0; x < 5; x++) {
+            this.createBoss()
+        }
+    }
+
 
     create() {
         // Create
         this.cameras.main.backgroundColor = Phaser.Display.Color.HexStringToColor("#3498db");
 
         this.enemyList = []
+        this.bossList = []
 
         this.scoreText = this.add.text(16, 16, `Score: ${this.score}`, {
             fontSize: '20px',
@@ -555,6 +573,8 @@ export default class Scene extends Phaser.Scene {
         this.scoreText.setScrollFactor(0);
 
         this.playerDead = false
+
+        this.bossKilled = 0
 
         const mapKey = 'map' + this.currentLevel
         const map = this.make.tilemap({ key: mapKey })
@@ -594,19 +614,25 @@ export default class Scene extends Phaser.Scene {
         this.mouseClick();
         this.createEnemy();
         this.playMusic();
-        this.createBoss();
+        this.loopBoss()
 
 
     }
 
     update(time) {
         // Update
-        this.boss?.update()
-        this.boss?.shoot(this, time)
+        for (const boss of this.bossList) {
+            boss?.update()
+            boss?.shoot(this, time)
+        }
 
         for (const enemy of this.enemyList) {
             enemy.update()
         }
+
+        this.scoreText.setText(`Score: ${this.score}`)
+        this.scoreText.depth = 100
+
         if (this.playerDead) {
             return
 
@@ -638,8 +664,7 @@ export default class Scene extends Phaser.Scene {
             this.playerSprite.anims.play('idle', true);
         }
 
-        this.scoreText.setText(`Score: ${this.score}`)
-        this.scoreText.depth = 100
+
 
 
 

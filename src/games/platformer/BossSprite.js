@@ -16,10 +16,10 @@ export default class BossSprite extends SpriteWithHealthBar {
     }
 
     bossBullet(scene) {
-        if (!scene.boss || !scene.boss.body) {
+        if (!this || !this.body) {
             return
         }
-        const projectile_sprite = scene.matter.add.sprite(scene.boss.x, scene.boss.y, 'laser', 0, {
+        const projectile_sprite = scene.matter.add.sprite(this.x, this.y, 'laser', 0, {
             isSensor: true, label: 'bossbullet', ignoreGravity: true, frictionAir: 0
         })
 
@@ -27,8 +27,8 @@ export default class BossSprite extends SpriteWithHealthBar {
         projectile_sprite.setScale(0.06, 0.12)
         const velocity = scene.speed * 1.1
 
-        let xDist = scene.playerSprite.x - scene.boss.x;
-        let yDist = scene.playerSprite.y - scene.boss.y;
+        let xDist = scene.playerSprite.x - this.x;
+        let yDist = scene.playerSprite.y - this.y;
         let angle = Math.atan2(yDist, xDist);
         let velocityX = Math.cos(angle) * velocity
         let velocityY = Math.sin(angle) * velocity
@@ -42,7 +42,7 @@ export default class BossSprite extends SpriteWithHealthBar {
 
         const self = scene
 
-        setTimeout(function () { self.destroy(projectile_sprite) }, 10000)
+        setTimeout(function () { self.destroy(projectile_sprite) }, 1500)
 
 
     }
