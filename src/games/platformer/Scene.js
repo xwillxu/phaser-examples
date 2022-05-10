@@ -12,6 +12,7 @@ import box_image from '../../assets/box-item-boxed.png'
 import slimeBlue from '../../assets/slimeBlue.png'
 import bossSprite from '../../assets/SlimeMonster.png'
 import bossLaser from '../../assets/laser.png'
+import missleItem from '../../assets/MultiShotItem.png'
 import slimeBlue_move from '../../assets/slimeBlue_move.png'
 import gameover from '../../assets/gameover1.wav'
 import backmusic from '../../assets/background-music.wav'
@@ -34,6 +35,11 @@ export default class Scene extends Phaser.Scene {
         } else {
             this.score = props.score
         }
+        if (props.bulletCount === undefined) {
+            this.bulletCount = 1
+        } else {
+            this.bulletCount = props.bulletCount
+        }
 
     }
 
@@ -44,6 +50,7 @@ export default class Scene extends Phaser.Scene {
         this.load.image('box', box_image)
         this.load.image('boss', bossSprite)
         this.load.image('laser', bossLaser)
+        this.load.image('missle', missleItem)
         this.load.image('slime', slimeBlue)
         this.load.image('slime2', slimeBlue_move)
         this.load.tilemapTiledJSON('map0', map0)
@@ -158,7 +165,7 @@ export default class Scene extends Phaser.Scene {
 
     nextLevel() {
 
-        this.scene.restart({ level: this.currentLevel + 1, score: this.score })
+        this.scene.restart({ level: this.currentLevel + 1, score: this.score, bulletCount: this.bulletCount })
     }
 
     youWon() {
@@ -229,7 +236,7 @@ export default class Scene extends Phaser.Scene {
     }
 
     shoot(targetX, targetY) {
-        for (let x = 0; x < 25; x++) {
+        for (let x = 0; x < this.bulletCount; x++) {
             const projectile_sprite = this.matter.add.sprite(this.playerSprite.x, this.playerSprite.y, 'box', 0, {
                 isSensor: false, label: 'bullet', ignoreGravity: true, gravityScale: { x: 0, y: 0 }, frictionAir: 0
             })
@@ -238,7 +245,7 @@ export default class Scene extends Phaser.Scene {
 
             let xDist = targetX - this.playerSprite.x;
             let yDist = targetY - this.playerSprite.y;
-            let angle = Math.atan2(yDist, xDist) + x / 1
+            let angle = Math.atan2(yDist, xDist) + x / 10
             let velocityX = Math.cos(angle) * velocity
             let velocityY = Math.sin(angle) * velocity
 
@@ -286,13 +293,41 @@ export default class Scene extends Phaser.Scene {
         this.enemyList.push(enemy)
     }
 
+    MultiShoot() {
+        const offset = 100
+        let posX = Math.random() * 7936 + offset
+        let posY = Math.random() * 4608 + offset
+
+        // Get the position of all the tiles if overlapping redo. 
+        let canSpawn = false
+        while (canSpawn == false) {
+            const tile = this.map.getTileAtWorldXY(posX, posY)
+
+            if (tile == null) {
+                canSpawn = true
+                break;
+            }
+            posX = Math.random() * 7936 + offset
+            posY = Math.random() * 4608 + offset
+
+        }
+
+        const MultiShotItem = this.matter.add.sprite(posX, posY, 'missle', 0, {
+            isSensor: false, label: 'item', friction: 0, restitution: 0, frictionAir: 0
+        })
+
+        MultiShotItem.setScale(0.1, 0.1)
+
+
+    }
+
     createBoss() {
         // debugger
         if (this.currentLevel >= 3) {
             console.log('next level')
             const offset = 256
             let posX = Math.random() * 3334 + offset
-            let posY = Math.random() * 1000 + offset
+            let posY = 3330 - offset
 
             // Get the position of all the tiles if overlapping redo. 
             let canSpawn = false
@@ -304,7 +339,7 @@ export default class Scene extends Phaser.Scene {
                     break;
                 }
                 posX = Math.random() * 3334 + offset
-                posY = Math.random() * 1000 + offset
+                posY = 3330 - offset
 
             }
 
@@ -446,6 +481,20 @@ export default class Scene extends Phaser.Scene {
 
                 if (bodyB == this.playerSprite.body && bodyA.label == 'bossbullet') {
                     this.die()
+                    bodyA.gameObject?.destroy()
+                    this.matter.world.remove(bodyA)
+
+                }
+
+                if (bodyA == this.playerSprite.body && bodyB.label == 'item') {
+                    this.bulletCount += 2
+                    bodyB.gameObject?.destroy()
+                    this.matter.world.remove(bodyB)
+
+                }
+
+                if (bodyB == this.playerSprite.body && bodyA.label == 'item') {
+                    this.bulletCount += 2
                     bodyA.gameObject?.destroy()
                     this.matter.world.remove(bodyA)
 
@@ -614,8 +663,10 @@ export default class Scene extends Phaser.Scene {
         this.mouseClick();
         this.createEnemy();
         this.playMusic();
-        this.loopBoss()
-
+        this.loopBoss();
+        for (let x = 0; x < 7; x++) {
+            this.MultiShoot()
+        }
 
     }
 
@@ -663,6 +714,7 @@ export default class Scene extends Phaser.Scene {
         if (isIdle) {
             this.playerSprite.anims.play('idle', true);
         }
+
 
 
 
