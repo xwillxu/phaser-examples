@@ -8,6 +8,7 @@ import map2 from '../../assets/Platformer-Template3.json'
 import bossMap from '../../assets/Boss-Map.json'
 import texture from '../../assets/texture.extruded.png'
 import player_image from '../../assets/dude-cropped.png'
+import player_image2 from '../../assets/dude-cropped-red.png'
 import box_image from '../../assets/box-item-boxed.png'
 import slimeBlue from '../../assets/slimeBlue.png'
 import bossSprite from '../../assets/SlimeMonster.png'
@@ -40,6 +41,11 @@ export default class Scene extends Phaser.Scene {
         } else {
             this.bulletCount = props.bulletCount
         }
+        if (props.spriteChoice === undefined) {
+            this.spriteChoice = 0
+        } else {
+            this.spriteChoice = props.spriteChoice
+        }
 
     }
 
@@ -57,7 +63,12 @@ export default class Scene extends Phaser.Scene {
         this.load.tilemapTiledJSON('map1', map1)
         this.load.tilemapTiledJSON('map2', map2)
         this.load.tilemapTiledJSON('map3', bossMap)
-        this.load.spritesheet('player', player_image, { frameWidth: 32, frameHeight: 42 });
+        if (this.spriteChoice == 0) {
+            this.load.spritesheet('player', player_image, { frameWidth: 32, frameHeight: 42 });
+        } else {
+            this.load.spritesheet('player', player_image2, { frameWidth: 32, frameHeight: 42 });
+
+        }
         this.load.image('texture', texture)
         this.load.audio('gameover', gameover)
         this.load.audio('back-music', backmusic)
