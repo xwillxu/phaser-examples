@@ -42,7 +42,7 @@ export default class BossSprite extends SpriteWithHealthBar {
 
         const self = scene
 
-        setTimeout(function () { self.destroy(projectile_sprite) }, 1500)
+        setTimeout(function () { self.destroy(projectile_sprite) }, 10000)
 
 
     }

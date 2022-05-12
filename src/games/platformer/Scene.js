@@ -9,6 +9,7 @@ import bossMap from '../../assets/Boss-Map.json'
 import texture from '../../assets/texture.extruded.png'
 import player_image from '../../assets/dude-cropped.png'
 import player_image2 from '../../assets/dude-cropped-red.png'
+import player_image3 from '../../assets/dude-cropped-blue.png'
 import box_image from '../../assets/box-item-boxed.png'
 import slimeBlue from '../../assets/slimeBlue.png'
 import bossSprite from '../../assets/SlimeMonster.png'
@@ -65,9 +66,10 @@ export default class Scene extends Phaser.Scene {
         this.load.tilemapTiledJSON('map3', bossMap)
         if (this.spriteChoice == 0) {
             this.load.spritesheet('player', player_image, { frameWidth: 32, frameHeight: 42 });
-        } else {
+        } else if (this.spriteChoice == 1) {
             this.load.spritesheet('player', player_image2, { frameWidth: 32, frameHeight: 42 });
-
+        } else if (this.spriteChoice == 2) {
+            this.load.spritesheet('player', player_image3, { frameWidth: 32, frameHeight: 42 });
         }
         this.load.image('texture', texture)
         this.load.audio('gameover', gameover)
@@ -249,7 +251,7 @@ export default class Scene extends Phaser.Scene {
     shoot(targetX, targetY) {
         for (let x = 0; x < this.bulletCount; x++) {
             const projectile_sprite = this.matter.add.sprite(this.playerSprite.x, this.playerSprite.y, 'box', 0, {
-                isSensor: false, label: 'bullet', ignoreGravity: true, gravityScale: { x: 0, y: 0 }, frictionAir: 0
+                isSensor: false, label: 'bullet', ignoreGravity: true, gravityScale: { x: 0, y: 0 }, frictionAir: 0, friction: 0
             })
             projectile_sprite.setScale(0.5, 0.5)
             const velocity = this.speed * 2
@@ -333,42 +335,38 @@ export default class Scene extends Phaser.Scene {
     }
 
     createBoss() {
-        // debugger
-        if (this.currentLevel >= 3) {
-            console.log('next level')
-            const offset = 256
-            let posX = Math.random() * 3334 + offset
-            let posY = 3330 - offset
+        const offset = 256
+        let posX = Math.random() * 3334 + offset
+        let posY = 3330 - offset
 
-            // Get the position of all the tiles if overlapping redo. 
-            let canSpawn = false
-            while (canSpawn == false) {
-                const tile = this.map.getTileAtWorldXY(posX, posY)
+        // Get the position of all the tiles if overlapping redo. 
+        let canSpawn = false
+        while (canSpawn == false) {
+            const tile = this.map.getTileAtWorldXY(posX, posY)
 
-                if (tile == null) {
-                    canSpawn = true
-                    break;
-                }
-                posX = Math.random() * 3334 + offset
-                posY = 3330 - offset
-
+            if (tile == null) {
+                canSpawn = true
+                break;
             }
-
-            const boss = new BossSprite(this, posX, posY, 'boss', 0, {
-                isSensor: false, label: 'boss', friction: 0, restitution: 0.1, frictionAir: 0
-            })
-
-            boss.setMass(50)
-            boss.setScale(0.5, 0.5)
-
-            const velocity = Math.random() * 20 - 10
-            boss.setVelocityX(velocity)
-            boss.setFixedRotation()
-
-
-            this.bossList.push(boss)
+            posX = Math.random() * 3334 + offset
+            posY = 3330 - offset
 
         }
+
+        const boss = new BossSprite(this, posX, posY, 'boss', 0, {
+            isSensor: false, label: 'boss', friction: 0, restitution: 0.1, frictionAir: 0
+        })
+
+        boss.setMass(50)
+        boss.setScale(0.1 + this.currentLevel / 10, 0.1 + this.currentLevel / 10)
+
+        const velocity = Math.random() * 20 - 10
+        boss.setVelocityX(velocity)
+        boss.setFixedRotation()
+
+
+        this.bossList.push(boss)
+
     }
 
 
@@ -445,7 +443,7 @@ export default class Scene extends Phaser.Scene {
                 // Process enemy hp bar
 
                 if (bossHit) {
-                    const result = bossHit.gameObject?.damage(20)
+                    const result = bossHit.gameObject?.damage(5)
                     if (result === true) {
                         bossHit.gameObject?.removeHp()
                         // Enemy has zero hp now
@@ -610,7 +608,9 @@ export default class Scene extends Phaser.Scene {
     }
 
     loopBoss() {
-        for (let x = 0; x < 5; x++) {
+        let bossSpawn = 1 + this.currentLevel
+
+        for (let x = 0; x < bossSpawn; x++) {
             this.createBoss()
         }
     }
