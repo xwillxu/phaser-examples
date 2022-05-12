@@ -3,6 +3,7 @@ import start_image from '../../assets/start-button.png'
 import start_word_image from '../../assets/start-word.png'
 import playerChoice1 from '../../assets/dude-cropped.png'
 import playerChoice2 from '../../assets/dude-cropped-red.png'
+import playerChoice3 from '../../assets/dude-cropped-blue.png'
 
 
 export default class SceneStart extends Phaser.Scene {
@@ -15,6 +16,7 @@ export default class SceneStart extends Phaser.Scene {
         this.load.image('start-word', start_word_image)
         this.load.spritesheet('playerImage1', playerChoice1, { frameWidth: 32, frameHeight: 42 })
         this.load.spritesheet('playerImage2', playerChoice2, { frameWidth: 32, frameHeight: 42 })
+        this.load.spritesheet('playerImage3', playerChoice3, { frameWidth: 32, frameHeight: 42 })
     }
 
     create() {
@@ -32,10 +34,13 @@ export default class SceneStart extends Phaser.Scene {
         Phaser.Display.Align.In.Center(this.startButton, this.add.zone(1100, 250, 1600, 800));
 
         this.player1 = this.add.sprite(300, 500, 'playerImage1', 4).setInteractive();
-        this.player1.setScale(2, 2)
+        this.player1.setScale(3, 3)
 
-        this.player2 = this.add.sprite(1100, 500, 'playerImage2', 4).setInteractive();
+        this.player2 = this.add.sprite(700, 500, 'playerImage2', 4).setInteractive();
         this.player2.setScale(2, 2)
+
+        this.player3 = this.add.sprite(1100, 500, 'playerImage3', 4).setInteractive();
+        this.player3.setScale(2, 2)
 
         this.selectedSprite = 0
 
@@ -43,12 +48,25 @@ export default class SceneStart extends Phaser.Scene {
 
         this.player1.on('pointerdown', function (pointer) {
             self.selectedSprite = 0
-            console.log('clicked2')
+            self.player1.setScale(3, 3)
+            self.player2.setScale(2, 2)
+            self.player3.setScale(2, 2)
         });
 
         this.player2.on('pointerdown', function (pointer) {
             self.selectedSprite = 1
-            console.log('clicked')
+            self.player2.setScale(3, 3)
+            self.player1.setScale(2, 2)
+            self.player3.setScale(2, 2)
+
+        });
+
+        this.player3.on('pointerdown', function (pointer) {
+            self.selectedSprite = 2
+            self.player3.setScale(3, 3)
+            self.player2.setScale(2, 2)
+            self.player1.setScale(2, 2)
+
         });
 
         this.startButton.on('pointerdown', function (pointer) {
