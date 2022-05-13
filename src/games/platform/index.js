@@ -1,6 +1,6 @@
 import Phaser from 'phaser'
 import phaser_test_1 from '../../assets/phaser_test_1.json'
-import texture from '../../assets/texture.png'
+import texture from '../../assets/texture.extruded.png'
 import player_image from '../../assets/dude-cropped.png'
 import box_image from '../../assets/box-item-boxed.png'
 
@@ -19,7 +19,7 @@ var config = {
 		matter: {
 			gravity: { y: 1 },
 			enableSleep: false,
-			debug: true
+			debug: false
 		}
 	},
 	scene: {
@@ -75,7 +75,7 @@ function preload() {
 
 function create() {
 	var map = this.make.tilemap({ key: 'map' });
-	var tileset = map.addTilesetImage('Texture');
+	var tileset = map.addTilesetImage('Texture', 'Texture', 128, 128, 1, 2);
 	var layer = map.createLayer('ground', tileset, 0, 0);
 
 	// Set up the layer to have matter bodies. Any colliding tiles will be given a Matter body.

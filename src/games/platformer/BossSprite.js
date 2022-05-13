@@ -4,9 +4,8 @@ export default class BossSprite extends SpriteWithHealthBar {
     lastShootTime = 0
 
     shoot(scene, time) {
-        console.log('Works')
         const intervalFromLastShot = time - this.lastShootTime
-        const limit = 300
+        const limit = 800 - scene.currentLevel * 200
         if (intervalFromLastShot < limit) {
             return
         }
@@ -19,6 +18,17 @@ export default class BossSprite extends SpriteWithHealthBar {
         if (!this || !this.body) {
             return
         }
+
+
+        let xDist = scene.playerSprite.x - this.x;
+        let yDist = scene.playerSprite.y - this.y;
+
+        let distance = Math.sqrt(xDist * xDist + yDist * yDist)
+
+        if (distance > 800) {
+            return
+        }
+
         const projectile_sprite = scene.matter.add.sprite(this.x, this.y, 'laser', 0, {
             isSensor: true, label: 'bossbullet', ignoreGravity: true, frictionAir: 0
         })
@@ -26,9 +36,6 @@ export default class BossSprite extends SpriteWithHealthBar {
 
         projectile_sprite.setScale(0.06, 0.12)
         const velocity = scene.speed * 1.1
-
-        let xDist = scene.playerSprite.x - this.x;
-        let yDist = scene.playerSprite.y - this.y;
         let angle = Math.atan2(yDist, xDist);
         let velocityX = Math.cos(angle) * velocity
         let velocityY = Math.sin(angle) * velocity
@@ -40,9 +47,11 @@ export default class BossSprite extends SpriteWithHealthBar {
 
         projectile_sprite.setAngle(degree)
 
+        let range = 700 + scene.currentLevel * 250
+
         const self = scene
 
-        setTimeout(function () { self.destroy(projectile_sprite) }, 10000)
+        setTimeout(function () { self.destroy(projectile_sprite) }, range)
 
 
     }
