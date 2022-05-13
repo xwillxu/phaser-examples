@@ -258,7 +258,7 @@ export default class Scene extends Phaser.Scene {
 
             let xDist = targetX - this.playerSprite.x;
             let yDist = targetY - this.playerSprite.y;
-            let angle = Math.atan2(yDist, xDist) + x / 10
+            let angle = Math.atan2(yDist, xDist) + x / 5
             let velocityX = Math.cos(angle) * velocity
             let velocityY = Math.sin(angle) * velocity
 
