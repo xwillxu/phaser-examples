@@ -1,0 +1,18 @@
+p {
+    color: rgb(0, 191, 255);
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 600;
+}
+
+.editor-note {
+    color: red;
+
+
+}
+
+strong {
+    font-weight: 700;
+    border-top: 1px solid rgb(0, 60, 255);
+    border-bottom: 1px solid rgb(0, 60, 255);
+    background-color: white;
+}
