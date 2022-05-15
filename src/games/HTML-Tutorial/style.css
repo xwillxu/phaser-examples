@@ -1,7 +1,48 @@
+* {
+    font-family: 'Quicksand', sans-serif;
+}
+
+html {
+    background-color: #fbbd01;
+}
+
 p {
     color: rgb(0, 191, 255);
-    font-family: 'Quicksand', sans-serif;
     font-weight: 600;
+}
+
+a {
+    font-weight: 700;
+    border-bottom: 1px dotted rgb(0, 140, 255);
+    color: rgb(0, 255, 255);
+}
+
+body {
+    width: 600px;
+    margin: 0 auto;
+    background-color: #1a1b8b;
+    padding: 0 20px 20px 20px;
+    border: 5px solid black;
+    overflow: hidden;
+
+}
+
+a:hover {
+    color: red;
+    font-weight: 700;
+    border-bottom: 1px dotted red;
+}
+
+h1 {
+    color: turquoise;
+    font-weight: 700;
+    border-bottom: 2px solid rgb(0, 60, 255)
+}
+
+li {
+    color: darkgoldenrod;
+    font-weight: 700;
+
 }
 
 .editor-note {
@@ -10,9 +51,30 @@ p {
 
 }
 
+.vertical, .horizontal {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background-color: red;
+    height: 200px;
+}
+
+.horizontal {
+    flex-direction: row;
+}
+
+.vertical div, .horizontal div {
+    background-color: aqua;
+    margin: 10px;
+}
+
+.grow {
+    flex-grow: 1;
+
+}
+
 strong {
     font-weight: 700;
     border-top: 1px solid rgb(0, 60, 255);
     border-bottom: 1px solid rgb(0, 60, 255);
-    background-color: white;
 }
