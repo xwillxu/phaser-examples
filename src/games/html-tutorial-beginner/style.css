@@ -20,9 +20,9 @@ a {
 body {
     width: 600px;
     margin: 0 auto;
-    background-color: #1a1b8b;
+    background-color: #a2d6ff;
     padding: 0 20px 20px 20px;
-    border: 5px solid black;
+    border: 5px solid rgb(0, 0, 0);
     overflow: hidden;
 
 }
@@ -36,11 +36,12 @@ a:hover {
 h1 {
     color: turquoise;
     font-weight: 700;
-    border-bottom: 2px solid rgb(0, 60, 255)
+    border-bottom: 2px solid rgb(0, 60, 255);
+    text-shadow: 3px 3px 1px rgb(0, 0, 0);
 }
 
 li {
-    color: darkgoldenrod;
+    color: rgb(255, 0, 0);
     font-weight: 700;
 
 }
