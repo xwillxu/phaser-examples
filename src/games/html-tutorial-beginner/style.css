@@ -34,6 +34,7 @@ a:hover {
 }
 
 h1 {
+    word-break: break-all;
     color: turquoise;
     font-weight: 700;
     border-bottom: 2px solid rgb(0, 60, 255);
