@@ -4,10 +4,10 @@ import * as Colyseus from "colyseus.js"
 export default class Scene extends Phaser.Scene {
     constructor() {
         super('circle.io-phaser')
-        this.players = {}
         this.myId = null
         this.room = null
         this.circles = {}
+        this.orbs = {}
         this.name = prompt('Enter Name')
     }
 
@@ -91,6 +91,7 @@ export default class Scene extends Phaser.Scene {
         let mysessionId = this.myId
         let mycircle = this.circles[mysessionId]
         mycircle.setFillStyle(0x00ffff)
+        this.cameras.main.backgroundColor = Phaser.Display.Color.HexStringToColor('0x000000');
         this.cameras.main.startFollow(mycircle)
     }
 
@@ -105,7 +106,6 @@ export default class Scene extends Phaser.Scene {
 
 
             this.room.state.clients.onAdd = (player, sessionId) => {
-                this.players[sessionId] = player
                 const circle = this.add.circle(player.x, player.y, 50, 0x6666ff)
                 this.circles[sessionId] = circle
                 player.onChange = updateChanges(player, sessionId);
@@ -113,18 +113,28 @@ export default class Scene extends Phaser.Scene {
 
             this.room.state.clients.onRemove = function (player, sessionId) {
                 let circle = this.circles[sessionId]
-                delete this.players[sessionId]
                 circle.destroy()
+            }
+
+            this.room.state.orbs.onAdd = (orb, id) => {
+                console.log('orb', orb)
+                console.log('id', id)
+                const orb2 = this.add.circle(orb.x, orb.y, 20, 0x1cfc03)
+                this.orbs[id] = orb2
+                orb.onChange = updateChanges(orb2, id);
+            }
+
+            this.room.state.orbs.onRemove = function (orb, id) {
+                let orb2 = this.orbs[id]
+                orb2.destroy()
             }
 
             this.myId = this.room.sessionId
         })
 
         const updateChanges = (stateObject, sessionId) => (changes) => {
-            console.log("stateObject", stateObject, "sessionId", sessionId, "changes", changes)
             // TODO update changes
             let circle = this.circles[sessionId]
-            console.log('circle', circle)
             if (!circle) return
             circle.setRadius(50)
             this.setupCamera()
@@ -143,7 +153,9 @@ export default class Scene extends Phaser.Scene {
 
     }
 
+
     create() {
+
         this.connectToServer()
         this.setupKeys()
     }
