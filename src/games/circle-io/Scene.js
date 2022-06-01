@@ -87,6 +87,10 @@ export default class Scene extends Phaser.Scene {
         this.room.send("move", movement);
     }
 
+    playerZoom(zoomNumber) {
+        this.cameras.main.zoomTo(zoomNumber, 1000)
+    }
+
     setupCamera() {
         let mysessionId = this.myId
         let mycircle = this.circles[mysessionId]
@@ -106,25 +110,23 @@ export default class Scene extends Phaser.Scene {
 
 
             this.room.state.clients.onAdd = (player, sessionId) => {
-                const circle = this.add.circle(player.x, player.y, 50, 0x6666ff)
+                const circle = this.add.circle(player.x, player.y, player.size / 2, 0x6666ff)
                 this.circles[sessionId] = circle
                 player.onChange = updateChanges(player, sessionId);
             }
 
-            this.room.state.clients.onRemove = function (player, sessionId) {
+            this.room.state.clients.onRemove = (player, sessionId) => {
                 let circle = this.circles[sessionId]
                 circle.destroy()
             }
 
             this.room.state.orbs.onAdd = (orb, id) => {
-                console.log('orb', orb)
-                console.log('id', id)
                 const orb2 = this.add.circle(orb.x, orb.y, 20, 0x1cfc03)
                 this.orbs[id] = orb2
                 orb.onChange = updateChanges(orb2, id);
             }
 
-            this.room.state.orbs.onRemove = function (orb, id) {
+            this.room.state.orbs.onRemove = (orb, id) => {
                 let orb2 = this.orbs[id]
                 orb2.destroy()
             }
@@ -134,9 +136,9 @@ export default class Scene extends Phaser.Scene {
 
         const updateChanges = (stateObject, sessionId) => (changes) => {
             // TODO update changes
+            console.log('changes', changes)
             let circle = this.circles[sessionId]
             if (!circle) return
-            circle.setRadius(50)
             this.setupCamera()
 
             changes.forEach(({ field, value }) => {
@@ -146,6 +148,12 @@ export default class Scene extends Phaser.Scene {
                         break;
                     case 'y':
                         circle.y = parseInt(value);
+                        break;
+                    case 'size':
+                        circle.setRadius(parseInt(value))
+                        if (sessionId == this.myId) {
+                            this.playerZoom(50 / parseInt(value))
+                        }
                         break;
                 }
             });
