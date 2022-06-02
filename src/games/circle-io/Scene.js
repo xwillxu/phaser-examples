@@ -8,7 +8,7 @@ export default class Scene extends Phaser.Scene {
         this.room = null
         this.circles = {}
         this.orbs = {}
-        this.name = prompt('Enter Name')
+        this.name = prompt('Enter Name').slice(0, 7)
     }
 
     preload() {
@@ -94,7 +94,7 @@ export default class Scene extends Phaser.Scene {
     setupCamera() {
         let mysessionId = this.myId
         let mycircle = this.circles[mysessionId]
-        mycircle.setFillStyle(0x00ffff)
+        mycircle.first.setFillStyle(0x00ffff)
         this.cameras.main.backgroundColor = Phaser.Display.Color.HexStringToColor('0x000000');
         this.cameras.main.startFollow(mycircle)
     }
@@ -110,8 +110,14 @@ export default class Scene extends Phaser.Scene {
 
 
             this.room.state.clients.onAdd = (player, sessionId) => {
-                const circle = this.add.circle(player.x, player.y, player.size / 2, 0x6666ff)
-                this.circles[sessionId] = circle
+                let container = this.add.container(player.x, player.y);
+                const circle = this.add.circle(0, 0, player.size, 0x6666ff)
+                let text = this.add.text(0, 0, `${player.name || "Guest"}`)
+                text.setOrigin(0.5, 0.5);
+                container.add(circle)
+                container.add(text)
+
+                this.circles[sessionId] = container
                 player.onChange = updateChanges(player, sessionId);
             }
 
@@ -136,23 +142,27 @@ export default class Scene extends Phaser.Scene {
 
         const updateChanges = (stateObject, sessionId) => (changes) => {
             // TODO update changes
-            console.log('changes', changes)
-            let circle = this.circles[sessionId]
-            if (!circle) return
+            let container = this.circles[sessionId]
+            if (!container) return
             this.setupCamera()
 
             changes.forEach(({ field, value }) => {
                 switch (field) {
                     case 'x':
-                        circle.x = parseInt(value);
+                        container.x = parseInt(value);
                         break;
                     case 'y':
-                        circle.y = parseInt(value);
+                        container.y = parseInt(value);
                         break;
                     case 'size':
-                        circle.setRadius(parseInt(value))
+                        container.setScale(parseInt(value) / 25, parseInt(value) / 25)
                         if (sessionId == this.myId) {
-                            this.playerZoom(50 / parseInt(value))
+                            let scale = 25 / parseInt(value)
+                            const limit = 0.1
+                            if (scale < limit) {
+                                scale = limit
+                            }
+                            this.playerZoom(scale)
                         }
                         break;
                 }
