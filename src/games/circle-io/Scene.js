@@ -8,7 +8,7 @@ export default class Scene extends Phaser.Scene {
         this.room = null
         this.circles = {}
         this.orbs = {}
-        this.name = prompt('Enter Name').slice(0, 7)
+        this.name = prompt('Enter Name')?.slice(0, 7)
     }
 
     preload() {
@@ -111,14 +111,15 @@ export default class Scene extends Phaser.Scene {
 
             this.room.state.clients.onAdd = (player, sessionId) => {
                 let container = this.add.container(player.x, player.y);
-                const circle = this.add.circle(0, 0, player.size, 0x6666ff)
+                const circle = this.add.circle(0, 0, 25, 0x6666ff)
+                console.log('size', player.size)
                 let text = this.add.text(0, 0, `${player.name || "Guest"}`)
                 text.setOrigin(0.5, 0.5);
                 container.add(circle)
                 container.add(text)
 
                 this.circles[sessionId] = container
-                player.onChange = updateChanges(player, sessionId);
+                player.onChange = updateChanges(player, sessionId, this.tweens);
             }
 
             this.room.state.clients.onRemove = (player, sessionId) => {
@@ -140,21 +141,24 @@ export default class Scene extends Phaser.Scene {
             this.myId = this.room.sessionId
         })
 
-        const updateChanges = (stateObject, sessionId) => (changes) => {
+        const updateChanges = (stateObject, sessionId, tweens) => (changes) => {
             // TODO update changes
             let container = this.circles[sessionId]
             if (!container) return
             this.setupCamera()
+            let targetX = container.x
+            let targetY = container.y
 
             changes.forEach(({ field, value }) => {
                 switch (field) {
                     case 'x':
-                        container.x = parseInt(value);
+                        targetX = parseInt(value);
                         break;
                     case 'y':
-                        container.y = parseInt(value);
+                        targetY = parseInt(value);
                         break;
                     case 'size':
+                        console.log('id', sessionId, 'scale', parseInt(value) / 25,)
                         container.setScale(parseInt(value) / 25, parseInt(value) / 25)
                         if (sessionId == this.myId) {
                             let scale = 25 / parseInt(value)
@@ -167,8 +171,15 @@ export default class Scene extends Phaser.Scene {
                         break;
                 }
             });
-        }
 
+            tweens.add({
+                targets: container,
+                x: targetX,
+                y: targetY,
+                duration: 200,
+                ease: 'Power2'
+            });
+        }
     }
 
 
