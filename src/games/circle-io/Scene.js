@@ -1,12 +1,47 @@
 import Phaser from 'phaser'
 import * as Colyseus from "colyseus.js"
 
+class UiScene extends Phaser.Scene {
+    constructor() {
+        super('UiScene')
+        this.stateCircles = null
+        this.scoreBoard = null
+    }
+
+    create(data) {
+        this.stateCircles = data.stateCircles
+        this.scene.bringToTop()
+    }
+
+    listClients() {
+        // Create if not exist
+        if (!this.scoreBoard) {
+            console.log('creating')
+            // 1. set the scoreboard to a text
+            this.scoreBoard = this.add.text(0, 0, '', { font: '30px Courier', fill: '#00ff00' })
+            this.scoreBoard.setScrollFactor(0)
+        }
+
+        // Update the content
+        let data = []
+        for (const key in this.stateCircles) {
+            const player = this.stateCircles[key]
+            data.push('Name:' + player.name + ' ' + 'Score:' + player.size)
+
+        }
+        console.log('updating', data)
+        this.scoreBoard.setText(data)
+    }
+
+}
+
 export default class Scene extends Phaser.Scene {
     constructor() {
         super('circle.io-phaser')
         this.myId = null
         this.room = null
         this.circles = {}
+        this.stateCircles = {}
         this.orbs = {}
         this.name = prompt('Enter Name')?.slice(0, 7)
     }
@@ -25,8 +60,6 @@ export default class Scene extends Phaser.Scene {
         this.keystate = {
             'W': false, 'A': false, 'D': false, 'S': false
         }
-
-
 
         this.WKey.on('down', function () {
             this.keystate.W = true
@@ -108,8 +141,9 @@ export default class Scene extends Phaser.Scene {
         client.joinOrCreate("circle_io", { name: this.name }).then(room_instance => {
             this.room = room_instance
 
-
             this.room.state.clients.onAdd = (player, sessionId) => {
+                this.stateCircles[sessionId] = player
+
                 let container = this.add.container(player.x, player.y);
                 const circle = this.add.circle(0, 0, 25, 0x6666ff)
                 console.log('size', player.size)
@@ -117,13 +151,15 @@ export default class Scene extends Phaser.Scene {
                 text.setOrigin(0.5, 0.5);
                 container.add(circle)
                 container.add(text)
-
+                this.listClients()
                 this.circles[sessionId] = container
                 player.onChange = updateChanges(player, sessionId, this.tweens);
             }
 
             this.room.state.clients.onRemove = (player, sessionId) => {
                 let circle = this.circles[sessionId]
+                delete this.stateCircles[sessionId]
+                this.listClients()
                 circle.destroy()
             }
 
@@ -168,6 +204,11 @@ export default class Scene extends Phaser.Scene {
                             }
                             this.playerZoom(scale)
                         }
+                        console.log('statePlayer', this.stateCircles)
+                        let player = this.stateCircles[sessionId]
+                        player.size = parseInt(value)
+                        this.stateCircles[sessionId] = player
+                        this.listClients()
                         break;
                 }
             });
@@ -182,12 +223,20 @@ export default class Scene extends Phaser.Scene {
         }
     }
 
+    listClients() {
+        this.scene.get('UiScene').listClients();
+    }
+
+    setupUiScene() {
+        this.scene.add('UiScene', UiScene, true, { stateCircles: this.stateCircles })
+    }
 
     create() {
-
         this.connectToServer()
         this.setupKeys()
+        this.setupUiScene()
     }
+
     update() {
         if (this.cursors.left.isDown || this.keystate.A == true) {
             this.left()
