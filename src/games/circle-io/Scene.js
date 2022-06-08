@@ -1,39 +1,6 @@
 import Phaser from 'phaser'
 import * as Colyseus from "colyseus.js"
-
-class UiScene extends Phaser.Scene {
-    constructor() {
-        super('UiScene')
-        this.stateCircles = null
-        this.scoreBoard = null
-    }
-
-    create(data) {
-        this.stateCircles = data.stateCircles
-        this.scene.bringToTop()
-    }
-
-    listClients() {
-        // Create if not exist
-        if (!this.scoreBoard) {
-            console.log('creating')
-            // 1. set the scoreboard to a text
-            this.scoreBoard = this.add.text(0, 0, '', { font: '30px Courier', fill: '#00ff00' })
-            this.scoreBoard.setScrollFactor(0)
-        }
-
-        // Update the content
-        let data = []
-        for (const key in this.stateCircles) {
-            const player = this.stateCircles[key]
-            data.push('Name:' + player.name + ' ' + 'Score:' + player.size)
-
-        }
-        console.log('updating', data)
-        this.scoreBoard.setText(data)
-    }
-
-}
+import UiScene from "./UiScene"
 
 export default class Scene extends Phaser.Scene {
     constructor() {
