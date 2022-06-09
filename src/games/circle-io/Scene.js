@@ -101,7 +101,10 @@ export default class Scene extends Phaser.Scene {
 
     connectToServer() {
         var host = window.document.location.host.replace(/:.*/, '');
-        const serverAdress = location.protocol.replace("http", "ws") + "//" + host + ':' + '2567'
+        let serverAdress = location.protocol.replace("http", "wss") + "//" + host + ':' + '2567'
+        if (host.indexOf('localhost') === -1) {
+            serverAdress = 'wss://ws.imini.app'
+        }
 
         var client = new Colyseus.Client(serverAdress);
 
