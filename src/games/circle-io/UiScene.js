@@ -21,7 +21,7 @@ export default class UiScene extends Phaser.Scene {
         // Create if not exist
         if (!this.scoreBoard) {
             // 1. set the scoreboard to a text
-            this.scoreBoard = this.add.text(0, 0, '', { font: '30px Courier', fill: '#00ff00' })
+            this.scoreBoard = this.add.text(20, 20, '', { font: '24px Courier', fill: '#00ff00' })
             this.scoreBoard.setScrollFactor(0)
         }
 
@@ -43,8 +43,9 @@ export default class UiScene extends Phaser.Scene {
         }
 
         let sortedArray = this.sortArray(data)
+        let sortedTopThree = sortedArray.slice(0, 5)
         let dataString = []
-        for (const item of sortedArray) {
+        for (const item of sortedTopThree) {
             dataString.push('Name:' + item.name + ' ' + 'Score:' + item.size)
         }
         this.scoreBoard.setText(dataString)
