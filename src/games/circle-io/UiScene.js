@@ -13,7 +13,7 @@ export default class UiScene extends Phaser.Scene {
     }
 
     sortArray(array) {
-        array.sort((a, b) => b.size - a.size)
+        array.sort((a, b) => b.score - a.score)
         return array
     }
 
@@ -37,16 +37,18 @@ export default class UiScene extends Phaser.Scene {
             data.push(
                 {
                     name: player.name,
-                    size: player.size,
+                    score: player.score,
                 }
             )
         }
+
+        console.log('data', data)
 
         let sortedArray = this.sortArray(data)
         let sortedTopThree = sortedArray.slice(0, 5)
         let dataString = []
         for (const item of sortedTopThree) {
-            dataString.push('Name:' + item.name + ' ' + 'Score:' + item.size)
+            dataString.push('Name:' + item.name + ' ' + 'Score:' + item.score)
         }
         this.scoreBoard.setText(dataString)
     }
