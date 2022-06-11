@@ -11,6 +11,8 @@ export default class Scene extends Phaser.Scene {
         this.stateCircles = {}
         this.orbs = {}
         this.name = prompt('Enter Name')?.slice(0, 7)
+
+        this.canSplit = true
     }
 
     preload() {
@@ -23,9 +25,10 @@ export default class Scene extends Phaser.Scene {
         this.AKey = this.input.keyboard.addKey('A');
         this.DKey = this.input.keyboard.addKey('D');
         this.SKey = this.input.keyboard.addKey('S');
+        this.SpaceKey = this.input.keyboard.addKey('Space');
 
         this.keystate = {
-            'W': false, 'A': false, 'D': false, 'S': false
+            'W': false, 'A': false, 'D': false, 'S': false, 'Space': false
         }
 
         this.WKey.on('down', function () {
@@ -60,6 +63,14 @@ export default class Scene extends Phaser.Scene {
             this.keystate.S = false
         }, this);
 
+        this.SpaceKey.on('down', function () {
+            this.keystate.Space = true
+        }, this)
+
+        this.SpaceKey.on('up', function () {
+            this.keystate.Space = false
+        }, this)
+
     }
 
 
@@ -85,6 +96,20 @@ export default class Scene extends Phaser.Scene {
         var movement = { x: -7 }
 
         this.room.send("move", movement);
+    }
+
+    split() {
+        if (this.canSplit) {
+
+            this.canSplit = false
+
+            var player = this.circles[this.myId]
+
+            this.room.send("split", player)
+
+            setTimeout(() => { this.canSplit = true }, 500)
+
+        }
     }
 
     playerZoom(zoomNumber) {
@@ -204,6 +229,7 @@ export default class Scene extends Phaser.Scene {
         this.scene.add('UiScene', UiScene, true, { stateCircles: this.stateCircles })
     }
 
+
     create() {
         this.connectToServer()
         this.setupKeys()
@@ -225,6 +251,11 @@ export default class Scene extends Phaser.Scene {
 
         if (this.cursors.down.isDown || this.keystate.S == true) {
             this.down()
+        }
+
+        if (this.cursors.space.isDown || this.keystate.Space == true) {
+            console.log('split')
+            this.split()
         }
     }
 }
