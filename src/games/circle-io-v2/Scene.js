@@ -133,7 +133,7 @@ export default class Scene extends Phaser.Scene {
 
         var client = new Colyseus.Client(serverAdress);
 
-        client.joinOrCreate("circle_io", { name: this.name }).then(room_instance => {
+        client.joinOrCreate("circle_io_v2", { name: this.name }).then(room_instance => {
             this.room = room_instance
 
             this.room.state.clients.onAdd = (player, sessionId) => {
