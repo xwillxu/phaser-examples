@@ -8,6 +8,18 @@
 
 <body>
     <p>Player 1: Chris</p>
+    <button onclick="updateName()">CLICK ME NOW!</button>
+    <script>
+        const para = document.querySelector('p')
+
+        para.addEventListener('click', updateName)
+
+
+        function updateName() {
+            const name = prompt('Enter Name')
+            para.textContent = `Player 1: ${name}`
+        }
+    </script>
     <script src="./main.js"></script>
 </body>
 
