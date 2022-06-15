@@ -1,4 +1,5 @@
 p {
+    word-break: break-all;
     font-family: 'helvetica neue', helvetica, sans-serif;
     letter-spacing: 1px;
     text-transform: uppercase;
@@ -11,4 +12,10 @@ p {
     padding: 3px 10px;
     display: inline-block;
     cursor: pointer;
+   
   }
+
+strong {
+  font-weight: bolder;
+  font-size: xx-large;
+}
