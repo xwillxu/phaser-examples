@@ -3,13 +3,21 @@
 
 <head>
     <link href="style.css" rel="stylesheet" />
-    <title>Html Review</title>
+    <title>Number Guessing Game</title>
 </head>
 
 <body>
-    <p>Player 1: <b><strong>ERROR PLEASE RELOAD THE PAGE</strong></b></p>
-    <button>CLICK ME NOW!</button>
-    <script src="./main.js" defer></script>
+    <p>An AI has selected a random number between 1 and 100. See if you can guess it in 10 turns or fewer. The AI will
+        tell
+        you if your guess was too high or too low.</p>
+    <form id="form">
+        <span>Enter A Guess:</span>
+        <input type="text" id="input" value="" autofocus />
+        <input type="submit" value="SUBMIT GUESS" />
+    </form>
+    <p id="answerDisplay"></p>
+
+    <script src="./test.js" defer></script>
 </body>
 
 </html>

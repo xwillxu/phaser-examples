@@ -15,6 +15,11 @@ p {
    
   }
 
+span {
+  font-family: 'helvetica neue', helvetica, sans-serif;
+
+}
+
 strong {
   font-weight: bolder;
   font-size: xx-large;
