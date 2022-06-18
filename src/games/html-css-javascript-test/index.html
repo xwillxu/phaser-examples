@@ -3,24 +3,21 @@
 
 <head>
     <link href="style.css" rel="stylesheet" />
-    <title>Html Review</title>
+    <title>Number Guessing Game</title>
 </head>
 
 <body>
-    <p>Player 1: Chris</p>
-    <button onclick="updateName()">CLICK ME NOW!</button>
-    <script>
-        const para = document.querySelector('p')
+    <p>An AI has selected a random number between 1 and 100. See if you can guess it in 10 turns or fewer. The AI will
+        tell
+        you if your guess was too high or too low.</p>
+    <form id="form">
+        <span>Enter A Guess:</span>
+        <input type="text" id="input" value="" autofocus />
+        <input type="submit" value="SUBMIT GUESS" />
+    </form>
+    <p id="answerDisplay"></p>
 
-        para.addEventListener('click', updateName)
-
-
-        function updateName() {
-            const name = prompt('Enter Name')
-            para.textContent = `Player 1: ${name}`
-        }
-    </script>
-    <script src="./main.js"></script>
+    <script src="./test.js" defer></script>
 </body>
 
 </html>
