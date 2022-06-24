@@ -13,7 +13,7 @@ let multiplicationAnswer;
 let multiplicationEquation;
 
 let divisionAnswer;
-let divisionEquation
+let divisionEquation;
 
 let questionMark = '❔❔❔'
 
