@@ -1,6 +1,7 @@
 const equationsArray = []
 const equationContainer = document.querySelector('.questionContainer')
-for (let x = 0; x < 25; x++) {
+
+for (let x = 0; x < random(1000); x++) {
     const equationsData = {
         'addition: ': {
             'symbolForm': '+',
@@ -34,8 +35,6 @@ for (let x = 0; x < 25; x++) {
             'equation': null,
             'calculationFunction': calculateDivision,
         },
-
-
     }
     for (const key in equationsData) {
         const equationCode = equationsData[key]
@@ -44,25 +43,18 @@ for (let x = 0; x < 25; x++) {
     }
 
 }
-
-
-
-
-
 const questionMark = '❔❔❔'
 
 restart()
 
 let restartButton = document.querySelector('.restart')
 
-restartButton.onclick = () => {
-    restart()
-}
+restartButton.addEventListener('click', restart)
 
 for (const equationCode of equationsArray) {
-    equationCode.documentElement.onmousedown = () => {
+    equationCode.documentElement.addEventListener('mousedown', () => {
         equationCode.documentElement.textContent = `${equationCode.equation}${equationCode.answer}`
-    }
+    })
 
     equationCode.documentElement.onmouseup = () => {
         equationCode.documentElement.textContent = `${equationCode.equation}${questionMark}`
@@ -70,13 +62,12 @@ for (const equationCode of equationsArray) {
 }
 
 function restart() {
-    for (const equationCode of equationsData) {
+    for (const equationCode of equationsArray) {
         const number1 = random(equationCode.range[0]) + 2
         const number2 = random(equationCode.range[1]) + 2
         equationCode.answer = `${equationCode.calculationFunction(number1, number2)}`
         equationCode.equation = `${number1} ${equationCode.symbolForm} ${number2} = `
         equationCode.documentElement.textContent = `${equationCode.equation}${questionMark}`
-
     }
 }
 
@@ -112,3 +103,28 @@ function calculateEquation(baseNumber, numbers, equation) {
     }
     return currentAnswer
 }
+
+const players = [
+    {
+        name: 'Xwill',
+        age: 9,
+    },
+
+    {
+        name: 'Daddy',
+        age: 41,
+    },
+
+    {
+        name: 'Mommy',
+        age: 40,
+    },
+]
+
+
+const sortedArray = players.sort((a, b) => {
+    return a.age - b.age
+})
+
+console.log(sortedArray[sortedArray.length - 1].name)
+
