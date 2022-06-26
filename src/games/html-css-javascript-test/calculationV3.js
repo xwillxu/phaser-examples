@@ -1,7 +1,7 @@
 const equationsArray = []
 const equationContainer = document.querySelector('.questionContainer')
 
-for (let x = 0; x < random(1000); x++) {
+for (let x = 0; x < random(250); x++) {
     const equationsData = {
         'addition: ': {
             'symbolForm': '+',
@@ -128,3 +128,8 @@ const sortedArray = players.sort((a, b) => {
 
 console.log(sortedArray[sortedArray.length - 1].name)
 
+
+let lotsOfDecimals = 1.5251
+console.log(lotsOfDecimals)
+let twoDecimals = lotsOfDecimals.toFixed(2)
+console.log(twoDecimals)
