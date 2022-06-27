@@ -35,6 +35,23 @@ for (let x = 0; x < random(250); x++) {
             'equation': null,
             'calculationFunction': calculateDivision,
         },
+        'remainder: ': {
+            'symbolForm': '%',
+            'documentElement': document.createElement('p'),
+            'range': [200, 200],
+            'answer': null,
+            'equation': null,
+            'calculationFunction': calculateRemainder,
+        },
+
+        'exponent: ': {
+            'symbolForm': '**',
+            'documentElement': document.createElement('p'),
+            'range': [5, 5],
+            'answer': null,
+            'equation': null,
+            'calculationFunction': calculateExponent,
+        }
     }
     for (const key in equationsData) {
         const equationCode = equationsData[key]
@@ -96,12 +113,14 @@ function calculateDivision(number1, number2) {
     return answer
 }
 
-function calculateEquation(baseNumber, numbers, equation) {
-    let currentAnswer = baseNumber
-    for (let number of numbers) {
-        currentAnswer = eval(`${currentAnswer} ${equation} ${number}`)
-    }
-    return currentAnswer
+function calculateRemainder(number1, number2) {
+    let answer = number1 % number2
+    return answer
+}
+
+function calculateExponent(number1, number2) {
+    let answer = number1 ** number2
+    return answer
 }
 
 const players = [
@@ -133,3 +152,5 @@ let lotsOfDecimals = 1.5251
 console.log(lotsOfDecimals)
 let twoDecimals = lotsOfDecimals.toFixed(2)
 console.log(twoDecimals)
+console.log((10 / 5) ** 10)
+console.log(100 / 2 % 7)
