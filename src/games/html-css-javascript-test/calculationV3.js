@@ -154,3 +154,13 @@ let twoDecimals = lotsOfDecimals.toFixed(2)
 console.log(twoDecimals)
 console.log((10 / 5) ** 10)
 console.log(100 / 2 % 7)
+
+// Question: Does A Elephant Ways Less Than A Mouse?
+// True: Elephants weigh less than mice?
+// False: Of course an elephant is heavier than a mouse!
+// Answer: False
+
+// Question: A Ostrich Is Taller Than The Duck Or What?
+// True: An ostrich is indeed taller than a duck!
+// False: Apparently a duck is taller than an ostrich?
+// Answer: True 
