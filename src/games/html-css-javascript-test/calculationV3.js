@@ -155,6 +155,8 @@ console.log(twoDecimals)
 console.log((10 / 5) ** 10)
 console.log(100 / 2 % 7)
 
+// FUNNY QUESTIONS:
+
 // Question: Does A Elephant Ways Less Than A Mouse?
 // True: Elephants weigh less than mice?
 // False: Of course an elephant is heavier than a mouse!
@@ -163,4 +165,23 @@ console.log(100 / 2 % 7)
 // Question: A Ostrich Is Taller Than The Duck Or What?
 // True: An ostrich is indeed taller than a duck!
 // False: Apparently a duck is taller than an ostrich?
-// Answer: True 
+// Answer: True
+
+// Question: Can You Make A Number Act Like A String?
+// True: Even though it might not make sense it does!
+// False: Uh, so when you opened up the console you a saw error?
+// Answer: True
+
+// Question: Do ⬆UP⬆, ⬇DOWN⬇, ⬅LEFT⬅, ➡RIGHT➡ match?
+// True: Well duh, they don't match!
+// False: So, ⬆UP⬆, ⬇DOWN⬇, ⬅LEFT⬅, ➡RIGHT➡ match completely?
+// Answer: True
+
+
+// JOKES:
+
+// Question: What Do You Say To A Error?
+// Answer: Solved You Computers Ago
+// Did You Get It?
+// Yes Or No?
+
