@@ -181,7 +181,9 @@ console.log(100 / 2 % 7)
 // JOKES:
 
 // Question: What Do You Say To A Error?
-// Answer: Solved You Computers Ago
+// Answer: Solved You Arrays Ago
 // Did You Get It?
 // Yes Or No?
 
+// Question: Why Did The Bug Fly Across The Road?
+// Answer: Because it wanted to bug off someone.
