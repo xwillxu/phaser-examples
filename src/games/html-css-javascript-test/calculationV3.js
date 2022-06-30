@@ -185,3 +185,5 @@ console.log(100 / 2 % 7)
 // Did You Get It?
 // Yes Or No?
 
+// Question: Why Did The Bug Fly Across The Road?
+// Answer: Because it wanted to bug off someone.
