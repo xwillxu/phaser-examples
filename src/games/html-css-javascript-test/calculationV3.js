@@ -181,7 +181,7 @@ console.log(100 / 2 % 7)
 // JOKES:
 
 // Question: What Do You Say To A Error?
-// Answer: Solved You Computers Ago
+// Answer: Solved You Arrays Ago
 // Did You Get It?
 // Yes Or No?
 
