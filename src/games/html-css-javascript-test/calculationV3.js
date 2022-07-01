@@ -187,3 +187,20 @@ console.log(100 / 2 % 7)
 
 // Question: Why Did The Bug Fly Across The Road?
 // Answer: Because it wanted to bug off someone.
+// Did You Get It?
+// Yes Or No?
+
+
+// QUESTIONS:
+
+// Question: If You Wait For A Waiter Aren't You The Waiter?
+// Did You Get It?
+// Yes Or No?
+
+// Question: If You Wave At A Wave Aren't You The Wave?
+// Did You Get It?
+// Yes Or No?
+
+// Question: If You Scam A Scammer Aren't You The Scammmer?
+// Did You Get It?
+// Yes Or No?
