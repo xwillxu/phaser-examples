@@ -177,6 +177,10 @@ console.log(100 / 2 % 7)
 // False: So, ⬆UP⬆, ⬇DOWN⬇, ⬅LEFT⬅, ➡RIGHT➡ apparently match completely?
 // Answer: True
 
+// Question: Can You Jump Higher Than The CN Tower
+// Yes, because the CN tower can't jump.
+// Did You Get It?
+
 
 // JOKES:
 
