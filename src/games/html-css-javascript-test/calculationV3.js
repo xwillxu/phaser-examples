@@ -174,14 +174,14 @@ console.log(100 / 2 % 7)
 
 // Question: Do ⬆UP⬆, ⬇DOWN⬇, ⬅LEFT⬅, ➡RIGHT➡ match?
 // True: Well duh, they don't match!
-// False: So, ⬆UP⬆, ⬇DOWN⬇, ⬅LEFT⬅, ➡RIGHT➡ match completely?
+// False: So, ⬆UP⬆, ⬇DOWN⬇, ⬅LEFT⬅, ➡RIGHT➡ apparently match completely?
 // Answer: True
 
 
 // JOKES:
 
 // Question: What Do You Say To A Error?
-// Answer: Solved You Arrays Ago
+// Answer: Time to debug you
 // Did You Get It?
 // Yes Or No?
 
