@@ -155,56 +155,58 @@ console.log(twoDecimals)
 console.log((10 / 5) ** 10)
 console.log(100 / 2 % 7)
 
-// FUNNY QUESTIONS:
+const shoppingList = [
+    'Bird Eggs',
+    'Organic Milk',
+    'Two High-Quality Large Pizzas',
+    'One-Hundred High-Quality Pancakes',
+    'Five Pound Lobster',
+    'Five Pound King Crab',
+]
 
-// Question: Does A Elephant Ways Less Than A Mouse?
-// True: Elephants weigh less than mice?
-// False: Of course an elephant is heavier than a mouse!
-// Answer: False
+const shoppingPriceV2 = []
+let index = 1
 
-// Question: A Ostrich Is Taller Than The Duck Or What?
-// True: An ostrich is indeed taller than a duck!
-// False: Apparently a duck is taller than an ostrich?
-// Answer: True
+for (const food of shoppingList) {
+    const newItem = `${food}: $${index ** 3}`
+    shoppingPriceV2.push(newItem)
+    index++
+}
 
-// Question: Can You Make A Number Act Like A String?
-// True: Even though it might not make sense it does!
-// False: Uh, so when you opened up the console you a saw error?
-// Answer: True
+const shoppingPrice = shoppingList.map((item, index) => {
+    index++
+    const newItem = `${item}: $${index ** 3}`
+    return newItem
+})
+console.log(shoppingPrice)
+console.log(shoppingPriceV2)
 
-// Question: Do ⬆UP⬆, ⬇DOWN⬇, ⬅LEFT⬅, ➡RIGHT➡ match?
-// True: Well duh, they don't match!
-// False: So, ⬆UP⬆, ⬇DOWN⬇, ⬅LEFT⬅, ➡RIGHT➡ apparently match completely?
-// Answer: True
+let myArray = ["Ryu", "Ken", "Chun-Li", "Cammy", "Guile", "Sakura", "Sagat", "Juri"];
 
-// Question: Can You Jump Higher Than The CN Tower
-// Yes, because the CN tower can't jump.
-// Did You Get It?
+myArray.pop()
+myArray.push('Xwill', 'William')
 
+let myString = myArray.map((item, index) => {
+    const newItem = `${item} (${index})`
+    return newItem
+})
 
-// JOKES:
-
-// Question: What Do You Say To A Error?
-// Answer: Time to debug you
-// Did You Get It?
-// Yes Or No?
-
-// Question: Why Did The Bug Fly Across The Road?
-// Answer: Because it wanted to bug off someone.
-// Did You Get It?
-// Yes Or No?
+myString = myString.join('-')
+console.log(myString)
 
 
-// QUESTIONS:
 
-// Question: If You Wait For A Waiter Aren't You The Waiter?
-// Did You Get It?
-// Yes Or No?
+const birds = ["Parrots", "Falcons", "Eagles", "Emus", "Caracaras", "Egrets"];
 
-// Question: If You Wave At A Wave Aren't You The Wave?
-// Did You Get It?
-// Yes Or No?
+const eagleIndex = birds.indexOf('Eagles')
 
-// Question: If You Scam A Scammer Aren't You The Scammmer?
-// Did You Get It?
-// Yes Or No?
+birds.splice(eagleIndex, 1)
+
+const eBirds = []
+birds.map((item) => {
+    if (item.startsWith('E')) {
+        eBirds.push(item)
+    }
+})
+
+console.log(eBirds)
