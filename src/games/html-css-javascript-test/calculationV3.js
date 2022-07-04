@@ -196,4 +196,17 @@ console.log(myString)
 
 
 
+const birds = ["Parrots", "Falcons", "Eagles", "Emus", "Caracaras", "Egrets"];
 
+const eagleIndex = birds.indexOf('Eagles')
+
+birds.splice(eagleIndex, 1)
+
+const eBirds = []
+birds.map((item) => {
+    if (item.startsWith('E')) {
+        eBirds.push(item)
+    }
+})
+
+console.log(eBirds)
