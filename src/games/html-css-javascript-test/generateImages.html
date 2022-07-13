@@ -85,9 +85,11 @@
 
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      for (let i = 0; i < 100; i++) {
+      // TODO: Enter your own amount of circles
+      prompt('Enter Amount Of Circles: Max 100000')
+      for (let i = 0; i < 1500; i++) {
         ctx.beginPath();
-        ctx.fillStyle = 'rgba(255,0,0,0.5)';
+        ctx.fillStyle = `rgba(${random(255)},${random(255)},${random(255)},0.5)`;
         ctx.arc(random(canvas.width), random(canvas.height), random(50), 0, 2 * Math.PI);
         ctx.fill();
       }
