@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="noindex, nofollow">
+    <style>
+        body {
+            padding: 50px;
+            margin: 0;
+        }
+
+        svg:not(:root) {
+            display: block;
+        }
+
+        .playable-code {
+            background-color: #f4f7f8;
+            border: none;
+            border-left: 6px solid #558abb;
+            border-width: medium medium medium 6px;
+            color: #4d4e53;
+            height: 100px;
+            width: 90%;
+            padding: 10px 10px 0;
+        }
+
+        .playable-canvas {
+            border: 1px solid #4d4e53;
+            border-radius: 2px;
+        }
+
+        .playable-buttons {
+            text-align: right;
+            width: 90%;
+            padding: 5px 10px 5px 26px;
+        }
+
+        pre {
+            word-break: break-all;
+            font-family: 'helvetica neue', helvetica, sans-serif;
+            letter-spacing: 1px;
+            /* text-transform: uppercase; */
+            /* text-align: center; */
+            border: 2px solid rgba(0, 0, 200, 0.6);
+            background: rgba(0, 0, 200, 0.3);
+            color: rgba(0, 0, 200, 0.6);
+            box-shadow: 1px 1px 2px rgba(0, 0, 200, 0.4);
+            border-radius: 10px;
+            padding: 3px 10px;
+            /* display: inline-block; */
+            cursor: pointer;
+        }
+    </style>
+
+    <title>Looping code - calculating_squares - code sample</title>
+</head>
+
+<body>
+
+    <button id="calculate">Calculate</button>
+    <pre id="results"></pre>
+
+
+
+    <script>
+        const results = document.querySelector('#results');
+
+        function calculate() {
+            results.textContent = ''
+            for (let i = 1; i < 10; i++) {
+                const randomNumber1 = 1600000000 // Math.floor(Math.random() * 15) + 1
+                const randomNumber2 = Math.floor(Math.random() * 15) + 1
+                const newResult = `${randomNumber1} x ${randomNumber2} = ${randomNumber1 * randomNumber2}`;
+                results.textContent += `${newResult}\n`;
+            }
+            results.textContent += '\nFinished!';
+        }
+
+        const calculateBtn = document.querySelector('#calculate');
+        const clearBtn = document.querySelector('#clear');
+
+        calculateBtn.addEventListener('click', calculate);
+
+
+    </script>
+
+</body>
+
+</html>
