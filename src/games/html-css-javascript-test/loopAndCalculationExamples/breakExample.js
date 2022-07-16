@@ -10,7 +10,31 @@ const contacts = [
     {
         name: 'Jade',
         phoneNumber: '9059384721'
-    }
+    },
+    {
+        name: 'Chris',
+        phoneNumber: '3568875687',
+    },
+    {
+        name: 'Mary',
+        phoneNumber: '3234435987',
+    },
+    {
+        name: 'Samuel',
+        phoneNumber: '3562445561',
+    },
+    {
+        name: 'William',
+        phoneNumber: '2345674210',
+    },
+    {
+        name: 'Brandon',
+        phoneNumber: '5675324681',
+    },
+    {
+        name: 'Matthew',
+        phoneNumber: '1245163464',
+    },
 ];
 const para = document.querySelector('p');
 const input = document.querySelector('input');
