@@ -1,6 +1,6 @@
 const contacts = [
     {
-        name: 'Bank',
+        name: 'Ben',
         phoneNumber: '4166728126',
     },
     {
@@ -34,6 +34,10 @@ const contacts = [
     {
         name: 'Matthew',
         phoneNumber: '1245163464',
+    },
+    {
+        name: 'Martin',
+        phoneNumber: '4161687332',
     },
 ];
 const para = document.querySelector('p');
