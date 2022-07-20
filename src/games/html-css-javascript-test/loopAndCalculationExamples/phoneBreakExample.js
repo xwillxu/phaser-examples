@@ -51,6 +51,18 @@ const contacts = [
         name: 'Tina',
         phoneNumber: '4164274312',
     },
+    {
+        name: 'Anne',
+        phoneNumber: '4161469065',
+    },
+    {
+        name: 'Francesca',
+        phoneNumber: '4161233001',
+    },
+    {
+        name: 'Mustafa',
+        phoneNumber: '4161826888',
+    },
 ];
 const para = document.querySelector('p');
 const input = document.querySelector('input');
