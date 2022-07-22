@@ -18,17 +18,39 @@
 </head>
 
 <body>
+  <canvas></canvas>
 
-  <section class="preview">
+  <section class="preview"></section>
 
 
-
-  </section>
 
 </body>
 <script>
 
   const para = document.createElement('p');
+  const canvas = document.querySelector('canvas');
+  const ctx = canvas.getContext('2d');
+
+  let WIDTH = document.documentElement.clientWidth;
+  let HEIGHT = document.documentElement.clientHeight / 3
+
+  canvas.width = WIDTH;
+  canvas.height = HEIGHT;
+
+  function random(number) {
+    return Math.floor(Math.random() * number);
+  }
+
+  function drawACircle(number) {
+    ctx.clearRect(0, 0, WIDTH, HEIGHT);
+    for (let i = 0; i < number; i++) {
+      ctx.beginPath();
+      ctx.fillStyle = `rgba(${random(255)},${random(255)},${random(255)},0.5)`;
+      ctx.arc(random(WIDTH), random(HEIGHT), random(WIDTH / 20), 0, 2 * Math.PI);
+      ctx.fill();
+    }
+  }
+  drawACircle(1000000)
 
   function isPrime(num) {
     for (let i = 2, s = Math.sqrt(num); i <= s; i++)
@@ -42,7 +64,7 @@
 
 
   // Add your code here
-  for (let i = 10000; i > 1; i--) {
+  for (let i = 100000; i > 1; i--) {
     if (isPrime(i)) {
       para.textContent += i + ', '
     }
