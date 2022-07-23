@@ -12,3 +12,15 @@ button2.addEventListener('click', () => { console.log('clicked2') })
 textBox.addEventListener('keydown', (event) => {
     console.log(`You typed down ${event.key}`)
 })
+
+function one() {
+    const two = '2'
+    console.log(two)
+}
+
+function one() {
+    const two = 'two'
+    console.log(two)
+}
+
+one()
