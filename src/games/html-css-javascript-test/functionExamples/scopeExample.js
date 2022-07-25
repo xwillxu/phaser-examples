@@ -46,7 +46,7 @@ output(x)
 a()
 b()
 
-// CASE 2: ERROR
+// CASE 3: ERROR
 
 const arrowUp = 1;
 
