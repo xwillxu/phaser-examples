@@ -20,15 +20,20 @@
     <script>
         const input = document.querySelector('.numberInput');
         const para = document.querySelector('p');
-        function squared(num) {
+        const defaultNumber = 25
+        function squareRoot(num = defaultNumber) {
+            return Math.sqrt(num)
+        }
+
+        function squared(num = defaultNumber) {
             return num * num;
         }
 
-        function cubed(num) {
+        function cubed(num = defaultNumber) {
             return num * num * num;
         }
 
-        function factorial(num) {
+        function factorial(num = defaultNumber) {
             if (num < 0) return undefined
             if (num === 0) return 1
             let x = 1
@@ -39,16 +44,23 @@
             }
             return result
         }
+
+        function displayAnswers(numberInput) {
+            para.textContent = `${numberInput} squared is ${squared(numberInput)}. `;
+            para.textContent += `${numberInput} cubed is ${cubed(numberInput)}. `;
+            para.textContent += `${numberInput} factorial is ${factorial(numberInput)}. `;
+            para.textContent += `The squareroot of ${numberInput} is ${squareRoot(numberInput)}. `;
+        }
         input.addEventListener('change', () => {
             const num = parseFloat(input.value);
             if (isNaN(num)) {
-                para.textContent = 'You need to enter a number!';
+                displayAnswers(defaultNumber)
             } else {
-                para.textContent = `${num} squared is ${squared(num)}. `;
-                para.textContent += `${num} cubed is ${cubed(num)}. `;
-                para.textContent += `${num} factorial is ${factorial(num)}. `;
+                displayAnswers(num)
             }
+            input.value = ''
         });
+        window.addEventListener('load', () => console.log('LOADED'))
     </script>
 </body>
 
