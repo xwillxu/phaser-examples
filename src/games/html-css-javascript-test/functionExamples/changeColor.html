@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+</head>
+
+<body>
+    <button>Change Color</button>
+    <script>
+        const body = document.querySelector('body')
+        const button = document.querySelector('button')
+
+        function randomRGB() {
+            return Math.floor(Math.random() * 255)
+        }
+        button.onclick = () => {
+            body.style.backgroundColor = `rgb(${randomRGB()}, ${randomRGB()}, ${randomRGB()})`
+        }
+    </script>
+</body>
+
+</html>
