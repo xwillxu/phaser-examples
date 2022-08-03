@@ -1,4 +1,4 @@
-/* p {
+p {
   word-break: break-all;
   font-family: 'helvetica neue', helvetica, sans-serif;
   letter-spacing: 1px;
@@ -37,4 +37,4 @@ button {
   border-radius: 10px;
   padding: 3px 10px;
   cursor: pointer;
-} */
+}
