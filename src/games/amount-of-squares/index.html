@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>How many squares do you SEE?</title>
+    <link href="./style.css" rel="stylesheet" />
+</head>
+
+<body>
+    <p class="info">Enter a number in the 'Enter A Number' text box. After that a bunch of squares will be generated.
+        Your job is count all the squares and then, enter your answer to enter answer textbox. You will if you are
+        correct or wrong and click enter answer.
+    </p>
+
+    <div class="container">
+        <div style="flex-grow: 1">
+            <input type="text" placeholder="Enter A Number" class="enterNumberInput">
+            <button class="enterButton">Enter Number</button>
+        </div>
+        <div>
+            <input type="text" placeholder="Answer Here" class="typeAnswer">
+            <button class="answerQuestion">Enter Answer</button>
+        </div>
+    </div>
+
+    <div class="showAnswerContainer">
+        <button class="showAnswer" style="visibility: hidden;">Show Answer</button>
+    </div>
+
+    <script src="./amountOfSquares.js"></script>
+</body>
+
+</html>
