@@ -4,87 +4,13 @@
 <head>
     <meta charset="utf-8">
     <title>Function start</title>
-    <style>
-        .msgBox {
-            position: absolute;
-            top: 10%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 242px;
-            background: #eee;
-            border: 5px solid #333;
-            border-radius: 5px;
-        }
-
-        .msgBox p {
-            line-height: 1.5;
-            padding: 10px 20px;
-            color: #333;
-            padding-left: 82px;
-            background-position: 25px center;
-            background-repeat: no-repeat;
-        }
-
-        .msgBox button {
-            background: none;
-            border: none;
-            position: absolute;
-            top: 0;
-            right: 0;
-            font-size: 1.1rem;
-            color: #aaa;
-        }
-    </style>
+    <link rel="stylesheet" href="../../-useful-stuff-/messageStyle.css">
 </head>
 
 <body>
     <button>Display message box</button>
 
-    <script>
-        function displayMessage(msgText, msgType, msgName = 'User') {
-            const body = document.body
-
-            const panel = document.createElement('div')
-            panel.setAttribute('class', 'msgBox')
-            body.appendChild(panel)
-
-            const msg = document.createElement('p')
-            if (msgType == 'chat') {
-                msg.textContent = msgName + ': ' + msgText
-            } else if (msgType == 'warning') {
-                msg.textContent = 'WARNING: ' + msgText
-            } else {
-                msg.textContent = msgText
-            }
-
-            panel.appendChild(msg)
-
-            const closeBtn = document.createElement('button')
-            closeBtn.textContent = 'x'
-            panel.appendChild(closeBtn)
-
-            closeBtn.addEventListener('click', () => panel.parentNode.removeChild(panel))
-            switch (msgType) {
-                case 'warning':
-                    msg.style.backgroundImage = 'url(https://raw.githubusercontent.com/mdn/learning-area/main/javascript/building-blocks/functions/icons/warning.png)'
-                    panel.style.backgroundColor = 'red'
-                    panel.style.width = "342px"
-                    msg.style.textTransform = "uppercase";
-                    msg.style.fontWeight = 'bolder'
-                    break;
-                case 'chat':
-                    msg.style.backgroundImage = 'url(https://raw.githubusercontent.com/mdn/learning-area/main/javascript/building-blocks/functions/icons/chat.png)'
-                    panel.style.backgroundColor = 'green'
-                    break
-                default:
-                    msg.style.paddingLeft = '20px'
-                    break;
-            }
-        }
-
-        const btn = document.querySelector('button');
-        btn.addEventListener('click', () => displayMessage('YOU ARE GETTING TO MANY MESSAGES YOU DEVICE IS ABOUT TO CRASH: BEST CASE. YOUR DEVICE HAS EXPLODED: Worst Case', 'warning'))
-    </script>
+    <script src="./alertExample.js"></script>
 </body>
 
 </html>

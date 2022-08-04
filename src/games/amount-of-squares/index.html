@@ -5,6 +5,7 @@
 <head>
     <title>How many squares do you SEE?</title>
     <link href="./style.css" rel="stylesheet" />
+    <link href="../-useful-stuff-/messageStyle.css" rel="stylesheet">
 </head>
 
 <body>
@@ -15,7 +16,7 @@
 
     <div class="container">
         <div style="flex-grow: 1">
-            <input type="text" placeholder="Enter A Number" class="enterNumberInput">
+            <input type="text" placeholder="Enter A Number" class="typeNumber">
             <button class="enterButton">Enter Number</button>
         </div>
         <div>
@@ -26,6 +27,10 @@
 
     <div class="showAnswerContainer">
         <button class="showAnswer" style="visibility: hidden;">Show Answer</button>
+    </div>
+
+    <div class="squareContainerWrapper">
+        <div class="squareContainer"></div>
     </div>
 
     <script src="./amountOfSquares.js"></script>
