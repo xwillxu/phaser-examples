@@ -12,14 +12,37 @@ const squareContainer = document.querySelector('.squareContainer')
 
 // Main Logic
 let answer = 0
+let ableAnswer = false
 
 enterNumberBtn.addEventListener('click', () => {
-    if (isNaN(enterNumberText.value)) {
+    const text = enterNumberText.value
+    enterNumberText.value = ''
+    if (isNaN(text)) {
         displayMessage("Please Only Type Numbers", "warning")
+
         return
     }
-    answer = calculateSquares(enterNumberText.value)
-    createSquares(enterNumberText.value)
+    answer = calculateSquares(text)
+    createSquares(text)
+    ableAnswer = true
+})
+
+answerQuestionBtn.addEventListener('click', () => {
+    const text = answerQuestionText.value
+    answerQuestionText.value = ''
+    if (!ableAnswer == true) {
+        displayMessage("Can't Answer", "warning")
+
+        return
+    }
+    if (text == answer) {
+        displayMessage("Wahoo You Got The Answer Correct", "happy")
+    } else if (text < answer) {
+        displayMessage("Your answer was smaller than the actual answer", "sorry")
+    } else {
+        displayMessage("Your answer was bigger than the actual answer", "sorry")
+    }
+
 })
 
 // Calculation

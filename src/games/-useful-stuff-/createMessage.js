@@ -29,8 +29,20 @@ export default function displayMessage(msgText, msgType, msgName = 'User') {
             msg.style.textTransform = "uppercase";
             msg.style.fontWeight = 'bolder'
             break;
+        case 'sorry':
+            msg.style.backgroundImage = 'url(https://raw.githubusercontent.com/mdn/learning-area/main/javascript/building-blocks/functions/icons/warning.png)'
+            panel.style.backgroundColor = 'yellow'
+            panel.style.width = "342px"
+            msg.style.textTransform = "uppercase";
+            msg.style.fontWeight = 'bolder'
+            break;
         case 'chat':
+
             msg.style.backgroundImage = 'url(https://raw.githubusercontent.com/mdn/learning-area/main/javascript/building-blocks/functions/icons/chat.png)'
+            panel.style.backgroundColor = 'green'
+            break
+        case 'happy':
+            msg.style.backgroundImage = 'url(http://www.get-emoji.com/images/emoji/2705.png)'
             panel.style.backgroundColor = 'green'
             break
         default:
