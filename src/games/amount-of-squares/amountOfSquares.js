@@ -7,12 +7,16 @@ const enterNumberText = document.querySelector('.typeNumber')
 const answerQuestionBtn = document.querySelector('.answerQuestion')
 const answerQuestionText = document.querySelector('.typeAnswer')
 
+// Show Answer
+const showAnswer = document.querySelector('.showAnswer')
+
 // IMPORTANT: Div That Contains The Actual Squares That Are Generated
 const squareContainer = document.querySelector('.squareContainer')
 
 // Main Logic
 let answer = 0
 let ableAnswer = false
+let correct = false
 
 enterNumberBtn.addEventListener('click', () => {
     const text = enterNumberText.value
@@ -25,6 +29,7 @@ enterNumberBtn.addEventListener('click', () => {
     answer = calculateSquares(text)
     createSquares(text)
     ableAnswer = true
+
 })
 
 answerQuestionBtn.addEventListener('click', () => {
@@ -37,11 +42,13 @@ answerQuestionBtn.addEventListener('click', () => {
     }
     if (text == answer) {
         displayMessage("Wahoo You Got The Answer Correct", "happy")
+        setTimeout(() => { reset(), 2000 })
     } else if (text < answer) {
         displayMessage("Your answer was smaller than the actual answer", "sorry")
     } else {
         displayMessage("Your answer was bigger than the actual answer", "sorry")
     }
+
 
 })
 
@@ -71,3 +78,23 @@ function createSquares(number) {
         }
     }
 }
+// Reset Function
+function reset() {
+    answer = 0
+    ableAnswer = false
+    squareContainer.innerHTML = ''
+    answerQuestionText.value = ''
+    showAnswer.style.visibility = 'hidden'
+    showAnswer.textContent = 'Show Answer'
+}
+
+// Show answer
+function showAnswerBtn() {
+    showAnswer.style.visibility = 'visible'
+}
+
+showAnswer.addEventListener('click', () => {
+    showAnswer.textContent = answer
+    setTimout(() => displayMessage('You have cheated. You must do another puzzle.', 'warning'), 200)
+    setTimout(() => reset(), 2000)
+})
