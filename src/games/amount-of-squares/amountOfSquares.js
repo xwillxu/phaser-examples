@@ -15,17 +15,26 @@ const squareContainer = document.querySelector('.squareContainer')
 
 // Main Logic
 let answer = 0
+let currentSquares = 0
 let ableAnswer = false
-let correct = false
+const bannedNumbers = ['0']
+
 
 enterNumberBtn.addEventListener('click', () => {
     const text = enterNumberText.value
     enterNumberText.value = ''
+
     if (isNaN(text)) {
         displayMessage("Please Only Type Numbers", "warning")
-
         return
     }
+    for (const number of bannedNumbers) {
+        if (text == number) {
+            displayMessage('Unable To Create Squares.', 'warning')
+            return
+        }
+    }
+    currentSquares = text
     answer = calculateSquares(text)
     createSquares(text)
     ableAnswer = true
@@ -45,8 +54,10 @@ answerQuestionBtn.addEventListener('click', () => {
         setTimeout(() => { reset(), 2000 })
     } else if (text < answer) {
         displayMessage("Your answer was smaller than the actual answer", "sorry")
+        showAnswerBtn()
     } else {
         displayMessage("Your answer was bigger than the actual answer", "sorry")
+        showAnswerBtn()
     }
 
 
@@ -95,6 +106,9 @@ function showAnswerBtn() {
 
 showAnswer.addEventListener('click', () => {
     showAnswer.textContent = answer
-    setTimout(() => displayMessage('You have cheated. You must do another puzzle.', 'warning'), 200)
-    setTimout(() => reset(), 2000)
+    ableAnswer = false
+    setTimeout(() => displayMessage('You have cheated. You must do another puzzle.', 'warning'), 200)
+    bannedNumbers.push(currentSquares)
+    setTimeout(() => reset(), 2200)
+
 })
