@@ -112,3 +112,5 @@ showAnswer.addEventListener('click', () => {
     setTimeout(() => reset(), 2200)
 
 })
+
+// Finished Amount Of Squares.
