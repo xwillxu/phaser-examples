@@ -7,22 +7,18 @@
 
 
 <body>
-    <form>
-        <div>
-            <label for="fname">First name: </label>
-            <input id="fname" type="text">
-        </div>
-        <div>
-            <label for="lname">Last name: </label>
-            <input id="lname" type="text">
-        </div>
-        <div>
-            <input id="submit" type="submit">
-        </div>
-    </form>
-    <p></p>
+    <button>Display video</button>
 
-    <script></script>
+    <div class="hidden">
+        <video>
+            <source src="../../../assets/rabbit320.mp4" type="video/mp4">
+            <source src="../../../assets/javascript_building-blocks_events_rabbit320.webm" type="video/webm">
+            <p>Your browser doesn't support HTML5 video. Here is a <a href="../../../assets/rabbit320.mp4">link to the
+                    video</a>
+                instead.</p>
+        </video>
+    </div>
+    <script src="./formExample.js"></script>
 </body>
 
 </html>
