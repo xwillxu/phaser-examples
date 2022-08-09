@@ -12,4 +12,7 @@ videoBox.addEventListener('click', () => videoBox.setAttribute('class', 'hidden'
 
 const video = document.querySelector('video');
 
-video.addEventListener('click', () => video.play());
+video.addEventListener('click', (e) => {
+    e.stopPropagation();
+    video.play()
+});
