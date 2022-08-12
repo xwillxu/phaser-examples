@@ -1,7 +1,6 @@
-
 const btn = document.querySelector('.off');
 
-// Add your code here
+
 let text = 'Machine Is On'
 let firstOrSecond = 'first'
 btn.addEventListener('click', () => {
