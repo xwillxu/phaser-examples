@@ -7,6 +7,7 @@
 .timer {
     color: white;
     text-shadow: 1px 1px 2px rgb(93, 93, 93), 0 0 1em rgb(0, 0, 0), 0 0 0.2em rgb(0, 0, 0);
+    box-shadow: 5px 5px 10px rgb(0, 0, 0);
     text-align: center;
     font-size: 250px;
 }
