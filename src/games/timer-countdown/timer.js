@@ -33,7 +33,7 @@ export default function setupTimer() {
     container.appendChild(sectext)
     container.appendChild(button)
 
-
+    // Style
     for (const item of container.children) {
         item.className = 'flippedColor'
     }
@@ -41,14 +41,9 @@ export default function setupTimer() {
     // Append Container To Body
     htmlBody.appendChild(container)
     htmlBody.appendChild(timerContainer)
-
-    // Loop function method
-    function loopM(method, methodAnswer, stuff) {
-
-    }
     // Loop function attribute
-    function loopA(attributes, attributeAnswers, stuff) {
-        for (const item of stuff) {
+    function loopA(attributes, attributeAnswers, objects) {
+        for (const item of objects) {
             let index = 0
             for (const attribute of attributes) {
                 const answer = attributeAnswers[index]
@@ -60,64 +55,65 @@ export default function setupTimer() {
 
     // Call function 1
     button.addEventListener('click', () => {
-        workerTimers.clearTimeout(currentTimeout)
+        if (currentTimeout) workerTimers.clearTimeout(currentTimeout)
         sound.pause()
         sound.currentTime = 0
+        createInterval()
+        loopA(['value'], [''], [mintext, hourtext, sectext])
+    })
+    // Display and change the function
+    function createInterval() {
         const mtext = Math.floor(Number(mintext.value))
         const htext = Math.floor(Number(hourtext.value))
         const stext = Math.floor(Number(sectext.value))
-        if (mtext < 0 || htext < 0 || stext < 0) {
-            displayMessage('No negative numbers or 0', 'sorry')
-        } else if (mtext == 0 && htext == 0 && stext == 0) {
-            generateTimer(30)
-        } else {
-            generateTimer(mtext, htext, stext)
-        }
-        loopA(['value'], [''], [mintext, hourtext, sectext])
-    })
 
-    // Function 1: Generate Everything
-    function generateTimer(min, hour = 0, second = 0) {
-        min = Math.floor(min)
-        hour = Math.floor(hour)
-        second = Math.floor(second)
-        const startTimerImage = hour + ':' + String(min).padStart(2, '0') + ':' + String(second).padStart(2, '0')
-        const newPara = document.createElement('p')
-        newPara.className = 'timer'
-        newPara.textContent = startTimerImage
-        timerContainer.innerHTML = ''
-        timerContainer.appendChild(newPara)
-        const amountOfSeconds = hour * 3600 + min * 60 + second
-        startCountdown(min, hour, second, amountOfSeconds)
+        workerTimers.setTimeout(() => {
+            console.log(mtext, htext, stext)
+            if (mtext <= 0 && htext <= 0 && stext <= 0) {
+                timer(30, 0, 0)
+                return
+            }
+            timer(mtext, htext, stext)
+        }, 1000)
     }
 
-    // Function 2: Start Countdown
-    function startCountdown(min, hour, second, seconds) {
+    function timer(min, hour = 0, second = 0) {
+        const newPara = document.createElement('p')
+        const timerDisplay = hour + ':' + String(min).padStart(2, '0') + ':' + String(second).padStart(2, '0')
+        newPara.className = 'timer'
+        newPara.textContent = timerDisplay
+        timerContainer.innerHTML = ''
+        timerContainer.appendChild(newPara)
+
+        if (min <= 0 && hour <= 0 && second <= 0) {
+            sound.play()
+            currentTimeout = workerTimers.setTimeout(() => {
+                sound.pause()
+                sound.currentTime = 0
+            }, 60000)
+            return
+        }
+
+        let newMin = min
+        let newHour = hour
+        let newSecond = second
+
+        newSecond--
+        if (newSecond < 0) {
+            newMin--
+            newSecond = 59
+        }
+
+        if (newMin < 0) {
+            newHour--
+            newMin = 59
+        }
+
         currentTimeout = workerTimers.setTimeout(() => {
-            if (seconds <= 0) {
-                sound.play()
-                workerTimers.setTimeout(() => {
-                    sound.pause()
-                    sound.currentTime = 0
-                }, 60000)
-                return
-            } else if (second == 0) {
-                min -= 1
-                second = 59
-                if (min < 0) {
-                    hour -= 1
-                    min = 59
-                }
-            } else {
-                second -= 1
-                seconds -= 1
-            }
-            generateTimer(min, hour, second)
+            timer(newMin, newHour, newSecond)
         }, 1000)
     }
 }
-
-
 
 // Create The Timer Setup
 setupTimer()
