@@ -26,7 +26,8 @@
 	"dependencies": {
 		"colyseus.js": "^0.14.13",
 		"cssnano": "^4.1.11",
-		"phaser": "^3.55.2"
+		"phaser": "^3.55.2",
+		"worker-timers": "^7.0.51"
 	},
 	"parcelCleanPaths": [
 		"dist"

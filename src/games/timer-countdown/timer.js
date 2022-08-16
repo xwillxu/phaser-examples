@@ -1,4 +1,5 @@
 import displayMessage from '../-useful-stuff-/createMessage'
+import * as workerTimers from 'worker-timers';
 
 let currentTimeout;
 
@@ -59,7 +60,7 @@ export default function setupTimer() {
 
     // Call function 1
     button.addEventListener('click', () => {
-        clearTimeout(currentTimeout)
+        workerTimers.clearTimeout(currentTimeout)
         sound.pause()
         sound.currentTime = 0
         const mtext = Math.floor(Number(mintext.value))
@@ -92,10 +93,10 @@ export default function setupTimer() {
 
     // Function 2: Start Countdown
     function startCountdown(min, hour, second, seconds) {
-        currentTimeout = setTimeout(() => {
+        currentTimeout = workerTimers.setTimeout(() => {
             if (seconds <= 0) {
                 sound.play()
-                setTimeout(() => {
+                workerTimers.setTimeout(() => {
                     sound.pause()
                     sound.currentTime = 0
                 }, 60000)
