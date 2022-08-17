@@ -1,3 +1,5 @@
+import * as workerTimers from 'worker-timers';
+
 const container = document.createElement('div')
 const htmlBody = document.querySelector('body')
 const mintext = document.createElement('input')
@@ -78,7 +80,7 @@ function convertSecondsToTimerString(seconds) {
 function restart(timeString = '00:30:00') {
     data.totalSeconds = covertTimeStringToSeconds(timeString)
     data.currentSeconds = data.totalSeconds
-    clearInterval(data.currentInterval)
+    workerTimers.clearInterval(data.currentInterval)
     startTimer()
 }
 
@@ -94,7 +96,7 @@ function displayTimer(seconds) {
 }
 
 function startTimer() {
-    data.currentInterval = setInterval(() => {
+    data.currentInterval = workerTimers.setInterval(() => {
         data.currentSeconds--
         displayTimer(data.currentSeconds)
     }, 1000)
