@@ -67,7 +67,7 @@ export default function setupTimer() {
         const htext = Math.floor(Number(hourtext.value))
         const stext = Math.floor(Number(sectext.value))
 
-        workerTimers.setTimeout(() => {
+        currentTimeout = workerTimers.setTimeout(() => {
             console.log(mtext, htext, stext)
             if (mtext <= 0 && htext <= 0 && stext <= 0) {
                 timer(30, 0, 0)
