@@ -34,3 +34,30 @@ const newPara = document.createElement('p')
 newPara.textContent = person.bio()
 console.log(newPara)
 document.querySelector('body').appendChild(newPara)
+
+
+const phoneBook = {
+    Xwill: {
+        number: 1629469793,
+        fullName: 'Xwill Xu'
+    },
+    Austin: {
+        number: 1237656375,
+        fullName: 'Austin L'
+    },
+    Matt: {
+        number: 1973785787,
+        fullName: 'Matt Mo'
+    },
+}
+
+function findPhoneNumber(name) {
+    return phoneBook[name]['number']
+}
+
+function changePhoneNumber(name, phoneNumber) {
+    phoneBook[name]['number'] = phoneNumber
+}
+
+changePhoneNumber('Xwill', 1273669812)
+console.log(findPhoneNumber('Xwill'))
