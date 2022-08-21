@@ -29,12 +29,12 @@ const person = {
     }
 };
 
-
-const newPara = document.createElement('p')
-newPara.textContent = person.bio()
-console.log(newPara)
-document.querySelector('body').appendChild(newPara)
-
+function newParagraph(text) {
+    const newPara = document.createElement('p')
+    newPara.textContent = text
+    console.log(newPara)
+    document.querySelector('body').appendChild(newPara)
+}
 
 const phoneBook = {
     Xwill: {
@@ -61,3 +61,22 @@ function changePhoneNumber(name, phoneNumber) {
 
 changePhoneNumber('Xwill', 1273669812)
 console.log(findPhoneNumber('Xwill'))
+
+function Person(name) {
+    this.name = name
+
+    this.introduceSelf = function () {
+        newParagraph('Hi my name is ' + this.name)
+    }
+}
+
+
+const nameArray = ['Matthew', 'Austin', 'Xwill']
+
+for (const name of nameArray) {
+    const newPerson = new Person(name)
+    newPerson.introduceSelf()
+}
+
+Notification.requestPermission()
+const myNotification = new Notification('Hello!');
