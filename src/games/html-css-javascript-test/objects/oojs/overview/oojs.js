@@ -1,4 +1,4 @@
-import { calculateAge } from '../../../-useful-stuff-/date.js'
+import { calculateAge } from '../../../../-useful-stuff-/date.js'
 import { format } from 'date-fns'
 
 const person = {
