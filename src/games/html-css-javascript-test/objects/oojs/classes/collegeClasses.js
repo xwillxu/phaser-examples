@@ -1,15 +1,17 @@
+import { stringifyNumber } from '../../../../-useful-stuff-/number'
+
 class Person {
     constructor(name) {
         this.name = name
     }
     introduceSelf() {
-        console.log(`My name is ${this.name}`)
+        console.log(`My name is ${this.name}.`)
     }
 }
 
 class Professor extends Person {
     constructor(name, teaches) {
-        super(name, teaches)
+        super(name)
         this.name = name
         this.teaches = teaches
     }
@@ -35,17 +37,17 @@ class Professor extends Person {
     }
 
     introduceSelf() {
-        console.log(`My name is Professor ${this.name} and i will teaching you ${this.teaches}`)
+        console.log(`My name is Professor ${this.name} and i will teaching you ${this.teaches}.`)
     }
 }
 class Student extends Person {
     constructor(name, year) {
-        super(name, year)
+        super(name)
         this.name = name
         this.year = year
     }
     introduceSelf() {
-        console.log(`My name is ${this.name} and i'm in my ${toString(this.year)}`)
+        console.log(`My name is ${this.name} and i'm in my ${stringifyNumber(this.year)} year.`)
     }
 }
 
@@ -57,3 +59,4 @@ summers.introduceSelf() // 'My name is Summers and I'm in the first year.'
 
 const pratt = new Person('Pratt')
 pratt.introduceSelf() // 'My name is Pratt.'
+
