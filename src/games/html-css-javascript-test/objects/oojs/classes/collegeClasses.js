@@ -16,24 +16,23 @@ class Professor extends Person {
         this.teaches = teaches
     }
 
-    gradePaper(paperType) {
-        const gradeScore = Math.floor(Math.random() * 12)
+    gradeClass(classType, gradeScore) {
         let consoleString = ''
-        if (gradeScore <= 2) {
+        if (gradeScore >= 100) {
             consoleString = 'A+'
-        } else if (gradeScore > 2 && gradeScore <= 4) {
+        } else if (gradeScore < 100 && gradeScore >= 90) {
             consoleString = 'A'
-        } else if (gradeScore > 4 && gradeScore <= 6) {
+        } else if (gradeScore < 90 && gradeScore >= 80) {
             consoleString = 'A-'
-        } else if (gradeScore > 6 && gradeScore <= 8) {
+        } else if (gradeScore < 80 && gradeScore >= 70) {
             consoleString = 'B+'
-        } else if (gradeScore > 8 && gradeScore <= 10) {
+        } else if (gradeScore < 70 && gradeScore >= 60) {
             consoleString = 'B'
         } else {
             consoleString = 'B-'
         }
 
-        console.log(`Your grade on your ${paperType} is ${consoleString}`)
+        console.log(`Your grade on ${classType} class is ${consoleString} or ${gradeScore}`)
     }
 
     introduceSelf() {
@@ -41,13 +40,26 @@ class Professor extends Person {
     }
 }
 class Student extends Person {
+    #year
     constructor(name, year) {
         super(name)
         this.name = name
-        this.year = year
+        this.#year = year
     }
     introduceSelf() {
         console.log(`My name is ${this.name} and i'm in my ${stringifyNumber(this.year)} year.`)
+    }
+
+    canStudyArchery() {
+        return this.#year > 1
+    }
+
+    setYear(year) {
+        this.#year = year
+    }
+
+    getYear() {
+        return this.#year
     }
 }
 
@@ -60,3 +72,17 @@ summers.introduceSelf() // 'My name is Summers and I'm in the first year.'
 const pratt = new Person('Pratt')
 pratt.introduceSelf() // 'My name is Pratt.'
 
+function checkStudent(student, professor) {
+    if (student.canStudyArchery()) {
+        const studentAccuracy = 79 + ((student.getYear() - 1) * 7)
+        professor.gradeClass('Archery', studentAccuracy)
+    } else {
+        console.log('You are too young to study archery')
+    }
+}
+
+checkStudent(summers, walsh)
+
+
+summers.setYear(4)
+checkStudent(summers, walsh)
