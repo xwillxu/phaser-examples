@@ -1,4 +1,4 @@
-import { stringifyNumber } from '../../../../-useful-stuff-/number'
+import { stringifyNumber } from '../../../../../-useful-stuff-/number'
 
 class Person {
     constructor(name) {
