@@ -15,8 +15,9 @@
 	},
 	"homepage": "https://phaser-examples.imini.app/",
 	"devDependencies": {
-		"@babel/core": "^7.10.5",
+		"@babel/core": "^7.18.13",
 		"@babel/plugin-proposal-class-properties": "^7.10.4",
+		"@babel/plugin-transform-runtime": "^7.18.10",
 		"babel-eslint": "^10.1.0",
 		"eslint": "^6.8.0",
 		"minimist": ">=1.2.2",
