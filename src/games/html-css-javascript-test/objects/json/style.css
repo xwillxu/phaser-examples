@@ -5,7 +5,7 @@ html {
 }
 
 body {
-    width: 800px;
+    width: 1200px;
     margin: 0 auto;
 }
 
@@ -16,12 +16,12 @@ h1, h2 {
 /* header styles */
 
 h1 {
-    font-size: 4rem;
+    font-size: 6rem;
     text-align: center;
 }
 
 header p {
-    font-size: 1.3rem;
+    font-size: 2rem;
     font-weight: bold;
     text-align: center;
 }
@@ -35,14 +35,17 @@ section article {
 
 section p {
     margin: 5px 0;
+    padding-left: 6px;
 }
 
 section ul {
     margin-top: 0;
+    padding-left: 8px;
 }
 
 h2 {
-    font-size: 2.5rem;
+    font-size: 4rem;
     letter-spacing: -5px;
     margin-bottom: 10px;
+    text-align: center;
 }

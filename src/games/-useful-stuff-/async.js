@@ -8,8 +8,3 @@ export async function getJsonLink(link) {
 
     return jsonResult
 }
-
-export async function getJson(link) {
-    const jsonLink = await getJsonLink(link)
-    return jsonLink
-}
