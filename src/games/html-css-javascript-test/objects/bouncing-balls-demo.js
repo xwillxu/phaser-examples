@@ -10,15 +10,19 @@ const ctx = canvas.getContext('2d');
 const width = canvas.width = window.innerWidth;
 const height = canvas.height = window.innerHeight;
 
+
 // Setting up the classes
 class Ball {
-    constructor(x, y, velX, velY, color, size) {
+    constructor(x, y, velX, velY, color, size, sizeLabel = 'normal') {
         this.x = x;
         this.y = y;
         this.velX = velX;
         this.velY = velY;
         this.color = color;
         this.size = size;
+        this.sizeLabel = sizeLabel
+
+        this.collidedWithBiggest = false
     }
 
     draw() {
@@ -47,7 +51,17 @@ class Ball {
                 const distance = Math.sqrt(dx * dx + dy * dy);
 
                 if (distance < this.size + ball.size) {
-                    ball.color = this.color = randomRGB();
+                    if (this.sizeLabel === 'biggest' || ball.sizeLabel === 'biggest') {
+                        if (this.sizeLabel === 'biggest') {
+                            ball.color = this.color
+                            ball.collidedWithBiggest = true
+                        } else {
+                            this.color = ball.color
+                            this.collidedWithBiggest = true
+                        }
+                    } else if (!this.collidedWithBiggest && !ball.collidedWithBiggest) {
+                        ball.color = this.color = randomRGB();
+                    }
                 }
             }
         }
@@ -76,12 +90,19 @@ class Ball {
 
 }
 const balls = []
-for (let x = 0; x < 100; x++) {
+for (let x = 0; x < 1000; x++) {
     const size = random(5, 30)
     const newBall = new Ball(random(size, width - size), random(size, height - size), random(-7, 7), random(-7, 7), randomRGB(), size);
     balls.push(newBall)
 }
 
+
+// Biggest ball
+for (let x = 0; x < 10; x++) {
+    const biggestBall = new Ball(random(random(5, 30), width - random(5, 30)), random(random(5, 30), height - random(5, 30)), random(-10, 10), random(-10, 10), 'blue', 50, 'biggest')
+    console.log(biggestBall)
+    balls.push(biggestBall)
+}
 function loop() {
     ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';
     ctx.fillRect(0, 0, width, height);
