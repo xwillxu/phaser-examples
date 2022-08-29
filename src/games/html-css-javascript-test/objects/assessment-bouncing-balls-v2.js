@@ -9,6 +9,10 @@ const ctx = canvas.getContext('2d');
 const width = canvas.width = window.innerWidth;
 const height = canvas.height = window.innerHeight;
 
+const scoreP = document.querySelector('p')
+scoreP.textContent = '0'
+let ballsKilled = 0
+
 // Classes
 class Shape {
     constructor(x, y, velX, velY) {
@@ -58,6 +62,7 @@ class Ball extends Shape {
     collisionDetect() {
         for (const ball of balls) {
             if (!(this === ball) && ball.exists) {
+                console.log(ball.exists)
                 const dx = this.x - ball.x;
                 const dy = this.y - ball.y;
                 const distance = Math.sqrt(dx * dx + dy * dy);
@@ -73,9 +78,9 @@ class Ball extends Shape {
 
 class EvilCircle extends Shape {
     constructor(x, y) {
-        super(x, y, 20, 20)
+        super(x, y, 10, 10)
         this.color = 'white'
-        this.size = 10
+        this.size = 15
 
         this.keyPressed = {
             'a': false,
@@ -139,11 +144,26 @@ class EvilCircle extends Shape {
             this.y = this.size
         }
     }
+
+    collisionDetect() {
+        for (const ball of balls) {
+            if (ball.exists) {
+                const dx = this.x - ball.x;
+                const dy = this.y - ball.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < this.size + ball.size) {
+                    console.log('hit')
+                    ball.exists = false
+                }
+            }
+        }
+    }
 }
 
 const balls = [];
 
-while (balls.length < 25) {
+while (balls.length < 0) {
     const size = random(10, 20);
     const ball = new Ball(
         random(size, width - size),
@@ -157,23 +177,34 @@ while (balls.length < 25) {
     balls.push(ball);
 }
 
-
-const evilBall = new EvilCircle(random(10, width - 10), random(10, width - 10))
-
+const evilBalls = []
+for (let x = 0; x < 100; x++) {
+    const evilBall = new EvilCircle(random(10, width - 10), random(10, width - 10))
+    evilBalls.push(evilBall)
+}
 
 function loop() {
     ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';
     ctx.fillRect(0, 0, width, height);
+    ballsKilled = balls.filter((item) => item.exists == false).length
 
     for (const ball of balls) {
+        if (!ball.exists) {
+            continue
+        }
         ball.draw();
         ball.update();
         ball.collisionDetect();
     }
-    evilBall.checkBounds()
-    evilBall.checkKeys()
-    evilBall.draw()
+    for (const evilBall of evilBalls) {
+        evilBall.checkBounds()
+        evilBall.checkKeys()
+        evilBall.draw()
+        evilBall.collisionDetect()
+    }
+    scoreP.textContent = ballsKilled.toString()
     requestAnimationFrame(loop);
+
 }
 
 loop();
