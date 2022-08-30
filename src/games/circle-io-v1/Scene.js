@@ -123,9 +123,16 @@ export default class Scene extends Phaser.Scene {
             }
 
             this.room.state.clients.onRemove = (player, sessionId) => {
+                // Get the phaser circle or object
                 let circle = this.circles[sessionId]
+
+                // Delete Player from our client state where all the players are stored
                 delete this.stateCircles[sessionId]
+
+                // Update leaderboard
                 this.listClients()
+
+                // Destroy the Phaser Object linked to the state player
                 circle.destroy()
             }
 
