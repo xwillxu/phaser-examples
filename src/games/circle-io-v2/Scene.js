@@ -6,9 +6,12 @@ export default class Scene extends Phaser.Scene {
     constructor() {
         super('circle.io-phaser')
         this.myId = null
+        this.cameraCircle = null
         this.room = null
+        // sessionId is the key and value is an array of world id of circles
+        this.playerCircles = {}
         this.circles = {}
-        this.stateCircles = {}
+        this.statePlayers = {}
         this.orbs = {}
         this.name = prompt('Enter Name')?.slice(0, 7)
 
@@ -117,11 +120,24 @@ export default class Scene extends Phaser.Scene {
     }
 
     setupCamera() {
-        let mysessionId = this.myId
-        let mycircle = this.circles[mysessionId]
-        mycircle.first.setFillStyle(0x00ffff)
+        const playerCircles = this.findMyCircles()
+        console.log(playerCircles)
+        let mycircle = playerCircles[0]
+        this.cameraCircle = mycircle
+        for (const playerCircle of playerCircles) {
+            playerCircle.first.setFillStyle(0x00ffff)
+        }
         this.cameras.main.backgroundColor = Phaser.Display.Color.HexStringToColor('0x000000');
         this.cameras.main.startFollow(mycircle)
+    }
+
+    findMyCircles() {
+        const worldIds = this.playerCircles[this.myId]
+        const circles = []
+        for (const key in this.circles) {
+            if (worldIds.indexOf(key) !== -1) circles.push(this.circles[key])
+        }
+        return circles
     }
 
     connectToServer() {
@@ -136,25 +152,37 @@ export default class Scene extends Phaser.Scene {
         client.joinOrCreate("circle_io_v2", { name: this.name }).then(room_instance => {
             this.room = room_instance
 
-            this.room.state.clients.onAdd = (player, sessionId) => {
-                this.stateCircles[sessionId] = player
+            this.room.state.players.onAdd = (player, sessionId) => {
+                this.statePlayers[sessionId] = player
+            }
 
-                let container = this.add.container(player.x, player.y);
+            this.room.state.playerCircles.onAdd = (playerCircle, worldId) => {
+                const player = this.statePlayers[playerCircle.playerId]
+
+                let container = this.add.container(playerCircle.x, playerCircle.y);
                 const circle = this.add.circle(0, 0, 25, 0x6666ff)
-                console.log('size', player.size)
+                console.log('size', playerCircle.size)
                 let text = this.add.text(0, 0, `${player.name || "Guest"}`)
                 text.setOrigin(0.5, 0.5);
                 container.add(circle)
                 container.add(text)
                 this.listClients()
-                this.circles[sessionId] = container
-                player.onChange = updateChanges(player, sessionId, this.tweens);
+                this.circles[worldId] = container
+                if (typeof this.playerCircles[playerCircle.playerId] === 'undefined') {
+                    this.playerCircles[playerCircle.playerId] = []
+                }
+                this.playerCircles[playerCircle.playerId].push(worldId)
+                playerCircle.onChange = updateChanges(playerCircle, worldId, this.tweens);
             }
 
-            this.room.state.clients.onRemove = (player, sessionId) => {
-                let circle = this.circles[sessionId]
-                delete this.stateCircles[sessionId]
+
+            this.room.state.players.onRemove = (player, sessionId) => {
+                delete this.statePlayers[sessionId]
                 this.listClients()
+            }
+
+            this.room.state.playerCircles.onRemove = (playerCircle, worldId) => {
+                let circle = this.circles[worldId]
                 circle.destroy()
             }
 
@@ -172,9 +200,9 @@ export default class Scene extends Phaser.Scene {
             this.myId = this.room.sessionId
         })
 
-        const updateChanges = (stateObject, sessionId, tweens) => (changes) => {
+        const updateChanges = (stateObject, worldId, tweens) => (changes) => {
             // TODO update changes
-            let container = this.circles[sessionId]
+            let container = this.circles[worldId]
             if (!container) return
             this.setupCamera()
             let targetX = container.x
@@ -189,20 +217,20 @@ export default class Scene extends Phaser.Scene {
                         targetY = parseInt(value);
                         break;
                     case 'size':
-                        console.log('id', sessionId, 'scale', parseInt(value) / 25,)
+                        console.log('id', worldId, 'scale', parseInt(value) / 25,)
                         container.setScale(parseInt(value) / 25, parseInt(value) / 25)
-                        if (sessionId == this.myId) {
-                            let scale = 25 / parseInt(value)
-                            const limit = 0.1
-                            if (scale < limit) {
-                                scale = limit
-                            }
-                            this.playerZoom(scale)
-                        }
-                        console.log('statePlayer', this.stateCircles)
-                        let player = this.stateCircles[sessionId]
-                        player.size = parseInt(value)
-                        this.stateCircles[sessionId] = player
+                        // if (worldId == this.myId) {
+                        //     let scale = 25 / parseInt(value)
+                        //     const limit = 0.1
+                        //     if (scale < limit) {
+                        //         scale = limit
+                        //     }
+                        //     this.playerZoom(scale)
+                        // }
+                        // console.log('statePlayer', this.statePlayers)
+                        // let player = this.circles[worldId]
+                        // player.size = parseInt(value)
+                        // this.statePlayers[worldId] = player
                         this.listClients()
                         break;
                     case 'score':
@@ -226,7 +254,7 @@ export default class Scene extends Phaser.Scene {
     }
 
     setupUiScene() {
-        this.scene.add('UiScene', UiScene, true, { stateCircles: this.stateCircles })
+        this.scene.add('UiScene', UiScene, true, { statePlayers: this.statePlayers })
     }
 
 

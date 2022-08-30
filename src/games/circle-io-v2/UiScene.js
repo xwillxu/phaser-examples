@@ -3,12 +3,12 @@ import Phaser from 'phaser'
 export default class UiScene extends Phaser.Scene {
     constructor() {
         super('UiScene')
-        this.stateCircles = null
+        this.statePlayers = null
         this.scoreBoard = null
     }
 
     create(data) {
-        this.stateCircles = data.stateCircles
+        this.statePlayers = data.statePlayers
         this.scene.bringToTop()
     }
 
@@ -32,8 +32,8 @@ export default class UiScene extends Phaser.Scene {
         */
 
         // }
-        for (const key in this.stateCircles) {
-            const player = this.stateCircles[key]
+        for (const key in this.statePlayers) {
+            const player = this.statePlayers[key]
             data.push(
                 {
                     name: player.name,
