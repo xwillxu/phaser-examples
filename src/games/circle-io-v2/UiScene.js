@@ -42,8 +42,6 @@ export default class UiScene extends Phaser.Scene {
             )
         }
 
-        console.log('data', data)
-
         let sortedArray = this.sortArray(data)
         let sortedTopThree = sortedArray.slice(0, 5)
         let dataString = []

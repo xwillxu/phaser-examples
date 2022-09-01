@@ -13,7 +13,7 @@ export default class Scene extends Phaser.Scene {
         this.circles = {}
         this.statePlayers = {}
         this.orbs = {}
-        this.name = prompt('Enter Name')?.slice(0, 7)
+        this.name = prompt('Enter Name')?.slice(0, 20)
 
         this.canSplit = true
     }
@@ -115,17 +115,34 @@ export default class Scene extends Phaser.Scene {
         }
     }
 
-    playerZoom(zoomNumber) {
-        this.cameras.main.zoomTo(zoomNumber, 1000)
+    playerZoom() {
+        // Calculate based on the biggest circle the player has
+        const myCircles = this.findMyCircles()
+        const circleScales = []
+        let biggestScale = 0
+        for (const circle of myCircles) {
+            circleScales.push(circle.scaleX)
+        }
+        for (const scale of circleScales) {
+            if (scale >= biggestScale) {
+                biggestScale = scale
+            }
+        }
+
+        const zoomNumber = 1 / biggestScale
+        const zoomToUse = zoomNumber > 0.1 ? zoomNumber : 0.1
+
+        this.cameras.main.zoomTo(zoomToUse, 1000)
     }
 
     setupCamera() {
         const playerCircles = this.findMyCircles()
-        console.log(playerCircles)
         let mycircle = playerCircles[0]
+        if (!mycircle) return
+
         this.cameraCircle = mycircle
         for (const playerCircle of playerCircles) {
-            playerCircle.first.setFillStyle(0x00ffff)
+            playerCircle.first?.setFillStyle(0x00ffff)
         }
         this.cameras.main.backgroundColor = Phaser.Display.Color.HexStringToColor('0x000000');
         this.cameras.main.startFollow(mycircle)
@@ -134,6 +151,7 @@ export default class Scene extends Phaser.Scene {
     findMyCircles() {
         const worldIds = this.playerCircles[this.myId]
         const circles = []
+        if (!worldIds) return circles
         for (const key in this.circles) {
             if (worldIds.indexOf(key) !== -1) circles.push(this.circles[key])
         }
@@ -161,7 +179,6 @@ export default class Scene extends Phaser.Scene {
 
                 let container = this.add.container(playerCircle.x, playerCircle.y);
                 const circle = this.add.circle(0, 0, 25, 0x6666ff)
-                console.log('size', playerCircle.size)
                 let text = this.add.text(0, 0, `${player.name || "Guest"}`)
                 text.setOrigin(0.5, 0.5);
                 container.add(circle)
@@ -184,6 +201,13 @@ export default class Scene extends Phaser.Scene {
             this.room.state.playerCircles.onRemove = (playerCircle, worldId) => {
                 let circle = this.circles[worldId]
                 circle.destroy()
+                delete this.circles[worldId]
+
+                const currentPlayerCircles = this.playerCircles[playerCircle.playerId]
+                const newPlayerCircleIds = currentPlayerCircles.filter(x => x != worldId)
+                this.playerCircles[playerCircle.playerId] = newPlayerCircleIds
+
+                this.setupCamera()
             }
 
             this.room.state.orbs.onAdd = (orb, id) => {
@@ -217,8 +241,8 @@ export default class Scene extends Phaser.Scene {
                         targetY = parseInt(value);
                         break;
                     case 'size':
-                        console.log('id', worldId, 'scale', parseInt(value) / 25,)
                         container.setScale(parseInt(value) / 25, parseInt(value) / 25)
+                        this.playerZoom()
                         // if (worldId == this.myId) {
                         //     let scale = 25 / parseInt(value)
                         //     const limit = 0.1
@@ -282,7 +306,6 @@ export default class Scene extends Phaser.Scene {
         }
 
         if (this.cursors.space.isDown || this.keystate.Space == true) {
-            console.log('split')
             this.split()
         }
     }
