@@ -138,6 +138,7 @@ export default class Scene extends Phaser.Scene {
     setupCamera() {
         const playerCircles = this.findMyCircles()
         let mycircle = playerCircles[0]
+        console.log('Camera', mycircle, playerCircles, this.playerCircles)
         if (!mycircle) return
 
         this.cameraCircle = mycircle
@@ -189,6 +190,10 @@ export default class Scene extends Phaser.Scene {
                     this.playerCircles[playerCircle.playerId] = []
                 }
                 this.playerCircles[playerCircle.playerId].push(worldId)
+                setTimeout(() => {
+                    this.setupCamera()
+                    this.playerZoom()
+                }, 1000)
                 playerCircle.onChange = updateChanges(playerCircle, worldId, this.tweens);
             }
 
@@ -228,7 +233,7 @@ export default class Scene extends Phaser.Scene {
             // TODO update changes
             let container = this.circles[worldId]
             if (!container) return
-            this.setupCamera()
+
             let targetX = container.x
             let targetY = container.y
 
