@@ -103,15 +103,9 @@ export default class Scene extends Phaser.Scene {
 
     split() {
         if (this.canSplit) {
-
+            this.room.send("split")
             this.canSplit = false
-
-            var player = this.circles[this.myId]
-
-            this.room.send("split", player)
-
-            setTimeout(() => { this.canSplit = true }, 500)
-
+            setTimeout(() => this.canSplit = true, 500)
         }
     }
 
@@ -190,6 +184,7 @@ export default class Scene extends Phaser.Scene {
                     this.playerCircles[playerCircle.playerId] = []
                 }
                 this.playerCircles[playerCircle.playerId].push(worldId)
+                // Timeout is needed the could not find it because phaser is still generating.
                 setTimeout(() => {
                     this.setupCamera()
                     this.playerZoom()
