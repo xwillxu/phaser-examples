@@ -105,6 +105,7 @@ export default class Scene extends Phaser.Scene {
         if (this.canSplit) {
             this.room.send("split")
             this.canSplit = false
+            setTimeout(() => this.setupCamera(), 50)
             setTimeout(() => this.canSplit = true, 500)
         }
     }
