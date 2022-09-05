@@ -105,7 +105,6 @@ export default class Scene extends Phaser.Scene {
         if (this.canSplit) {
             this.room.send("split")
             this.canSplit = false
-            setTimeout(() => this.setupCamera(), 50)
             setTimeout(() => this.canSplit = true, 500)
         }
     }
@@ -174,7 +173,10 @@ export default class Scene extends Phaser.Scene {
                 const player = this.statePlayers[playerCircle.playerId]
 
                 let container = this.add.container(playerCircle.x, playerCircle.y);
-                const circle = this.add.circle(0, 0, 25, 0x6666ff)
+                let initialColor = 0x6666ff
+                // You will know that the playerCircle Belongs With This Player If The Players SessionId is The PlayerCircles PlayerId
+                if (playerCircle.playerId == this.myId) initialColor = 0x00ffff
+                const circle = this.add.circle(0, 0, 25, initialColor)
                 let text = this.add.text(0, 0, `${player.name || "Guest"}`)
                 text.setOrigin(0.5, 0.5);
                 container.add(circle)
