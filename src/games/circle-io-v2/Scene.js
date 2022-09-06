@@ -5,21 +5,21 @@ import UiScene from "./UiScene"
 export default class Scene extends Phaser.Scene {
     constructor() {
         super('circle.io-phaser')
+        // This Cilents SessionId
         this.myId = null
-        this.cameraCircle = null
+        // ServerSide Room
         this.room = null
         // sessionId is the key and value is an array of world id of circles
         this.playerCircles = {}
         this.circles = {}
+        // Get all the Players From the state
         this.statePlayers = {}
+        // Orbs That spawn all Over The Map
         this.orbs = {}
-        this.name = prompt('Enter Name')?.slice(0, 20)
-
+        // Make Sure the Name is Not to long
+        this.name = prompt('Enter Name')?.slice(0, 30)
+        // Spliting Utilties
         this.canSplit = true
-    }
-
-    preload() {
-
     }
 
     setupKeys() {
@@ -126,7 +126,7 @@ export default class Scene extends Phaser.Scene {
         const zoomNumber = 1 / biggestScale
         const zoomToUse = zoomNumber > 0.1 ? zoomNumber : 0.1
 
-        this.cameras.main.zoomTo(zoomToUse, 1000)
+        this.cameras.main.zoomTo(zoomToUse * 1.5, 1000)
     }
 
     setupCamera() {
@@ -134,8 +134,6 @@ export default class Scene extends Phaser.Scene {
         let mycircle = playerCircles[0]
         console.log('Camera', mycircle, playerCircles, this.playerCircles)
         if (!mycircle) return
-
-        this.cameraCircle = mycircle
         for (const playerCircle of playerCircles) {
             playerCircle.first?.setFillStyle(0x00ffff)
         }
