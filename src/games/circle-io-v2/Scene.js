@@ -23,6 +23,7 @@ export default class Scene extends Phaser.Scene {
     }
 
     setupKeys() {
+        // Get All Keyboard Stuff
         this.cursors = this.input.keyboard.createCursorKeys()
         this.WKey = this.input.keyboard.addKey('W');
         this.AKey = this.input.keyboard.addKey('A');
@@ -30,10 +31,12 @@ export default class Scene extends Phaser.Scene {
         this.SKey = this.input.keyboard.addKey('S');
         this.SpaceKey = this.input.keyboard.addKey('Space');
 
+        // Make then Accesseble
         this.keystate = {
             'W': false, 'A': false, 'D': false, 'S': false, 'Space': false
         }
 
+        // Set Off Varibles To Send Changes To State
         this.WKey.on('down', function () {
             this.keystate.W = true
         }, this);
@@ -122,32 +125,41 @@ export default class Scene extends Phaser.Scene {
                 biggestScale = scale
             }
         }
-
+        // Make sure that the zoom number does not go over limit
         const zoomNumber = 1 / biggestScale
         const zoomToUse = zoomNumber > 0.1 ? zoomNumber : 0.1
 
-        this.cameras.main.zoomTo(zoomToUse * 1.5, 1000)
+        this.cameras.main.zoomTo(zoomToUse, 1000)
     }
 
     setupCamera() {
+        // Get the playerCircles of this client
         const playerCircles = this.findMyCircles()
+        // Get a random circle
         let mycircle = playerCircles[0]
-        console.log('Camera', mycircle, playerCircles, this.playerCircles)
+        // Undefined end loop
         if (!mycircle) return
+        // Set the fill style for client's circles
         for (const playerCircle of playerCircles) {
             playerCircle.first?.setFillStyle(0x00ffff)
         }
+        // Set the background color and start following the circle
         this.cameras.main.backgroundColor = Phaser.Display.Color.HexStringToColor('0x000000');
         this.cameras.main.startFollow(mycircle)
     }
 
     findMyCircles() {
+        // Get the ids
         const worldIds = this.playerCircles[this.myId]
+        // Create circles array given to caller
         const circles = []
+        // If worldIds undefined return nothing.
         if (!worldIds) return circles
+        // Main loop to add circles to circles(array)
         for (const key in this.circles) {
             if (worldIds.indexOf(key) !== -1) circles.push(this.circles[key])
         }
+        // Give all the info back to the caller
         return circles
     }
 
@@ -229,7 +241,6 @@ export default class Scene extends Phaser.Scene {
             // TODO update changes
             let container = this.circles[worldId]
             if (!container) return
-
             let targetX = container.x
             let targetY = container.y
 
@@ -244,18 +255,6 @@ export default class Scene extends Phaser.Scene {
                     case 'size':
                         container.setScale(parseInt(value) / 25, parseInt(value) / 25)
                         this.playerZoom()
-                        // if (worldId == this.myId) {
-                        //     let scale = 25 / parseInt(value)
-                        //     const limit = 0.1
-                        //     if (scale < limit) {
-                        //         scale = limit
-                        //     }
-                        //     this.playerZoom(scale)
-                        // }
-                        // console.log('statePlayer', this.statePlayers)
-                        // let player = this.circles[worldId]
-                        // player.size = parseInt(value)
-                        // this.statePlayers[worldId] = player
                         this.listClients()
                         break;
                     case 'score':
@@ -268,28 +267,32 @@ export default class Scene extends Phaser.Scene {
                 targets: container,
                 x: targetX,
                 y: targetY,
-                duration: 200,
-                ease: 'Power2'
+                duration: 190,
+                ease: 'Power1'
             });
         }
     }
 
     listClients() {
+        // Create And Update The Leader Board
         this.scene.get('UiScene').listClients();
     }
 
     setupUiScene() {
+        // Setup the UI sence used for the leaderboard
         this.scene.add('UiScene', UiScene, true, { statePlayers: this.statePlayers })
     }
 
 
     create() {
+        // Call some functions
         this.connectToServer()
         this.setupKeys()
         this.setupUiScene()
     }
 
     update() {
+        // Call the functions that use the keyboard events to move the player.
         if (this.cursors.left.isDown || this.keystate.A == true) {
             this.left()
         }
