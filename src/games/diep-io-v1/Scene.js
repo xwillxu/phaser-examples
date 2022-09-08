@@ -174,7 +174,7 @@ export default class Scene extends Phaser.Scene {
 
         var client = new Colyseus.Client(serverAdress);
 
-        client.joinOrCreate("circle_io_v2", { name: this.name }).then(room_instance => {
+        client.joinOrCreate("diep_io_v1", { name: this.name }).then(room_instance => {
             this.room = room_instance
 
             this.room.state.players.onAdd = (player, sessionId) => {
@@ -291,7 +291,13 @@ export default class Scene extends Phaser.Scene {
         this.connectToServer()
         this.setupKeys()
         this.setupUiScene()
-        // TODO: Use setInterval to create bullets
+        this.input.on('pointerdown', function (pointer) {
+            const targetXY = {
+                targetX: pointer.worldX,
+                targetY: pointer.worldY,
+            }
+            this.room.send("shoot", targetXY)
+        }, this);
     }
 
     update() {
