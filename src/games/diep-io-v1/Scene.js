@@ -22,6 +22,8 @@ export default class Scene extends Phaser.Scene {
         this.name = prompt('Enter Name')?.slice(0, 30)
         // Spliting Utilties
         this.canSplit = true
+        // Shooting Utilties
+        this.pointerPos = null
     }
 
     setupKeys() {
@@ -185,7 +187,7 @@ export default class Scene extends Phaser.Scene {
                 const player = this.statePlayers[playerCircle.playerId]
 
                 let container = this.add.container(playerCircle.x, playerCircle.y);
-                let initialColor = 0x6666ff
+                let initialColor = 0xff0000
                 // You will know that the playerCircle Belongs With This Player If The Players SessionId is The PlayerCircles PlayerId
                 if (playerCircle.playerId == this.myId) initialColor = 0x00ffff
                 const circle = this.add.circle(0, 0, 25, initialColor)
@@ -204,9 +206,16 @@ export default class Scene extends Phaser.Scene {
                     this.setupCamera()
                     this.playerZoom()
                 }, 1000)
-                playerCircle.onChange = updateChanges(playerCircle, worldId, this.tweens);
+                playerCircle.onChange = updateChanges(playerCircle, worldId, this.tweens, this.circles);
             }
 
+            this.room.state.playerBullets.onAdd = (bullet, worldId) => {
+                let initialColor = 0xff0000
+                if (bullet.playerId == this.myId) initialColor = 0x00ffff
+                const playerBullet = this.add.circle(bullet.x, bullet.y, bullet.size, initialColor)
+                this.bullets[worldId] = playerBullet
+                bullet.onChange = updateChanges(bullet, worldId, this.tweens, this.bullets)
+            }
 
             this.room.state.players.onRemove = (player, sessionId) => {
                 delete this.statePlayers[sessionId]
@@ -239,9 +248,10 @@ export default class Scene extends Phaser.Scene {
             this.myId = this.room.sessionId
         })
 
-        const updateChanges = (stateObject, worldId, tweens) => (changes) => {
+        const updateChanges = (stateObject, worldId, tweens, dictionary) => (changes) => {
             // TODO update changes
-            let container = this.circles[worldId]
+            if (!dictionary) return
+            let container = dictionary[worldId]
             if (!container) return
             let targetX = container.x
             let targetY = container.y
@@ -291,7 +301,7 @@ export default class Scene extends Phaser.Scene {
         this.connectToServer()
         this.setupKeys()
         this.setupUiScene()
-        this.input.on('pointerdown', function (pointer) {
+        this.input.on('pointerclick', function (pointer) {
             const targetXY = {
                 targetX: pointer.worldX,
                 targetY: pointer.worldY,
