@@ -209,12 +209,24 @@ export default class Scene extends Phaser.Scene {
                 playerCircle.onChange = updateChanges(playerCircle, worldId, this.tweens, this.circles);
             }
 
-            this.room.state.playerBullets.onAdd = (bullet, worldId) => {
+            this.room.state.playerBullets.onAdd = (playerBullet, worldId) => {
                 let initialColor = 0xff0000
-                if (bullet.playerId == this.myId) initialColor = 0x00ffff
-                const playerBullet = this.add.circle(bullet.x, bullet.y, bullet.size, initialColor)
-                this.bullets[worldId] = playerBullet
-                bullet.onChange = updateChanges(bullet, worldId, this.tweens, this.bullets)
+                if (playerBullet.playerId == this.myId) initialColor = 0x00ffff
+                const bullet = this.add.circle(playerBullet.x, playerBullet.y, playerBullet.size, initialColor)
+                this.bullets[worldId] = bullet
+                playerBullet.onChange = updateChanges(playerBullet, worldId, this.tweens, this.bullets)
+            }
+
+            this.room.state.playerBullets.onRemove = (playerBullet, worldId) => {
+                let bullet = this.bullets[worldId]
+                bullet.destroy()
+                delete this.bullets[worldId]
+
+                const currentPlayerCircles = this.playerCircles[playerBullet.playerId]
+                const newPlayerCircleIds = currentPlayerCircles.filter(x => x != worldId)
+                this.playerCircles[playerBullet.playerId] = newPlayerCircleIds
+
+                this.setupCamera()
             }
 
             this.room.state.players.onRemove = (player, sessionId) => {
@@ -301,7 +313,7 @@ export default class Scene extends Phaser.Scene {
         this.connectToServer()
         this.setupKeys()
         this.setupUiScene()
-        this.input.on('pointerclick', function (pointer) {
+        this.input.on('pointerdown', function (pointer) {
             const targetXY = {
                 targetX: pointer.worldX,
                 targetY: pointer.worldY,
