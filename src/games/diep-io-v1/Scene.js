@@ -225,8 +225,6 @@ export default class Scene extends Phaser.Scene {
                 const currentPlayerCircles = this.playerCircles[playerBullet.playerId]
                 const newPlayerCircleIds = currentPlayerCircles.filter(x => x != worldId)
                 this.playerCircles[playerBullet.playerId] = newPlayerCircleIds
-
-                this.setupCamera()
             }
 
             this.room.state.players.onRemove = (player, sessionId) => {
