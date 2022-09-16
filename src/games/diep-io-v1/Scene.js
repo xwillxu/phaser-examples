@@ -185,13 +185,13 @@ export default class Scene extends Phaser.Scene {
 
             this.room.state.playerCircles.onAdd = (playerCircle, worldId) => {
                 const player = this.statePlayers[playerCircle.playerId]
-
+                if (!player) return
                 let container = this.add.container(playerCircle.x, playerCircle.y);
                 let initialColor = 0xff0000
                 // You will know that the playerCircle Belongs With This Player If The Players SessionId is The PlayerCircles PlayerId
                 if (playerCircle.playerId == this.myId) initialColor = 0x00ffff
                 const circle = this.add.circle(0, 0, 25, initialColor)
-                let text = this.add.text(0, 0, `${player.name || "Guest"}`)
+                let text = this.add.text(0, 0, `${player?.name || "Guest"}`)
                 text.setOrigin(0.5, 0.5);
                 container.add(circle)
                 container.add(text)
@@ -219,7 +219,7 @@ export default class Scene extends Phaser.Scene {
 
             this.room.state.playerBullets.onRemove = (playerBullet, worldId) => {
                 let bullet = this.bullets[worldId]
-                bullet.destroy()
+                bullet?.destroy()
                 delete this.bullets[worldId]
 
                 const currentPlayerCircles = this.playerCircles[playerBullet.playerId]
