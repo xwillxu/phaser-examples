@@ -255,6 +255,9 @@ export default class Scene extends Phaser.Scene {
                 orb2.destroy()
             }
 
+            this.room.state.walls.onAdd = (wall, id) => this.add.rectangle(wall.x, wall.y, wall.width, wall.height, 0xD3D3D3)
+
+
             this.myId = this.room.sessionId
         })
 
