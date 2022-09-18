@@ -136,6 +136,14 @@ export default class Scene extends Phaser.Scene {
         this.cameras.main.zoomTo(zoomToUse, 1000)
     }
 
+    startFollowPlayer(seconds) {
+        // Timeout is needed the could not find it because phaser is still generating.
+        setTimeout(() => {
+            this.setupCamera()
+            this.playerZoom()
+        }, seconds)
+    }
+
     setupCamera() {
         // Get the playerCircles of this client
         const playerCircles = this.findMyCircles()
@@ -167,6 +175,7 @@ export default class Scene extends Phaser.Scene {
         return circles
     }
 
+
     connectToServer() {
         var host = window.document.location.host.replace(/:.*/, '');
         let serverAdress = location.protocol.replace("http", "ws") + "//" + host + ':' + '2567'
@@ -181,6 +190,7 @@ export default class Scene extends Phaser.Scene {
 
             this.room.state.players.onAdd = (player, sessionId) => {
                 this.statePlayers[sessionId] = player
+
             }
 
             this.room.state.playerCircles.onAdd = (playerCircle, worldId) => {
@@ -201,11 +211,15 @@ export default class Scene extends Phaser.Scene {
                     this.playerCircles[playerCircle.playerId] = []
                 }
                 this.playerCircles[playerCircle.playerId].push(worldId)
-                // Timeout is needed the could not find it because phaser is still generating.
-                setTimeout(() => {
-                    this.setupCamera()
-                    this.playerZoom()
-                }, 1000)
+                this.startFollowPlayer(1000)
+
+                this.startFollowPlayer(2000)
+
+                this.startFollowPlayer(3000)
+
+                this.startFollowPlayer(4000)
+
+                this.startFollowPlayer(5000)
                 playerCircle.onChange = updateChanges(playerCircle, worldId, this.tweens, this.circles);
             }
 
@@ -254,6 +268,9 @@ export default class Scene extends Phaser.Scene {
                 let orb2 = this.orbs[id]
                 orb2.destroy()
             }
+
+            this.room.state.walls.onAdd = (wall, id) => this.add.rectangle(wall.x, wall.y, wall.width, wall.height, 0xD3D3D3)
+
 
             this.myId = this.room.sessionId
         })
