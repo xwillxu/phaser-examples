@@ -291,6 +291,9 @@ export default class Scene extends Phaser.Scene {
                     case 'y':
                         targetY = parseInt(value);
                         break;
+                    case 'angle':
+                        //TODO: angle stuff
+                        break;
                     case 'size':
                         container.setScale(parseInt(value) / 25, parseInt(value) / 25)
                         this.playerZoom()
