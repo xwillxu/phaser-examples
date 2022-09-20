@@ -153,7 +153,7 @@ export default class Scene extends Phaser.Scene {
         if (!mycircle) return
         // Set the fill style for client's circles
         for (const playerCircle of playerCircles) {
-            playerCircle.first?.setFillStyle(0x00ffff)
+            playerCircle.getAt(1).setFillStyle(0x00ffff)
         }
         // Set the background color and start following the circle
         this.cameras.main.backgroundColor = Phaser.Display.Color.HexStringToColor('0x000000');
@@ -200,9 +200,15 @@ export default class Scene extends Phaser.Scene {
                 let initialColor = 0xff0000
                 // You will know that the playerCircle Belongs With This Player If The Players SessionId is The PlayerCircles PlayerId
                 if (playerCircle.playerId == this.myId) initialColor = 0x00ffff
+
+
                 const circle = this.add.circle(0, 0, 25, initialColor)
                 let text = this.add.text(0, 0, `${player?.name || "Guest"}`)
+                const turret = this.add.rectangle(0, 0, 40, 20, 0x656565)
+                turret.setOrigin(-0.1, 0.5)
                 text.setOrigin(0.5, 0.5);
+
+                container.add(turret)
                 container.add(circle)
                 container.add(text)
                 this.listClients()
@@ -282,6 +288,7 @@ export default class Scene extends Phaser.Scene {
             if (!container) return
             let targetX = container.x
             let targetY = container.y
+            let angle = container.angle
 
             changes.forEach(({ field, value }) => {
                 switch (field) {
@@ -292,7 +299,7 @@ export default class Scene extends Phaser.Scene {
                         targetY = parseInt(value);
                         break;
                     case 'angle':
-                        //TODO: angle stuff
+                        container.setAngle(Phaser.Math.RadToDeg(value))
                         break;
                     case 'size':
                         container.setScale(parseInt(value) / 25, parseInt(value) / 25)
