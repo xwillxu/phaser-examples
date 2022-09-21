@@ -204,7 +204,7 @@ export default class Scene extends Phaser.Scene {
 
                 const circle = this.add.circle(0, 0, 25, initialColor)
                 let text = this.add.text(0, 0, `${player?.name || "Guest"}`)
-                const turret = this.add.rectangle(0, 0, 40, 20, 0x656565)
+                const turret = this.add.rectangle(0, 0, 45, 30, 0x656565)
                 turret.setOrigin(-0.1, 0.5)
                 text.setOrigin(0.5, 0.5);
 
@@ -344,6 +344,14 @@ export default class Scene extends Phaser.Scene {
                 targetY: pointer.worldY,
             }
             this.room.send("shoot", targetXY)
+        }, this);
+
+        this.input.on('pointermove', function (pointer) {
+            const targetXY = {
+                targetX: pointer.worldX,
+                targetY: pointer.worldY,
+            }
+            this.room.send("pointermove", targetXY)
         }, this);
     }
 
