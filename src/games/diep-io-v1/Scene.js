@@ -204,7 +204,7 @@ export default class Scene extends Phaser.Scene {
 
                 const circle = this.add.circle(0, 0, 25, initialColor)
                 let text = this.add.text(0, 0, `${player?.name || "Guest"}`)
-                const turret = this.add.rectangle(0, 0, 45, 30, 0x656565)
+                const turret = this.add.rectangle(0, 0, 45, 25, 0x656565)
                 turret.setOrigin(-0.1, 0.5)
                 text.setOrigin(0.5, 0.5);
 
