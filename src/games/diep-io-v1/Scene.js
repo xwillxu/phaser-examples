@@ -226,7 +226,7 @@ export default class Scene extends Phaser.Scene {
                 this.startFollowPlayer(4000)
 
                 this.startFollowPlayer(5000)
-                playerCircle.onChange = updateChanges(playerCircle, worldId, this.tweens, this.circles);
+                playerCircle.onChange = updateChanges(playerCircle, worldId, this.tweens, this.circles, playerCircle.size / 2);
             }
 
             this.room.state.playerBullets.onAdd = (playerBullet, worldId) => {
@@ -234,7 +234,7 @@ export default class Scene extends Phaser.Scene {
                 if (playerBullet.playerId == this.myId) initialColor = 0x00ffff
                 const bullet = this.add.circle(playerBullet.x, playerBullet.y, playerBullet.size, initialColor)
                 this.bullets[worldId] = bullet
-                playerBullet.onChange = updateChanges(playerBullet, worldId, this.tweens, this.bullets)
+                playerBullet.onChange = updateChanges(playerBullet, worldId, this.tweens, this.bullets, playerBullet.size / 2)
             }
 
             this.room.state.playerBullets.onRemove = (playerBullet, worldId) => {
@@ -281,7 +281,7 @@ export default class Scene extends Phaser.Scene {
             this.myId = this.room.sessionId
         })
 
-        const updateChanges = (stateObject, worldId, tweens, dictionary) => (changes) => {
+        const updateChanges = (stateObject, worldId, tweens, dictionary, baseSize) => (changes) => {
             // TODO update changes
             if (!dictionary) return
             let container = dictionary[worldId]
@@ -302,7 +302,7 @@ export default class Scene extends Phaser.Scene {
                         container.setAngle(Phaser.Math.RadToDeg(value))
                         break;
                     case 'size':
-                        container.setScale(parseInt(value) / 25, parseInt(value) / 25)
+                        container.setScale(parseInt(value) / baseSize, parseInt(value) / baseSize)
                         this.playerZoom()
                         this.listClients()
                         break;
