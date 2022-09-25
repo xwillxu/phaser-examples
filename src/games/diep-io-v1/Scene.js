@@ -226,7 +226,7 @@ export default class Scene extends Phaser.Scene {
                 this.startFollowPlayer(4000)
 
                 this.startFollowPlayer(5000)
-                playerCircle.onChange = updateChanges(playerCircle, worldId, this.tweens, this.circles, playerCircle.size / 2);
+                playerCircle.onChange = updateChanges(playerCircle, worldId, this.tweens, this.circles, 25);
             }
 
             this.room.state.playerBullets.onAdd = (playerBullet, worldId) => {
@@ -288,7 +288,6 @@ export default class Scene extends Phaser.Scene {
             if (!container) return
             let targetX = container.x
             let targetY = container.y
-            let angle = container.angle
 
             changes.forEach(({ field, value }) => {
                 switch (field) {
@@ -339,6 +338,7 @@ export default class Scene extends Phaser.Scene {
         this.setupKeys()
         this.setupUiScene()
         this.input.on('pointerdown', function (pointer) {
+            if (!this.room) return
             const targetXY = {
                 targetX: pointer.worldX,
                 targetY: pointer.worldY,
@@ -347,6 +347,7 @@ export default class Scene extends Phaser.Scene {
         }, this);
 
         this.input.on('pointermove', function (pointer) {
+            if (!this.room) return
             const targetXY = {
                 targetX: pointer.worldX,
                 targetY: pointer.worldY,
@@ -357,6 +358,8 @@ export default class Scene extends Phaser.Scene {
 
     update() {
         // Call the functions that use the keyboard events to move the player.
+
+        if (!this.room) return
         if (this.cursors.left.isDown || this.keystate.A == true) {
             this.left()
         }
