@@ -156,7 +156,7 @@ export default class Scene extends Phaser.Scene {
             playerCircle.getAt(1).setFillStyle(0x00ffff)
         }
         // Set the background color and start following the circle
-        this.cameras.main.backgroundColor = Phaser.Display.Color.HexStringToColor('0x000000');
+        this.cameras.main.backgroundColor = Phaser.Display.Color.HexStringToColor('0xCDCDCD');
         this.cameras.main.startFollow(mycircle)
     }
 
@@ -197,14 +197,14 @@ export default class Scene extends Phaser.Scene {
                 const player = this.statePlayers[playerCircle.playerId]
                 if (!player) return
                 let container = this.add.container(playerCircle.x, playerCircle.y);
-                let initialColor = 0xff0000
+                let initialColor = 0xF14E54
                 // You will know that the playerCircle Belongs With This Player If The Players SessionId is The PlayerCircles PlayerId
-                if (playerCircle.playerId == this.myId) initialColor = 0x00ffff
+                if (playerCircle.playerId == this.myId) initialColor = 0x00B1DE
 
 
                 const circle = this.add.circle(0, 0, 25, initialColor)
                 let text = this.add.text(0, 0, `${player?.name || "Guest"}`)
-                const turret = this.add.rectangle(0, 0, 45, 25, 0x656565)
+                const turret = this.add.rectangle(0, 0, 45, 25, 0xa9a9a9)
                 turret.setOrigin(-0.1, 0.5)
                 text.setOrigin(0.5, 0.5);
 
@@ -265,7 +265,7 @@ export default class Scene extends Phaser.Scene {
             }
 
             this.room.state.orbs.onAdd = (orb, id) => {
-                const orb2 = this.add.circle(orb.x, orb.y, 20, 0x1cfc03)
+                const orb2 = this.add.rectangle(orb.x, orb.y, 30, 30, 0xfff123)
                 this.orbs[id] = orb2
                 orb.onChange = updateChanges(orb2, id);
             }
@@ -275,7 +275,7 @@ export default class Scene extends Phaser.Scene {
                 orb2.destroy()
             }
 
-            this.room.state.walls.onAdd = (wall, id) => this.add.rectangle(wall.x, wall.y, wall.width, wall.height, 0xD3D3D3)
+            this.room.state.walls.onAdd = (wall, id) => this.add.rectangle(wall.x, wall.y, wall.width, wall.height, 0xBBBBBB)
 
 
             this.myId = this.room.sessionId
