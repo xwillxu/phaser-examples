@@ -24,28 +24,23 @@ export default class UiScene extends Phaser.Scene {
             this.scoreBoard = this.add.text(20, 20, '', { font: '24px Courier', fill: '#00ff00' })
             this.scoreBoard.setScrollFactor(0)
         }
-
         // Update the content
         let data = []
-        /*
-        
-        */
-
-        // }
         for (const key in this.statePlayers) {
             const player = this.statePlayers[key]
+            const name = player.name ? player.name : 'Guest'
             data.push(
                 {
-                    name: player.name,
+                    name: name,
                     score: player.score,
                 }
             )
         }
 
         let sortedArray = this.sortArray(data)
-        let sortedTopThree = sortedArray.slice(0, 5)
+        let sortedTopFive = sortedArray.slice(0, 5)
         let dataString = []
-        for (const item of sortedTopThree) {
+        for (const item of sortedTopFive) {
             dataString.push('Name:' + item.name + ' ' + 'Score:' + item.score)
         }
         this.scoreBoard.setText(dataString)

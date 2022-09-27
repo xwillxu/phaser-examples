@@ -156,7 +156,7 @@ export default class Scene extends Phaser.Scene {
             playerCircle.getAt(1).setFillStyle(0x00ffff)
         }
         // Set the background color and start following the circle
-        this.cameras.main.backgroundColor = Phaser.Display.Color.HexStringToColor('0x000000');
+        this.cameras.main.backgroundColor = Phaser.Display.Color.HexStringToColor('0xCDCDCD');
         this.cameras.main.startFollow(mycircle)
     }
 
@@ -197,14 +197,14 @@ export default class Scene extends Phaser.Scene {
                 const player = this.statePlayers[playerCircle.playerId]
                 if (!player) return
                 let container = this.add.container(playerCircle.x, playerCircle.y);
-                let initialColor = 0xff0000
+                let initialColor = 0xF14E54
                 // You will know that the playerCircle Belongs With This Player If The Players SessionId is The PlayerCircles PlayerId
-                if (playerCircle.playerId == this.myId) initialColor = 0x00ffff
+                if (playerCircle.playerId == this.myId) initialColor = 0x00B1DE
 
 
                 const circle = this.add.circle(0, 0, 25, initialColor)
                 let text = this.add.text(0, 0, `${player?.name || "Guest"}`)
-                const turret = this.add.rectangle(0, 0, 45, 25, 0x656565)
+                const turret = this.add.rectangle(0, 0, 45, 25, 0xa9a9a9)
                 turret.setOrigin(-0.1, 0.5)
                 text.setOrigin(0.5, 0.5);
 
@@ -226,7 +226,7 @@ export default class Scene extends Phaser.Scene {
                 this.startFollowPlayer(4000)
 
                 this.startFollowPlayer(5000)
-                playerCircle.onChange = updateChanges(playerCircle, worldId, this.tweens, this.circles, playerCircle.size / 2);
+                playerCircle.onChange = updateChanges(playerCircle, worldId, this.tweens, this.circles, 25);
             }
 
             this.room.state.playerBullets.onAdd = (playerBullet, worldId) => {
@@ -265,7 +265,7 @@ export default class Scene extends Phaser.Scene {
             }
 
             this.room.state.orbs.onAdd = (orb, id) => {
-                const orb2 = this.add.circle(orb.x, orb.y, 20, 0x1cfc03)
+                const orb2 = this.add.rectangle(orb.x, orb.y, 30, 30, 0xfff123)
                 this.orbs[id] = orb2
                 orb.onChange = updateChanges(orb2, id);
             }
@@ -275,7 +275,7 @@ export default class Scene extends Phaser.Scene {
                 orb2.destroy()
             }
 
-            this.room.state.walls.onAdd = (wall, id) => this.add.rectangle(wall.x, wall.y, wall.width, wall.height, 0xD3D3D3)
+            this.room.state.walls.onAdd = (wall, id) => this.add.rectangle(wall.x, wall.y, wall.width, wall.height, 0xBBBBBB)
 
 
             this.myId = this.room.sessionId
@@ -288,7 +288,6 @@ export default class Scene extends Phaser.Scene {
             if (!container) return
             let targetX = container.x
             let targetY = container.y
-            let angle = container.angle
 
             changes.forEach(({ field, value }) => {
                 switch (field) {
@@ -339,6 +338,7 @@ export default class Scene extends Phaser.Scene {
         this.setupKeys()
         this.setupUiScene()
         this.input.on('pointerdown', function (pointer) {
+            if (!this.room) return
             const targetXY = {
                 targetX: pointer.worldX,
                 targetY: pointer.worldY,
@@ -347,6 +347,7 @@ export default class Scene extends Phaser.Scene {
         }, this);
 
         this.input.on('pointermove', function (pointer) {
+            if (!this.room) return
             const targetXY = {
                 targetX: pointer.worldX,
                 targetY: pointer.worldY,
@@ -357,6 +358,8 @@ export default class Scene extends Phaser.Scene {
 
     update() {
         // Call the functions that use the keyboard events to move the player.
+
+        if (!this.room) return
         if (this.cursors.left.isDown || this.keystate.A == true) {
             this.left()
         }
