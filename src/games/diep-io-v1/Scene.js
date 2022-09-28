@@ -265,7 +265,14 @@ export default class Scene extends Phaser.Scene {
             }
 
             this.room.state.orbs.onAdd = (orb, id) => {
-                const orb2 = this.add.rectangle(orb.x, orb.y, 30, 30, 0xfff123)
+                switch (orb.type) {
+                    case 'rectangle':
+                        break;
+                }
+                let orb2 = this.add.rectangle(orb.x, orb.y, 30, 30, 0xfff123)
+                if (orb.type == 'triangle') {
+                    orb2 = this.add.triangle(orb.x, orb.y,)
+                }
                 this.orbs[id] = orb2
                 orb.onChange = updateChanges(orb2, id);
             }
