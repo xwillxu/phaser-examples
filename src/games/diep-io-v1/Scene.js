@@ -176,6 +176,7 @@ export default class Scene extends Phaser.Scene {
     }
 
 
+
     connectToServer() {
         var host = window.document.location.host.replace(/:.*/, '');
         let serverAdress = location.protocol.replace("http", "ws") + "//" + host + ':' + '2567'
@@ -265,13 +266,23 @@ export default class Scene extends Phaser.Scene {
             }
 
             this.room.state.orbs.onAdd = (orb, id) => {
+                let orb2;
                 switch (orb.type) {
                     case 'rectangle':
+                        orb2 = this.add.rectangle(orb.x, orb.y, 30, 30, 0xfff123)
                         break;
-                }
-                let orb2 = this.add.rectangle(orb.x, orb.y, 30, 30, 0xfff123)
-                if (orb.type == 'triangle') {
-                    orb2 = this.add.triangle(orb.x, orb.y,)
+                    case 'triangle':
+                        const angleIncrease = 360 / 3
+                        const points = []
+                        for (let i = 0; i < 3; i++) {
+                            const iPoint = new Phaser.Geom.Point(orb.x, orb.x)
+                            const radian = Phaser.Math.DegToRad(angleIncrease * i)
+                            points.push(Phaser.Math.RotateTo(iPoint, orb.x, orb.y, radian, 30))
+                        }
+                        orb2 = this.add.polygon(orb.x, orb.y, points, 0xfc7676)
+                        break;
+                    case 'pentagon':
+                        break;
                 }
                 this.orbs[id] = orb2
                 orb.onChange = updateChanges(orb2, id);
