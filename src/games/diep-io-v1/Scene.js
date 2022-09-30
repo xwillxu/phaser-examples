@@ -175,6 +175,16 @@ export default class Scene extends Phaser.Scene {
         return circles
     }
 
+    generatePolygon(sides, object, size, color) {
+        const angleIncrease = 360 / sides
+        const points = []
+        for (let i = 0; i < sides; i++) {
+            const iPoint = new Phaser.Geom.Point(object.x, object.x)
+            const radian = Phaser.Math.DegToRad(angleIncrease * i)
+            points.push(Phaser.Math.RotateTo(iPoint, object.x, object.y, radian, size))
+        }
+        return this.add.polygon(object.x, object.y, points, color)
+    }
 
 
     connectToServer() {
@@ -272,16 +282,11 @@ export default class Scene extends Phaser.Scene {
                         orb2 = this.add.rectangle(orb.x, orb.y, 30, 30, 0xfff123)
                         break;
                     case 'triangle':
-                        const angleIncrease = 360 / 3
-                        const points = []
-                        for (let i = 0; i < 3; i++) {
-                            const iPoint = new Phaser.Geom.Point(orb.x, orb.x)
-                            const radian = Phaser.Math.DegToRad(angleIncrease * i)
-                            points.push(Phaser.Math.RotateTo(iPoint, orb.x, orb.y, radian, 30))
-                        }
-                        orb2 = this.add.polygon(orb.x, orb.y, points, 0xfc7676)
+                        orb2 = this.generatePolygon(3, orb, 30, 0xfc7676)
                         break;
                     case 'pentagon':
+
+                        orb2 = this.generatePolygon(5, orb, 50, 0x768cfc)
                         break;
                 }
                 this.orbs[id] = orb2
