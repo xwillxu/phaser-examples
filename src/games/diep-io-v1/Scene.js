@@ -177,11 +177,14 @@ export default class Scene extends Phaser.Scene {
 
     generatePolygon(sides, object, size, color) {
         const angleIncrease = 360 / sides
+        console.log('triangle', object.x, object.y)
+
         const points = []
         for (let i = 0; i < sides; i++) {
             const iPoint = new Phaser.Geom.Point(object.x, object.x)
-            const radian = Phaser.Math.DegToRad(angleIncrease * i)
+            const radian = Phaser.Math.DegToRad(angleIncrease * i + angleIncrease / 2)
             points.push(Phaser.Math.RotateTo(iPoint, object.x, object.y, radian, size))
+            console.log('point', iPoint)
         }
         return this.add.polygon(object.x, object.y, points, color)
     }
@@ -246,6 +249,7 @@ export default class Scene extends Phaser.Scene {
                 const bullet = this.add.circle(playerBullet.x, playerBullet.y, playerBullet.size, initialColor)
                 this.bullets[worldId] = bullet
                 playerBullet.onChange = updateChanges(playerBullet, worldId, this.tweens, this.bullets, playerBullet.size / 2)
+                console.log(playerBullet.x, playerBullet.y)
             }
 
             this.room.state.playerBullets.onRemove = (playerBullet, worldId) => {
