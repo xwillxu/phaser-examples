@@ -186,7 +186,10 @@ export default class Scene extends Phaser.Scene {
             points.push(Phaser.Math.RotateTo(iPoint, object.x, object.y, radian, size))
             console.log('point', iPoint)
         }
-        return this.add.polygon(object.x, object.y, points, color)
+        const poly = this.add.polygon(0, 0, points, color)
+        poly.x = poly.x + poly.displayOriginX;
+        poly.y = poly.y + poly.displayOriginY;
+        return poly
     }
 
 
@@ -231,22 +234,35 @@ export default class Scene extends Phaser.Scene {
                     this.playerCircles[playerCircle.playerId] = []
                 }
                 this.playerCircles[playerCircle.playerId].push(worldId)
+
+                // Long but safe proof
+                this.startFollowPlayer(500)
                 this.startFollowPlayer(1000)
-
+                this.startFollowPlayer(1500)
                 this.startFollowPlayer(2000)
-
+                this.startFollowPlayer(2500)
                 this.startFollowPlayer(3000)
-
+                this.startFollowPlayer(3500)
                 this.startFollowPlayer(4000)
-
+                this.startFollowPlayer(4500)
                 this.startFollowPlayer(5000)
+                this.startFollowPlayer(5500)
+                this.startFollowPlayer(6000)
+                this.startFollowPlayer(6500)
+                this.startFollowPlayer(7000)
+                this.startFollowPlayer(7500)
+                this.startFollowPlayer(8000)
+                this.startFollowPlayer(8500)
+                this.startFollowPlayer(9000)
+                this.startFollowPlayer(9500)
+                this.startFollowPlayer(10000)
                 playerCircle.onChange = updateChanges(playerCircle, worldId, this.tweens, this.circles, 25);
             }
 
             this.room.state.playerBullets.onAdd = (playerBullet, worldId) => {
                 let initialColor = 0xff0000
                 if (playerBullet.playerId == this.myId) initialColor = 0x00ffff
-                const bullet = this.add.circle(playerBullet.x, playerBullet.y, playerBullet.size, initialColor)
+                const bullet = this.add.circle(playerBullet.x, playerBullet.y, playerBullet.size / 2, initialColor)
                 this.bullets[worldId] = bullet
                 playerBullet.onChange = updateChanges(playerBullet, worldId, this.tweens, this.bullets, playerBullet.size / 2)
                 console.log(playerBullet.x, playerBullet.y)
