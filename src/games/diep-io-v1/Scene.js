@@ -22,8 +22,12 @@ export default class Scene extends Phaser.Scene {
         this.name = prompt('Enter Name')?.slice(0, 30)
         // Spliting Utilties
         this.canSplit = true
-        // Shooting Utilties
-        this.pointerPos = null
+        // Keyboard Utilties
+        this.autoShoot = false
+        this.pointerPosX = 0
+        this.pointerPosY = 0
+        this.shootInterval = 0
+        this.keystate = {}
     }
 
     setupKeys() {
@@ -33,11 +37,12 @@ export default class Scene extends Phaser.Scene {
         this.AKey = this.input.keyboard.addKey('A');
         this.DKey = this.input.keyboard.addKey('D');
         this.SKey = this.input.keyboard.addKey('S');
+        this.EKey = this.input.keyboard.addKey('E');
         this.SpaceKey = this.input.keyboard.addKey('Space');
 
         // Make then Accesseble
         this.keystate = {
-            'W': false, 'A': false, 'D': false, 'S': false, 'Space': false
+            'W': false, 'A': false, 'D': false, 'S': false, 'E': false, 'Space': false
         }
 
         // Set Off Varibles To Send Changes To State
@@ -72,7 +77,22 @@ export default class Scene extends Phaser.Scene {
         this.SKey.on('up', function () {
             this.keystate.S = false
         }, this);
+        this.SKey.on('down', function () {
+            this.keystate.S = true
+        }, this);
 
+        this.SKey.on('up', function () {
+            this.keystate.S = false
+        }, this);
+
+        this.EKey.on('down', function () {
+            this.keystate.E = true
+            this.switchAutoShoot()
+        }, this);
+
+        this.EKey.on('up', function () {
+            this.keystate.E = false
+        }, this);
         this.SpaceKey.on('down', function () {
             this.keystate.Space = true
         }, this)
@@ -83,6 +103,15 @@ export default class Scene extends Phaser.Scene {
 
     }
 
+    switchAutoShoot() {
+        if (!this.autoShoot) {
+            this.shootInterval = setInterval(() => this.shoot(), 200)
+            this.autoShoot = true
+        } else {
+            clearInterval(this.shootInterval)
+            this.autoShoot = false
+        }
+    }
 
     up() {
         var movement = { y: -7 }
@@ -153,7 +182,7 @@ export default class Scene extends Phaser.Scene {
         if (!mycircle) return
         // Set the fill style for client's circles
         for (const playerCircle of playerCircles) {
-            playerCircle.getAt(1).setFillStyle(0x00ffff)
+            playerCircle.getAt(1).setFillStyle(0x00b0e1)
         }
         // Set the background color and start following the circle
         this.cameras.main.backgroundColor = Phaser.Display.Color.HexStringToColor('0xCDCDCD');
@@ -177,14 +206,12 @@ export default class Scene extends Phaser.Scene {
 
     generatePolygon(sides, object, size, color) {
         const angleIncrease = 360 / sides
-        console.log('triangle', object.x, object.y)
 
         const points = []
         for (let i = 0; i < sides; i++) {
             const iPoint = new Phaser.Geom.Point(object.x, object.x)
             const radian = Phaser.Math.DegToRad(angleIncrease * i + angleIncrease / 2)
             points.push(Phaser.Math.RotateTo(iPoint, object.x, object.y, radian, size))
-            console.log('point', iPoint)
         }
         const poly = this.add.polygon(0, 0, points, color)
         poly.x = poly.x + poly.displayOriginX;
@@ -214,7 +241,7 @@ export default class Scene extends Phaser.Scene {
                 const player = this.statePlayers[playerCircle.playerId]
                 if (!player) return
                 let container = this.add.container(playerCircle.x, playerCircle.y);
-                let initialColor = 0xF14E54
+                let initialColor = 0xf04f54
                 // You will know that the playerCircle Belongs With This Player If The Players SessionId is The PlayerCircles PlayerId
                 if (playerCircle.playerId == this.myId) initialColor = 0x00B1DE
 
@@ -260,12 +287,12 @@ export default class Scene extends Phaser.Scene {
             }
 
             this.room.state.playerBullets.onAdd = (playerBullet, worldId) => {
-                let initialColor = 0xff0000
-                if (playerBullet.playerId == this.myId) initialColor = 0x00ffff
+                let initialColor = 0xf04f54
+                if (playerBullet.playerId == this.myId) initialColor = 0x00b0e1
                 const bullet = this.add.circle(playerBullet.x, playerBullet.y, playerBullet.size / 2, initialColor)
                 this.bullets[worldId] = bullet
                 playerBullet.onChange = updateChanges(playerBullet, worldId, this.tweens, this.bullets, playerBullet.size / 2)
-                console.log(playerBullet.x, playerBullet.y)
+
             }
 
             this.room.state.playerBullets.onRemove = (playerBullet, worldId) => {
@@ -374,6 +401,14 @@ export default class Scene extends Phaser.Scene {
         this.scene.add('UiScene', UiScene, true, { statePlayers: this.statePlayers })
     }
 
+    shoot() {
+        if (!this.room) return
+        const targetXY = {
+            targetX: this.pointerPosX,
+            targetY: this.pointerPosY,
+        }
+        this.room.send("shoot", targetXY)
+    }
 
     create() {
         // Call some functions
@@ -381,12 +416,8 @@ export default class Scene extends Phaser.Scene {
         this.setupKeys()
         this.setupUiScene()
         this.input.on('pointerdown', function (pointer) {
-            if (!this.room) return
-            const targetXY = {
-                targetX: pointer.worldX,
-                targetY: pointer.worldY,
-            }
-            this.room.send("shoot", targetXY)
+            if (this.autoShoot) return
+            this.shoot()
         }, this);
 
         this.input.on('pointermove', function (pointer) {
@@ -395,14 +426,20 @@ export default class Scene extends Phaser.Scene {
                 targetX: pointer.worldX,
                 targetY: pointer.worldY,
             }
+            this.pointerPosX = targetXY.targetX
+            this.pointerPosY = targetXY.targetY
             this.room.send("pointermove", targetXY)
         }, this);
+
+
     }
 
     update() {
         // Call the functions that use the keyboard events to move the player.
 
         if (!this.room) return
+
+
         if (this.cursors.left.isDown || this.keystate.A == true) {
             this.left()
         }
