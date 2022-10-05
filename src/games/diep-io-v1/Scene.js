@@ -105,7 +105,7 @@ export default class Scene extends Phaser.Scene {
 
     switchAutoShoot() {
         if (!this.autoShoot) {
-            this.shootInterval = setInterval(() => this.shoot(), 200)
+            this.shootInterval = setInterval(() => this.shoot(), 250)
             this.autoShoot = true
         } else {
             clearInterval(this.shootInterval)
