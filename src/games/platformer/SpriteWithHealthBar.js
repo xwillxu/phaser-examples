@@ -28,10 +28,10 @@ export default class SpriteWithHealthBar extends Phaser.Physics.Matter.Sprite {
         this.hp.destroy()
     }
 
-    update() {
-        if (this.body) {
-            this.hp.update(this.x, this.y)
-        }
+//     update() {
+//         if (this.body) {
+//             this.hp.update(this.x, this.y)
+//         }
 
-    }
+//     }
 }
