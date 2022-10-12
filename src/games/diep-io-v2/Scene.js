@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 import * as Colyseus from "colyseus.js"
 import UiScene from "./UiScene"
+import ContainerWithHealthBar from "../platformer/ContainerWithHealthBar"
 
 export default class Scene extends Phaser.Scene {
     constructor() {
@@ -209,9 +210,9 @@ export default class Scene extends Phaser.Scene {
 
         const points = []
         for (let i = 0; i < sides; i++) {
-            const iPoint = new Phaser.Geom.Point(object.x, object.x)
+            const iPoint = new Phaser.Geom.Point(0, 0)
             const radian = Phaser.Math.DegToRad(angleIncrease * i + angleIncrease / 2)
-            points.push(Phaser.Math.RotateTo(iPoint, object.x, object.y, radian, size))
+            points.push(Phaser.Math.RotateTo(iPoint, 0, 0, radian, size))
         }
         const poly = this.add.polygon(0, 0, points, color)
         poly.x = poly.x + poly.displayOriginX;
@@ -240,7 +241,7 @@ export default class Scene extends Phaser.Scene {
             this.room.state.playerCircles.onAdd = (playerCircle, worldId) => {
                 const player = this.statePlayers[playerCircle.playerId]
                 if (!player) return
-                let container = this.add.container(playerCircle.x, playerCircle.y);
+                let container = new ContainerWithHealthBar(this, playerCircle.x, playerCircle.y, [], 77, -75, 2);
                 let initialColor = 0xf04f54
                 // You will know that the playerCircle Belongs With This Player If The Players SessionId is The PlayerCircles PlayerId
                 if (playerCircle.playerId == this.myId) initialColor = 0x00B1DE
@@ -312,6 +313,7 @@ export default class Scene extends Phaser.Scene {
 
             this.room.state.playerCircles.onRemove = (playerCircle, worldId) => {
                 let circle = this.circles[worldId]
+                circle.removeHp()
                 circle.destroy()
                 delete this.circles[worldId]
 
@@ -323,17 +325,18 @@ export default class Scene extends Phaser.Scene {
             }
 
             this.room.state.orbs.onAdd = (orb, id) => {
-                let orb2;
+                let orb2 = new ContainerWithHealthBar(this, orb.x, orb.y, [], 40, -50)
                 switch (orb.type) {
                     case 'rectangle':
-                        orb2 = this.add.rectangle(orb.x, orb.y, 30, 30, 0xfff123)
+                        orb2.add(this.add.rectangle(0, 0, 30, 30, 0xfff123))
+
                         break;
                     case 'triangle':
-                        orb2 = this.generatePolygon(3, orb, 30, 0xfc7676)
+                        orb2.add(this.generatePolygon(3, orb, 30, 0xfc7676))
                         break;
                     case 'pentagon':
 
-                        orb2 = this.generatePolygon(5, orb, 50, 0x768cfc)
+                        orb2.add(this.generatePolygon(5, orb, 50, 0x768cfc))
                         break;
                 }
                 this.orbs[id] = orb2
@@ -342,6 +345,7 @@ export default class Scene extends Phaser.Scene {
 
             this.room.state.orbs.onRemove = (orb, id) => {
                 let orb2 = this.orbs[id]
+                orb2.removeHp()
                 orb2.destroy()
             }
 
@@ -439,6 +443,16 @@ export default class Scene extends Phaser.Scene {
 
         if (!this.room) return
 
+
+        for (const containerId in this.circles) {
+            const container = this.circles[containerId]
+            container.update()
+        }
+
+        for (const orbId in this.orbs) {
+            const orb = this.orbs[orbId]
+            orb.update()
+        }
 
         if (this.cursors.left.isDown || this.keystate.A == true) {
             this.left()

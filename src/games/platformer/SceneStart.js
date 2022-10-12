@@ -4,6 +4,7 @@ import start_word_image from '../../assets/start-word.png'
 import playerChoice1 from '../../assets/dude-cropped.png'
 import playerChoice2 from '../../assets/dude-cropped-red.png'
 import playerChoice3 from '../../assets/dude-cropped-blue.png'
+import ContainerWithHealthBar from './ContainerWithHealthBar'
 
 
 export default class SceneStart extends Phaser.Scene {
