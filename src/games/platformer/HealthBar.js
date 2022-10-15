@@ -1,7 +1,7 @@
 import Phaser from "phaser"
 
 export default class HealthBar {
-    constructor(scene, x, y, offsetX, offsetY, size) {
+    constructor(scene, x, y, offsetX, offsetY, size, maxHp = 100) {
         this.bar = new Phaser.GameObjects.Graphics(scene);
 
         this.offsetX = offsetX
@@ -10,7 +10,7 @@ export default class HealthBar {
         this.y = y - this.offsetY;
         this.size = size
         this.value = 100;
-        this.p = 76 / 100;
+        this.p = 76 / maxHp;
 
         this.draw();
 
@@ -25,6 +25,11 @@ export default class HealthBar {
     update(x, y) {
         this.x = x - this.offsetX;
         this.y = y - this.offsetY;
+        this.draw()
+    }
+
+    setHp(hpAmount) {
+        this.value = hpAmount
         this.draw()
     }
 
@@ -52,11 +57,15 @@ export default class HealthBar {
         this.bar.fillStyle(0xffffff);
         this.bar.fillRect(this.x + 2, this.y + 2, 76 * this.size, 12 * this.size);
 
-        if (this.value < 30) {
+        if (this.value < (30 / this.value)) {
             this.bar.fillStyle(0xff0000);
+            this.bar.visible = true
+        } else if (this.value == 100) {
+            this.bar.visible = false
         }
         else {
             this.bar.fillStyle(0x00ff00);
+            this.bar.visible = true
         }
 
         var d = Math.floor(this.p * this.value);

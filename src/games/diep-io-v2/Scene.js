@@ -220,6 +220,9 @@ export default class Scene extends Phaser.Scene {
         return poly
     }
 
+    setupHp(container, value) {
+        container.hp?.setHp(value)
+    }
 
     connectToServer() {
         var host = window.document.location.host.replace(/:.*/, '');
@@ -241,7 +244,7 @@ export default class Scene extends Phaser.Scene {
             this.room.state.playerCircles.onAdd = (playerCircle, worldId) => {
                 const player = this.statePlayers[playerCircle.playerId]
                 if (!player) return
-                let container = new ContainerWithHealthBar(this, playerCircle.x, playerCircle.y, [], 77, -75, 2);
+                let container = new ContainerWithHealthBar(this, playerCircle.x, playerCircle.y, [], 77, -75, 2, playerCircle.hp);
                 let initialColor = 0xf04f54
                 // You will know that the playerCircle Belongs With This Player If The Players SessionId is The PlayerCircles PlayerId
                 if (playerCircle.playerId == this.myId) initialColor = 0x00B1DE
@@ -325,22 +328,22 @@ export default class Scene extends Phaser.Scene {
             }
 
             this.room.state.orbs.onAdd = (orb, id) => {
-                let orb2 = new ContainerWithHealthBar(this, orb.x, orb.y, [], 40, -50)
+                console.log(orb.hp)
+                let orb2 = new ContainerWithHealthBar(this, orb.x, orb.y, [], 40, -50, 1, orb.hp)
+
                 switch (orb.type) {
                     case 'rectangle':
                         orb2.add(this.add.rectangle(0, 0, 30, 30, 0xfff123))
-
                         break;
                     case 'triangle':
                         orb2.add(this.generatePolygon(3, orb, 30, 0xfc7676))
                         break;
                     case 'pentagon':
-
                         orb2.add(this.generatePolygon(5, orb, 50, 0x768cfc))
                         break;
                 }
                 this.orbs[id] = orb2
-                orb.onChange = updateChanges(orb2, id);
+                orb.onChange = updateChanges(orb2, id, this.tweens, this.orbs);
             }
 
             this.room.state.orbs.onRemove = (orb, id) => {
@@ -373,6 +376,9 @@ export default class Scene extends Phaser.Scene {
                         break;
                     case 'angle':
                         container.setAngle(Phaser.Math.RadToDeg(value))
+                        break;
+                    case 'hp':
+                        this.setupHp(container, value)
                         break;
                     case 'size':
                         container.setScale(parseInt(value) / baseSize, parseInt(value) / baseSize)
