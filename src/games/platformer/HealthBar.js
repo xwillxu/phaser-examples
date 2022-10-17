@@ -9,7 +9,8 @@ export default class HealthBar {
         this.x = x - this.offsetX;
         this.y = y - this.offsetY;
         this.size = size
-        this.value = 100;
+        this.value = maxHp;
+        this.maxHp = maxHp
         this.p = 76 / maxHp;
 
         this.draw();
@@ -57,15 +58,17 @@ export default class HealthBar {
         this.bar.fillStyle(0xffffff);
         this.bar.fillRect(this.x + 2, this.y + 2, 76 * this.size, 12 * this.size);
 
-        if (this.value < (30 / this.value)) {
-            this.bar.fillStyle(0xff0000);
-            this.bar.visible = true
-        } else if (this.value == 100) {
+        const decimal = this.value / this.maxHp
+
+        if (decimal == 1) {
             this.bar.visible = false
-        }
-        else {
-            this.bar.fillStyle(0x00ff00);
+        } else {
             this.bar.visible = true
+            if (decimal <= 0.3) {
+                this.bar.fillStyle(0xff0000)
+            } else {
+                this.bar.fillStyle(0x00ff00)
+            }
         }
 
         var d = Math.floor(this.p * this.value);
