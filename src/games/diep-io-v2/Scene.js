@@ -316,8 +316,8 @@ export default class Scene extends Phaser.Scene {
 
             this.room.state.playerCircles.onRemove = (playerCircle, worldId) => {
                 let circle = this.circles[worldId]
-                circle.removeHp()
-                circle.destroy()
+                circle?.removeHp()
+                circle?.destroy()
                 delete this.circles[worldId]
 
                 const currentPlayerCircles = this.playerCircles[playerCircle.playerId]
