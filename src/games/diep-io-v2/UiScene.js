@@ -28,11 +28,12 @@ export default class UiScene extends Phaser.Scene {
         let data = []
         for (const key in this.statePlayers) {
             const player = this.statePlayers[key]
+            const score = Math.floor(player.score)
             const name = player.name ? player.name : 'Guest'
             data.push(
                 {
                     name: name,
-                    score: player.score,
+                    score: score,
                 }
             )
         }

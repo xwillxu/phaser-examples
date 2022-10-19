@@ -51,12 +51,12 @@ export default class HealthBar {
 
         //  BG
         this.bar.fillStyle(0x000000);
-        this.bar.fillRect(this.x, this.y, 80 * this.size, 16 * this.size);
+        this.bar.fillRoundedRect(this.x, this.y, 80 * this.size, 16 * this.size, 10);
 
         //  Health
 
         this.bar.fillStyle(0xffffff);
-        this.bar.fillRect(this.x + 2, this.y + 2, 76 * this.size, 12 * this.size);
+        this.bar.fillRoundedRect(this.x + 2, this.y + 2, 76 * this.size, 12 * this.size, 10);
 
         const decimal = this.value / this.maxHp
 
@@ -73,7 +73,7 @@ export default class HealthBar {
 
         var d = Math.floor(this.p * this.value);
 
-        this.bar.fillRect(this.x + 2, this.y + 2, d * this.size, 12 * this.size);
+        this.bar.fillRoundedRect(this.x + 2, this.y + 2, d * this.size, 12 * this.size, 10);
     }
 
 }
