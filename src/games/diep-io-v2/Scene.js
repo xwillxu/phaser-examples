@@ -341,6 +341,9 @@ export default class Scene extends Phaser.Scene {
                     case 'pentagon':
                         orb2.add(this.generatePolygon(5, orb, 50, 0x768cfc))
                         break;
+                    case 'pentagon':
+                        orb2.add(this.generatePolygon(5, orb, 3000, 0x768cfc))
+                        break;
                 }
                 this.orbs[id] = orb2
                 orb.onChange = updateChanges(orb2, id, this.tweens, this.orbs);
