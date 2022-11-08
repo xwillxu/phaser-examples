@@ -266,7 +266,7 @@ export default class Scene extends Phaser.Scene {
                 }
                 this.playerCircles[playerCircle.playerId].push(worldId)
 
-                // Long but safe proof
+                // Very Long but safe proof
                 this.startFollowPlayer(500)
                 this.startFollowPlayer(1000)
                 this.startFollowPlayer(1500)
@@ -287,6 +287,26 @@ export default class Scene extends Phaser.Scene {
                 this.startFollowPlayer(9000)
                 this.startFollowPlayer(9500)
                 this.startFollowPlayer(10000)
+                this.startFollowPlayer(10500)
+                this.startFollowPlayer(11000)
+                this.startFollowPlayer(11500)
+                this.startFollowPlayer(12000)
+                this.startFollowPlayer(12500)
+                this.startFollowPlayer(13000)
+                this.startFollowPlayer(13500)
+                this.startFollowPlayer(14000)
+                this.startFollowPlayer(14500)
+                this.startFollowPlayer(15000)
+                this.startFollowPlayer(15500)
+                this.startFollowPlayer(16000)
+                this.startFollowPlayer(16500)
+                this.startFollowPlayer(17000)
+                this.startFollowPlayer(17500)
+                this.startFollowPlayer(18000)
+                this.startFollowPlayer(18500)
+                this.startFollowPlayer(19000)
+                this.startFollowPlayer(19500)
+                this.startFollowPlayer(20000)
                 playerCircle.onChange = updateChanges(playerCircle, worldId, this.tweens, this.circles, 25);
             }
 
