@@ -348,8 +348,7 @@ export default class Scene extends Phaser.Scene {
             }
 
             this.room.state.orbs.onAdd = (orb, id) => {
-                console.log(orb.hp)
-                let orb2 = new ContainerWithHealthBar(this, orb.x, orb.y, [], 40, -50, 1, orb.hp)
+                let orb2 = new ContainerWithHealthBar(this, orb.x, orb.y, [], 40 * orb.hpBarSizeMultiplier, -50 * orb.hpBarSizeMultiplier, orb.hpBarSizeMultiplier, orb.hp)
 
                 switch (orb.type) {
                     case 'rectangle':
@@ -361,8 +360,8 @@ export default class Scene extends Phaser.Scene {
                     case 'pentagon':
                         orb2.add(this.generatePolygon(5, orb, 50, 0x768cfc))
                         break;
-                    case 'pentagon':
-                        orb2.add(this.generatePolygon(5, orb, 3000, 0x768cfc))
+                    case 'alphaPentagon':
+                        orb2.add(this.generatePolygon(5, orb, 500, 0x768cfc))
                         break;
                 }
                 this.orbs[id] = orb2
