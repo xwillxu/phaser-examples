@@ -29,6 +29,7 @@ export default class Scene extends Phaser.Scene {
         this.pointerPosY = 0
         this.shootInterval = 0
         this.keystate = {}
+        this.tankInfo = null
     }
 
     setupKeys() {
@@ -235,6 +236,10 @@ export default class Scene extends Phaser.Scene {
 
         client.joinOrCreate("diep_io_v2", { name: this.name }).then(room_instance => {
             this.room = room_instance
+            this.room.state.listen("tanks", (currentValue, previousValue) => {
+                this.tankInfo = !!currentValue ? JSON.parse(currentValue) : {}
+                console.log(this.tankInfo)
+            });
 
             this.room.state.players.onAdd = (player, sessionId) => {
                 this.statePlayers[sessionId] = player
@@ -361,7 +366,7 @@ export default class Scene extends Phaser.Scene {
                         orb2.add(this.generatePolygon(5, orb, 50, 0x768cfc))
                         break;
                     case 'alphaPentagon':
-                        orb2.add(this.generatePolygon(5, orb, 500, 0x768cfc))
+                        orb2.add(this.generatePolygon(5, orb, 250, 0x768cfc))
                         break;
                 }
                 this.orbs[id] = orb2
