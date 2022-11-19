@@ -250,6 +250,7 @@ export default class Scene extends Phaser.Scene {
                 this.statePlayers[sessionId] = player
 
                 player.onChange = (playerChanges) => {
+                    if(!this.myId == sessionId) return
                     console.log(playerChanges)
                     for (const change of playerChanges) {
                         if (change.field == "tankUpgradeNames") {
