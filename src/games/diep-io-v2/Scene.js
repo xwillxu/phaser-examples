@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 import * as Colyseus from "colyseus.js"
 import UiScene from "./UiScene"
+import GUISceneUntouched from "./GUISceneUntouched.js"
 import ContainerWithHealthBar from "../platformer/ContainerWithHealthBar"
 
 export default class Scene extends Phaser.Scene {
@@ -225,6 +226,11 @@ export default class Scene extends Phaser.Scene {
         container.hp?.setHp(value)
     }
 
+    displayUpgrades(change) {
+        console.log(change)
+        this.scene.add("DisplayUpgrades", GUISceneUntouched, true, { value: JSON.parse(change.value), tankInfo: this.tankInfo })
+    }
+
     connectToServer() {
         var host = window.document.location.host.replace(/:.*/, '');
         let serverAdress = location.protocol.replace("http", "ws") + "//" + host + ':' + '2567'
@@ -238,12 +244,19 @@ export default class Scene extends Phaser.Scene {
             this.room = room_instance
             this.room.state.listen("tanks", (currentValue, previousValue) => {
                 this.tankInfo = !!currentValue ? JSON.parse(currentValue) : {}
-                console.log(this.tankInfo)
             });
 
             this.room.state.players.onAdd = (player, sessionId) => {
                 this.statePlayers[sessionId] = player
 
+                player.onChange = (playerChanges) => {
+                    console.log(playerChanges)
+                    for (const change of playerChanges) {
+                        if (change.field == "tankUpgradeNames") {
+                            this.displayUpgrades(change)
+                        }
+                    }
+                }
             }
 
             this.room.state.playerCircles.onAdd = (playerCircle, worldId) => {
