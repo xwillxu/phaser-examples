@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 import * as Colyseus from "colyseus.js"
 import UiScene from "./UiScene"
+import GUISceneUntouched from "./GUISceneUntouched.js"
 import ContainerWithHealthBar from "../platformer/ContainerWithHealthBar"
 
 export default class Scene extends Phaser.Scene {
@@ -30,6 +31,7 @@ export default class Scene extends Phaser.Scene {
         this.shootInterval = 0
         this.keystate = {}
         this.tankInfo = null
+        this.guiSceneCreated = false
     }
 
     setupKeys() {
@@ -225,6 +227,12 @@ export default class Scene extends Phaser.Scene {
         container.hp?.setHp(value)
     }
 
+    displayUpgrades(change) {
+        if (!change.value) return
+        const newChange = JSON.parse(String(change.value))
+        this.scene.add("DisplayUpgrades", GUISceneUntouched, true, { value: newChange, tankInfo: this.tankInfo })
+    }
+
     connectToServer() {
         var host = window.document.location.host.replace(/:.*/, '');
         let serverAdress = location.protocol.replace("http", "ws") + "//" + host + ':' + '2567'
@@ -238,12 +246,23 @@ export default class Scene extends Phaser.Scene {
             this.room = room_instance
             this.room.state.listen("tanks", (currentValue, previousValue) => {
                 this.tankInfo = !!currentValue ? JSON.parse(currentValue) : {}
-                console.log(this.tankInfo)
             });
 
             this.room.state.players.onAdd = (player, sessionId) => {
                 this.statePlayers[sessionId] = player
 
+                player.onChange = (playerChanges) => {
+                    if (!this.myId == sessionId) return
+                    for (const change of playerChanges) {
+                        if (change.field == "tankUpgradeNames") {
+                            if (this.guiSceneCreated) {
+                                this.scene.get("DisplayUpgrades")
+                            } else {
+                                this.displayUpgrades(change)
+                            }
+                        }
+                    }
+                }
             }
 
             this.room.state.playerCircles.onAdd = (playerCircle, worldId) => {
