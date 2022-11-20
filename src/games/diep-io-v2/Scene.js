@@ -31,6 +31,7 @@ export default class Scene extends Phaser.Scene {
         this.shootInterval = 0
         this.keystate = {}
         this.tankInfo = null
+        this.guiSceneCreated = false
     }
 
     setupKeys() {
@@ -227,8 +228,9 @@ export default class Scene extends Phaser.Scene {
     }
 
     displayUpgrades(change) {
-        console.log(change)
-        this.scene.add("DisplayUpgrades", GUISceneUntouched, true, { value: JSON.parse(change.value), tankInfo: this.tankInfo })
+        if (!change.value) return
+        const newChange = JSON.parse(String(change.value))
+        this.scene.add("DisplayUpgrades", GUISceneUntouched, true, { value: newChange, tankInfo: this.tankInfo })
     }
 
     connectToServer() {
@@ -250,11 +252,14 @@ export default class Scene extends Phaser.Scene {
                 this.statePlayers[sessionId] = player
 
                 player.onChange = (playerChanges) => {
-                    if(!this.myId == sessionId) return
-                    console.log(playerChanges)
+                    if (!this.myId == sessionId) return
                     for (const change of playerChanges) {
                         if (change.field == "tankUpgradeNames") {
-                            this.displayUpgrades(change)
+                            if (this.guiSceneCreated) {
+                                this.scene.get("DisplayUpgrades")
+                            } else {
+                                this.displayUpgrades(change)
+                            }
                         }
                     }
                 }
