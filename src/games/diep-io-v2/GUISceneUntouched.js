@@ -18,17 +18,27 @@ export default class GUISceneUntouched extends Phaser.Scene {
         const containers = {}
         let id = 1
         for (const tankName of this.upgradeData) {
-            const container = this.add.container(0, 0)
-            const rectangle = this.add.rectangle(0, 0, 200, 200, 0x77CCFF)
+            const container = this.add.container(Math.floor(Math.random() * (1920 / 1.32)), Math.floor(Math.random() * (1080 / 1.5)))
             const name = this.add.text(0, 0, tankName)
+            const rectangle = this.add.rectangle(0, 0, 100, 100, 0x77CCFF)
+
+            name.setOrigin(0.5, -1.5);
+            container.add(rectangle)
             container.add(name)
-            // container.add(rectangle)
-            containers[tankName] = [container, id]
+            containers[tankName] = {
+                Container: container,
+                ID: id
+            }
             id++
+
+
         }
 
-        for (const containerArray in containers) {
-            console.log(containerArray)
+        for (const containerKey in containers) {
+            const container = containers[containerKey].Container
+            const id = containers[containerKey].ID
+            container.x = 50 + 150 * id
+            container.y = 650
         }
     }
 }
