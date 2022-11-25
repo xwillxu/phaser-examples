@@ -6,7 +6,7 @@ import ContainerWithHealthBar from "../platformer/ContainerWithHealthBar"
 
 export default class Scene extends Phaser.Scene {
     constructor() {
-        super('diep.io-phaser')
+        super('diep.io-2-phaser')
         // This Cilents SessionId
         this.myId = null
         // ServerSide Room
@@ -149,6 +149,10 @@ export default class Scene extends Phaser.Scene {
         }
     }
 
+    sendUpgradeInfo(tankName) {
+        console.log(tankName)
+    }
+
     playerZoom() {
         // Calculate based on the biggest circle the player has
         const myCircles = this.findMyCircles()
@@ -231,6 +235,8 @@ export default class Scene extends Phaser.Scene {
         if (!change.value) return
         const newChange = JSON.parse(String(change.value))
         this.scene.add("DisplayUpgrades", GUISceneUntouched, true, { value: newChange, tankInfo: this.tankInfo })
+        const tankName = this.scene.get("DisplayUpgrades").listUpgrades()
+        return tankName
     }
 
     connectToServer() {
@@ -253,12 +259,13 @@ export default class Scene extends Phaser.Scene {
 
                 player.onChange = (playerChanges) => {
                     if (!this.myId == sessionId) return
+                    let tankName = ""
                     for (const change of playerChanges) {
                         if (change.field == "tankUpgradeNames") {
                             if (this.guiSceneCreated) {
-                                this.scene.get("DisplayUpgrades")
+                                tankName = this.scene.get("DisplayUpgrades").listUpgrades()
                             } else {
-                                this.displayUpgrades(change)
+                                tankName = this.displayUpgrades(change)
                             }
                         }
                     }
