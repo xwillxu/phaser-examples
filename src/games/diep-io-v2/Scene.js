@@ -6,7 +6,7 @@ import ContainerWithHealthBar from "../platformer/ContainerWithHealthBar"
 
 export default class Scene extends Phaser.Scene {
     constructor() {
-        super('diep.io-phaser')
+        super('diep.io-2-phaser')
         // This Cilents SessionId
         this.myId = null
         // ServerSide Room
@@ -32,6 +32,7 @@ export default class Scene extends Phaser.Scene {
         this.keystate = {}
         this.tankInfo = null
         this.guiSceneCreated = false
+        this.myTankName = "Basic"
     }
 
     setupKeys() {
@@ -149,6 +150,11 @@ export default class Scene extends Phaser.Scene {
         }
     }
 
+    sendUpgradeInfo(tankName) {
+        this.myTankName = tankName
+        this.room.send("upgrade", tankName)
+    }
+
     playerZoom() {
         // Calculate based on the biggest circle the player has
         const myCircles = this.findMyCircles()
@@ -163,8 +169,9 @@ export default class Scene extends Phaser.Scene {
             }
         }
         // Make sure that the zoom number does not go over limit
+        const sight = !this.tankInfo[this.myTankName].sight ? 1 : this.tankInfo[this.myTankName].sight
         const zoomNumber = 1 / biggestScale
-        const zoomToUse = zoomNumber > 0.1 ? zoomNumber : 0.1
+        const zoomToUse = zoomNumber > (0.1 * sight) ? zoomNumber : (0.1 * sight)
 
         this.cameras.main.zoomTo(zoomToUse, 1000)
     }
@@ -230,7 +237,12 @@ export default class Scene extends Phaser.Scene {
     displayUpgrades(change) {
         if (!change.value) return
         const newChange = JSON.parse(String(change.value))
+        if (this.scene.get("DisplayUpgrades")) {
+            this.scene.remove("DisplayUpgrades")
+        }
         this.scene.add("DisplayUpgrades", GUISceneUntouched, true, { value: newChange, tankInfo: this.tankInfo })
+        const tankName = this.scene.get("DisplayUpgrades").listUpgrades()
+        return tankName
     }
 
     connectToServer() {
@@ -253,156 +265,159 @@ export default class Scene extends Phaser.Scene {
 
                 player.onChange = (playerChanges) => {
                     if (!this.myId == sessionId) return
+                    let tankName = ""
                     for (const change of playerChanges) {
                         if (change.field == "tankUpgradeNames") {
-                            if (this.guiSceneCreated) {
-                                this.scene.get("DisplayUpgrades")
+                            if (!this.guiSceneCreated) {
+
+                                tankName = this.scene.get("DisplayUpgrades").listUpgrades()
                             } else {
-                                this.displayUpgrades(change)
+                                tankName = this.displayUpgrades(change)
+
                             }
                         }
                     }
                 }
-            }
 
-            this.room.state.playerCircles.onAdd = (playerCircle, worldId) => {
-                const player = this.statePlayers[playerCircle.playerId]
-                if (!player) return
-                let container = new ContainerWithHealthBar(this, playerCircle.x, playerCircle.y, [], 77, -75, 2, playerCircle.hp);
-                let initialColor = 0xf04f54
-                // You will know that the playerCircle Belongs With This Player If The Players SessionId is The PlayerCircles PlayerId
-                if (playerCircle.playerId == this.myId) initialColor = 0x00B1DE
+                this.room.state.playerCircles.onAdd = (playerCircle, worldId) => {
+                    const player = this.statePlayers[playerCircle.playerId]
+                    if (!player) return
+                    let container = new ContainerWithHealthBar(this, playerCircle.x, playerCircle.y, [], 77, -75, 2, playerCircle.hp);
+                    let initialColor = 0xf04f54
+                    // You will know that the playerCircle Belongs With This Player If The Players SessionId is The PlayerCircles PlayerId
+                    if (playerCircle.playerId == this.myId) initialColor = 0x00B1DE
+                    // Get tank attributes
+                    const tankAttributes = this.tankInfo[playerCircle.tankName]
+                    console.log(tankAttributes)
+                    console.log(playerCircle.tankName)
+                    const circle = this.add.circle(0, 0, 25, initialColor)
+                    let text = this.add.text(0, 0, `${player?.name || "Guest"}`)
+                    const turret = this.add.rectangle(0, 0, 45, 25, 0xa9a9a9)
+                    turret.setOrigin(-0.1, 0.5)
+                    text.setOrigin(0.5, 0.5);
+                    container.add(turret)
+                    container.add(circle)
+                    container.add(text)
+                    this.listClients()
+                    this.circles[worldId] = container
+                    if (typeof this.playerCircles[playerCircle.playerId] === 'undefined') {
+                        this.playerCircles[playerCircle.playerId] = []
+                    }
+                    this.playerCircles[playerCircle.playerId].push(worldId)
 
-
-                const circle = this.add.circle(0, 0, 25, initialColor)
-                let text = this.add.text(0, 0, `${player?.name || "Guest"}`)
-                const turret = this.add.rectangle(0, 0, 45, 25, 0xa9a9a9)
-                turret.setOrigin(-0.1, 0.5)
-                text.setOrigin(0.5, 0.5);
-
-                container.add(turret)
-                container.add(circle)
-                container.add(text)
-                this.listClients()
-                this.circles[worldId] = container
-                if (typeof this.playerCircles[playerCircle.playerId] === 'undefined') {
-                    this.playerCircles[playerCircle.playerId] = []
+                    // Very Long but safe proof
+                    this.startFollowPlayer(500)
+                    this.startFollowPlayer(1000)
+                    this.startFollowPlayer(1500)
+                    this.startFollowPlayer(2000)
+                    this.startFollowPlayer(2500)
+                    this.startFollowPlayer(3000)
+                    this.startFollowPlayer(3500)
+                    this.startFollowPlayer(4000)
+                    this.startFollowPlayer(4500)
+                    this.startFollowPlayer(5000)
+                    this.startFollowPlayer(5500)
+                    this.startFollowPlayer(6000)
+                    this.startFollowPlayer(6500)
+                    this.startFollowPlayer(7000)
+                    this.startFollowPlayer(7500)
+                    this.startFollowPlayer(8000)
+                    this.startFollowPlayer(8500)
+                    this.startFollowPlayer(9000)
+                    this.startFollowPlayer(9500)
+                    this.startFollowPlayer(10000)
+                    this.startFollowPlayer(10500)
+                    this.startFollowPlayer(11000)
+                    this.startFollowPlayer(11500)
+                    this.startFollowPlayer(12000)
+                    this.startFollowPlayer(12500)
+                    this.startFollowPlayer(13000)
+                    this.startFollowPlayer(13500)
+                    this.startFollowPlayer(14000)
+                    this.startFollowPlayer(14500)
+                    this.startFollowPlayer(15000)
+                    this.startFollowPlayer(15500)
+                    this.startFollowPlayer(16000)
+                    this.startFollowPlayer(16500)
+                    this.startFollowPlayer(17000)
+                    this.startFollowPlayer(17500)
+                    this.startFollowPlayer(18000)
+                    this.startFollowPlayer(18500)
+                    this.startFollowPlayer(19000)
+                    this.startFollowPlayer(19500)
+                    this.startFollowPlayer(20000)
+                    playerCircle.onChange = updateChanges(playerCircle, worldId, this.tweens, this.circles, 25);
                 }
-                this.playerCircles[playerCircle.playerId].push(worldId)
 
-                // Very Long but safe proof
-                this.startFollowPlayer(500)
-                this.startFollowPlayer(1000)
-                this.startFollowPlayer(1500)
-                this.startFollowPlayer(2000)
-                this.startFollowPlayer(2500)
-                this.startFollowPlayer(3000)
-                this.startFollowPlayer(3500)
-                this.startFollowPlayer(4000)
-                this.startFollowPlayer(4500)
-                this.startFollowPlayer(5000)
-                this.startFollowPlayer(5500)
-                this.startFollowPlayer(6000)
-                this.startFollowPlayer(6500)
-                this.startFollowPlayer(7000)
-                this.startFollowPlayer(7500)
-                this.startFollowPlayer(8000)
-                this.startFollowPlayer(8500)
-                this.startFollowPlayer(9000)
-                this.startFollowPlayer(9500)
-                this.startFollowPlayer(10000)
-                this.startFollowPlayer(10500)
-                this.startFollowPlayer(11000)
-                this.startFollowPlayer(11500)
-                this.startFollowPlayer(12000)
-                this.startFollowPlayer(12500)
-                this.startFollowPlayer(13000)
-                this.startFollowPlayer(13500)
-                this.startFollowPlayer(14000)
-                this.startFollowPlayer(14500)
-                this.startFollowPlayer(15000)
-                this.startFollowPlayer(15500)
-                this.startFollowPlayer(16000)
-                this.startFollowPlayer(16500)
-                this.startFollowPlayer(17000)
-                this.startFollowPlayer(17500)
-                this.startFollowPlayer(18000)
-                this.startFollowPlayer(18500)
-                this.startFollowPlayer(19000)
-                this.startFollowPlayer(19500)
-                this.startFollowPlayer(20000)
-                playerCircle.onChange = updateChanges(playerCircle, worldId, this.tweens, this.circles, 25);
-            }
+                this.room.state.playerBullets.onAdd = (playerBullet, worldId) => {
+                    let initialColor = 0xf04f54
+                    if (playerBullet.playerId == this.myId) initialColor = 0x00b0e1
+                    const bullet = this.add.circle(playerBullet.x, playerBullet.y, playerBullet.size / 2, initialColor)
+                    this.bullets[worldId] = bullet
+                    playerBullet.onChange = updateChanges(playerBullet, worldId, this.tweens, this.bullets, playerBullet.size / 2)
 
-            this.room.state.playerBullets.onAdd = (playerBullet, worldId) => {
-                let initialColor = 0xf04f54
-                if (playerBullet.playerId == this.myId) initialColor = 0x00b0e1
-                const bullet = this.add.circle(playerBullet.x, playerBullet.y, playerBullet.size / 2, initialColor)
-                this.bullets[worldId] = bullet
-                playerBullet.onChange = updateChanges(playerBullet, worldId, this.tweens, this.bullets, playerBullet.size / 2)
-
-            }
-
-            this.room.state.playerBullets.onRemove = (playerBullet, worldId) => {
-                let bullet = this.bullets[worldId]
-                bullet?.destroy()
-                delete this.bullets[worldId]
-
-                const currentPlayerCircles = this.playerCircles[playerBullet.playerId]
-                const newPlayerCircleIds = currentPlayerCircles.filter(x => x != worldId)
-                this.playerCircles[playerBullet.playerId] = newPlayerCircleIds
-            }
-
-            this.room.state.players.onRemove = (player, sessionId) => {
-                delete this.statePlayers[sessionId]
-                this.listClients()
-            }
-
-            this.room.state.playerCircles.onRemove = (playerCircle, worldId) => {
-                let circle = this.circles[worldId]
-                circle?.removeHp()
-                circle?.destroy()
-                delete this.circles[worldId]
-
-                const currentPlayerCircles = this.playerCircles[playerCircle.playerId]
-                const newPlayerCircleIds = currentPlayerCircles.filter(x => x != worldId)
-                this.playerCircles[playerCircle.playerId] = newPlayerCircleIds
-
-                this.setupCamera()
-            }
-
-            this.room.state.orbs.onAdd = (orb, id) => {
-                let orb2 = new ContainerWithHealthBar(this, orb.x, orb.y, [], 40 * orb.hpBarSizeMultiplier, -50 * orb.hpBarSizeMultiplier, orb.hpBarSizeMultiplier, orb.hp)
-
-                switch (orb.type) {
-                    case 'rectangle':
-                        orb2.add(this.add.rectangle(0, 0, 30, 30, 0xfff123))
-                        break;
-                    case 'triangle':
-                        orb2.add(this.generatePolygon(3, orb, 30, 0xfc7676))
-                        break;
-                    case 'pentagon':
-                        orb2.add(this.generatePolygon(5, orb, 50, 0x768cfc))
-                        break;
-                    case 'alphaPentagon':
-                        orb2.add(this.generatePolygon(5, orb, 250, 0x768cfc))
-                        break;
                 }
-                this.orbs[id] = orb2
-                orb.onChange = updateChanges(orb2, id, this.tweens, this.orbs);
-            }
 
-            this.room.state.orbs.onRemove = (orb, id) => {
-                let orb2 = this.orbs[id]
-                orb2.removeHp()
-                orb2.destroy()
-            }
+                this.room.state.playerBullets.onRemove = (playerBullet, worldId) => {
+                    let bullet = this.bullets[worldId]
+                    bullet?.destroy()
+                    delete this.bullets[worldId]
 
-            this.room.state.walls.onAdd = (wall, id) => this.add.rectangle(wall.x, wall.y, wall.width, wall.height, 0xBBBBBB)
+                    const currentPlayerCircles = this.playerCircles[playerBullet.playerId]
+                    const newPlayerCircleIds = currentPlayerCircles.filter(x => x != worldId)
+                    this.playerCircles[playerBullet.playerId] = newPlayerCircleIds
+                }
+
+                this.room.state.players.onRemove = (player, sessionId) => {
+                    delete this.statePlayers[sessionId]
+                    this.listClients()
+                }
+
+                this.room.state.playerCircles.onRemove = (playerCircle, worldId) => {
+                    let circle = this.circles[worldId]
+                    circle?.removeHp()
+                    circle?.destroy()
+                    delete this.circles[worldId]
+
+                    const currentPlayerCircles = this.playerCircles[playerCircle.playerId]
+                    const newPlayerCircleIds = currentPlayerCircles.filter(x => x != worldId)
+                    this.playerCircles[playerCircle.playerId] = newPlayerCircleIds
+
+                    this.setupCamera()
+                }
+
+                this.room.state.orbs.onAdd = (orb, id) => {
+                    let orb2 = new ContainerWithHealthBar(this, orb.x, orb.y, [], 40 * orb.hpBarSizeMultiplier, -50 * orb.hpBarSizeMultiplier, orb.hpBarSizeMultiplier, orb.hp)
+
+                    switch (orb.type) {
+                        case 'rectangle':
+                            orb2.add(this.add.rectangle(0, 0, 30, 30, 0xfff123))
+                            break;
+                        case 'triangle':
+                            orb2.add(this.generatePolygon(3, orb, 30, 0xfc7676))
+                            break;
+                        case 'pentagon':
+                            orb2.add(this.generatePolygon(5, orb, 50, 0x768cfc))
+                            break;
+                        case 'alphaPentagon':
+                            orb2.add(this.generatePolygon(5, orb, 250, 0x768cfc))
+                            break;
+                    }
+                    this.orbs[id] = orb2
+                    orb.onChange = updateChanges(orb2, id, this.tweens, this.orbs);
+                }
+
+                this.room.state.orbs.onRemove = (orb, id) => {
+                    let orb2 = this.orbs[id]
+                    orb2.removeHp()
+                    orb2.destroy()
+                }
+
+                this.room.state.walls.onAdd = (wall, id) => this.add.rectangle(wall.x, wall.y, wall.width, wall.height, 0xBBBBBB)
 
 
-            this.myId = this.room.sessionId
-        })
+                this.myId = this.room.sessionId
+            })
 
         const updateChanges = (stateObject, worldId, tweens, dictionary, baseSize) => (changes) => {
             // TODO update changes
