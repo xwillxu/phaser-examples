@@ -16,7 +16,7 @@ export default class GUISceneUntouched extends Phaser.Scene {
         this.scene.bringToTop()
     }
 
-    listUpgrades() {
+    listUpgrades(data) {
         const containers = {}
         let id = 1
         let upgradeOptionName

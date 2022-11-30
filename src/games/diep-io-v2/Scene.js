@@ -237,11 +237,8 @@ export default class Scene extends Phaser.Scene {
     displayUpgrades(change) {
         if (!change.value) return
         const newChange = JSON.parse(String(change.value))
-        if (this.scene.get("DisplayUpgrades")) {
-            this.scene.remove("DisplayUpgrades")
-        }
         this.scene.add("DisplayUpgrades", GUISceneUntouched, true, { value: newChange, tankInfo: this.tankInfo })
-        const tankName = this.scene.get("DisplayUpgrades").listUpgrades()
+        const tankName = this.scene.get("DisplayUpgrades").listUpgrades(newChange)
         return tankName
     }
 
@@ -268,12 +265,11 @@ export default class Scene extends Phaser.Scene {
                     let tankName = ""
                     for (const change of playerChanges) {
                         if (change.field == "tankUpgradeNames") {
-                            if (!this.guiSceneCreated) {
-
-                                tankName = this.scene.get("DisplayUpgrades").listUpgrades()
+                            console.log(change)
+                            if (this.guiSceneCreated) {
+                                tankName = this.scene.get("DisplayUpgrades").listUpgrades(String(change.value))
                             } else {
                                 tankName = this.displayUpgrades(change)
-
                             }
                         }
                     }
@@ -417,49 +413,50 @@ export default class Scene extends Phaser.Scene {
 
 
                 this.myId = this.room.sessionId
-            })
+            }
 
-        const updateChanges = (stateObject, worldId, tweens, dictionary, baseSize) => (changes) => {
-            // TODO update changes
-            if (!dictionary) return
-            let container = dictionary[worldId]
-            if (!container) return
-            let targetX = container.x
-            let targetY = container.y
+            const updateChanges = (stateObject, worldId, tweens, dictionary, baseSize) => (changes) => {
+                // TODO update changes
+                if (!dictionary) return
+                let container = dictionary[worldId]
+                if (!container) return
+                let targetX = container.x
+                let targetY = container.y
 
-            changes.forEach(({ field, value }) => {
-                switch (field) {
-                    case 'x':
-                        targetX = parseInt(value);
-                        break;
-                    case 'y':
-                        targetY = parseInt(value);
-                        break;
-                    case 'angle':
-                        container.setAngle(Phaser.Math.RadToDeg(value))
-                        break;
-                    case 'hp':
-                        this.setupHp(container, value)
-                        break;
-                    case 'size':
-                        container.setScale(parseInt(value) / baseSize, parseInt(value) / baseSize)
-                        this.playerZoom()
-                        this.listClients()
-                        break;
-                    case 'score':
-                        this.listClients()
-                        break;
-                }
-            });
+                changes.forEach(({ field, value }) => {
+                    switch (field) {
+                        case 'x':
+                            targetX = parseInt(value);
+                            break;
+                        case 'y':
+                            targetY = parseInt(value);
+                            break;
+                        case 'angle':
+                            container.setAngle(Phaser.Math.RadToDeg(value))
+                            break;
+                        case 'hp':
+                            this.setupHp(container, value)
+                            break;
+                        case 'size':
+                            container.setScale(parseInt(value) / baseSize, parseInt(value) / baseSize)
+                            this.playerZoom()
+                            this.listClients()
+                            break;
+                        case 'score':
+                            this.listClients()
+                            break;
+                    }
+                });
 
-            tweens.add({
-                targets: container,
-                x: targetX,
-                y: targetY,
-                duration: 190,
-                ease: 'Power1'
-            });
-        }
+                tweens.add({
+                    targets: container,
+                    x: targetX,
+                    y: targetY,
+                    duration: 190,
+                    ease: 'Power1'
+                });
+            }
+        })
     }
 
     listClients() {
