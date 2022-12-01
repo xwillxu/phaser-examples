@@ -237,7 +237,9 @@ export default class Scene extends Phaser.Scene {
     displayUpgrades(change) {
         if (!change.value) return
         const newChange = JSON.parse(String(change.value))
-        this.scene.add("DisplayUpgrades", GUISceneUntouched, true, { value: newChange, tankInfo: this.tankInfo })
+        if (!this.scene.get("DisplayUpgrades")) {
+            this.scene.add("DisplayUpgrades", GUISceneUntouched, true, { value: newChange, tankInfo: this.tankInfo })
+        }
         const tankName = this.scene.get("DisplayUpgrades").listUpgrades(newChange)
         return tankName
     }
@@ -265,12 +267,7 @@ export default class Scene extends Phaser.Scene {
                     let tankName = ""
                     for (const change of playerChanges) {
                         if (change.field == "tankUpgradeNames") {
-                            console.log(change)
-                            if (this.guiSceneCreated) {
-                                tankName = this.scene.get("DisplayUpgrades").listUpgrades(String(change.value))
-                            } else {
-                                tankName = this.displayUpgrades(change)
-                            }
+                            tankName = this.displayUpgrades(change)
                         }
                     }
                 }
@@ -283,9 +280,6 @@ export default class Scene extends Phaser.Scene {
                     // You will know that the playerCircle Belongs With This Player If The Players SessionId is The PlayerCircles PlayerId
                     if (playerCircle.playerId == this.myId) initialColor = 0x00B1DE
                     // Get tank attributes
-                    const tankAttributes = this.tankInfo[playerCircle.tankName]
-                    console.log(tankAttributes)
-                    console.log(playerCircle.tankName)
                     const circle = this.add.circle(0, 0, 25, initialColor)
                     let text = this.add.text(0, 0, `${player?.name || "Guest"}`)
                     const turret = this.add.rectangle(0, 0, 45, 25, 0xa9a9a9)

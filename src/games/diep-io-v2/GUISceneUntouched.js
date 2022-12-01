@@ -7,7 +7,7 @@ export default class GUISceneUntouched extends Phaser.Scene {
         this.tankInfo = {}
         this.pointerPosX = 0
         this.pointerPosY = 0
-        this.pointerdown = false
+        this.oldContainers = []
     }
 
     create(data) {
@@ -17,6 +17,8 @@ export default class GUISceneUntouched extends Phaser.Scene {
     }
 
     listUpgrades(data) {
+        this.upgradeData = data
+        console.log(this.upgradeData)
         const containers = {}
         let id = 1
         let upgradeOptionName
@@ -32,6 +34,7 @@ export default class GUISceneUntouched extends Phaser.Scene {
                 Container: container,
                 ID: id
             }
+            this.oldContainers.push(container)
             id++
 
 
@@ -44,14 +47,14 @@ export default class GUISceneUntouched extends Phaser.Scene {
             container.y = 650
             const containerRectangle = container.getAt(0)
             containerRectangle.on("pointerdown", () => {
-                // debugger
+                for (const container of this.oldContainers) {
+                    container.destroy()
+                }
                 // Happens 1 min later or something
                 upgradeOptionName = containerKey
                 // Need to call on the main scene when this happens
                 this.scene.get("diep.io-2-phaser").sendUpgradeInfo(upgradeOptionName)
             })
         }
-
-        console.log(upgradeOptionName)
     }
 }
