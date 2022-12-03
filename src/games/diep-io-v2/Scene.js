@@ -32,7 +32,6 @@ export default class Scene extends Phaser.Scene {
         this.keystate = {}
         this.tankInfo = null
         this.guiSceneCreated = false
-        this.myLevel = 0
     }
 
     setupKeys() {
