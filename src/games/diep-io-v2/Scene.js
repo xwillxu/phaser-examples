@@ -32,7 +32,6 @@ export default class Scene extends Phaser.Scene {
         this.keystate = {}
         this.tankInfo = null
         this.guiSceneCreated = false
-        this.myTankName = "Basic"
     }
 
     setupKeys() {
@@ -169,9 +168,9 @@ export default class Scene extends Phaser.Scene {
             }
         }
         // Make sure that the zoom number does not go over limit
-        const sight = !this.tankInfo[this.myTankName].sight ? 1 : this.tankInfo[this.myTankName].sight
+        let sight = !this.tankInfo[this.myTankName]?.sight ? 1 : this.tankInfo[this.myTankName].sight
         const zoomNumber = 1 / biggestScale
-        const zoomToUse = zoomNumber > (0.1 * sight) ? zoomNumber : (0.1 * sight)
+        const zoomToUse = zoomNumber > (0.1 * Number(sight)) ? zoomNumber : (0.1 * Number(sight))
 
         this.cameras.main.zoomTo(zoomToUse, 1000)
     }
@@ -234,7 +233,7 @@ export default class Scene extends Phaser.Scene {
         container.hp?.setHp(value)
     }
 
-    displayUpgrades(change) {
+    displayUpgrades(change, level) {
         if (!change.value) return
         const newChange = JSON.parse(String(change.value))
         if (!this.scene.get("DisplayUpgrades")) {
@@ -263,11 +262,11 @@ export default class Scene extends Phaser.Scene {
                 this.statePlayers[sessionId] = player
 
                 player.onChange = (playerChanges) => {
-                    if (!this.myId == sessionId) return
-                    let tankName = ""
+                    if (this.myId != sessionId) return
+                    console.log(this.myId, sessionId)
                     for (const change of playerChanges) {
                         if (change.field == "tankUpgradeNames") {
-                            tankName = this.displayUpgrades(change)
+                            this.displayUpgrades(change)
                         }
                     }
                 }
