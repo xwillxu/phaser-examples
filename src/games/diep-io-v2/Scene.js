@@ -32,6 +32,7 @@ export default class Scene extends Phaser.Scene {
         this.keystate = {}
         this.tankInfo = null
         this.guiSceneCreated = false
+        this.myTankName = ""
     }
 
     setupKeys() {
@@ -233,7 +234,7 @@ export default class Scene extends Phaser.Scene {
         container.hp?.setHp(value)
     }
 
-    displayUpgrades(change, level) {
+    displayUpgrades(change) {
         if (!change.value) return
         const newChange = JSON.parse(String(change.value))
         if (!this.scene.get("DisplayUpgrades")) {
