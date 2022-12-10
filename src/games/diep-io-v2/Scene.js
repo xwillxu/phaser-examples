@@ -32,6 +32,7 @@ export default class Scene extends Phaser.Scene {
         this.keystate = {}
         this.tankInfo = null
         this.guiSceneCreated = false
+        this.myTankName = ""
     }
 
     setupKeys() {
@@ -118,25 +119,25 @@ export default class Scene extends Phaser.Scene {
     }
 
     up() {
-        var movement = { y: -7 }
+        var movement = { type: "negative", movementType: "y" }
 
         this.room.send("move", movement);
     }
 
     down() {
-        var movement = { y: 7 }
+        var movement = { type: "positive", movementType: "y" }
 
         this.room.send("move", movement);
     }
 
     right() {
-        var movement = { x: 7 }
+        var movement = { type: "positive", movementType: "x" }
 
         this.room.send("move", movement);
     }
 
     left() {
-        var movement = { x: -7 }
+        var movement = { type: "negative", movementType: "x" }
 
         this.room.send("move", movement);
     }
@@ -233,7 +234,7 @@ export default class Scene extends Phaser.Scene {
         container.hp?.setHp(value)
     }
 
-    displayUpgrades(change, level) {
+    displayUpgrades(change) {
         if (!change.value) return
         const newChange = JSON.parse(String(change.value))
         if (!this.scene.get("DisplayUpgrades")) {
@@ -527,8 +528,8 @@ export default class Scene extends Phaser.Scene {
             this.down()
         }
 
-        if (this.cursors.space.isDown || this.keystate.Space == true) {
-            this.split()
-        }
+        // if (this.cursors.space.isDown || this.keystate.Space == true) {
+        //     this.split()
+        // }
     }
 }
