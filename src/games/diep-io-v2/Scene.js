@@ -264,7 +264,6 @@ export default class Scene extends Phaser.Scene {
 
                 player.onChange = (playerChanges) => {
                     if (this.myId != sessionId) return
-                    console.log(this.myId, sessionId)
                     for (const change of playerChanges) {
                         if (change.field == "tankUpgradeNames") {
                             this.displayUpgrades(change)
@@ -378,7 +377,6 @@ export default class Scene extends Phaser.Scene {
 
                 this.room.state.orbs.onAdd = (orb, id) => {
                     let orb2 = new ContainerWithHealthBar(this, orb.x, orb.y, [], 40 * orb.hpBarSizeMultiplier, -50 * orb.hpBarSizeMultiplier, orb.hpBarSizeMultiplier, orb.hp)
-
                     switch (orb.type) {
                         case 'rectangle':
                             orb2.add(this.add.rectangle(0, 0, 30, 30, 0xfff123))
@@ -401,6 +399,7 @@ export default class Scene extends Phaser.Scene {
                     let orb2 = this.orbs[id]
                     orb2.removeHp()
                     orb2.destroy()
+                    delete this.orbs[id]
                 }
 
                 this.room.state.walls.onAdd = (wall, id) => this.add.rectangle(wall.x, wall.y, wall.width, wall.height, 0xBBBBBB)
@@ -416,6 +415,8 @@ export default class Scene extends Phaser.Scene {
                 if (!container) return
                 let targetX = container.x
                 let targetY = container.y
+
+                console.log(stateObject, 'stateObject')
 
                 changes.forEach(({ field, value }) => {
                     switch (field) {
@@ -442,13 +443,19 @@ export default class Scene extends Phaser.Scene {
                     }
                 });
 
-                tweens.add({
-                    targets: container,
-                    x: targetX,
-                    y: targetY,
-                    duration: 190,
-                    ease: 'Power1'
-                });
+                const diffX = Math.abs(container.x - targetX)
+                const diffY = Math.abs(container.y - targetY)
+
+                if (diffX > 1 || diffY > 1) {
+                    tweens.add({
+                        targets: container,
+                        x: targetX,
+                        y: targetY,
+                        duration: 200,
+                        ease: 'Elastic'
+                    });
+                }
+
             }
         })
     }
@@ -498,7 +505,6 @@ export default class Scene extends Phaser.Scene {
 
     update() {
         // Call the functions that use the keyboard events to move the player.
-
         if (!this.room) return
 
 
@@ -507,10 +513,27 @@ export default class Scene extends Phaser.Scene {
             container.update()
         }
 
+        // We don't need to update orbs, since orb position won't change
+        const cameraView = this.cameras.main.worldView;
+        const boundaries = {
+            xMin: cameraView.x - cameraView.width,
+            xMax: cameraView.x + cameraView.width,
+            yMin: cameraView.y - cameraView.height,
+            yMax: cameraView.y + cameraView.height,
+        }
         for (const orbId in this.orbs) {
             const orb = this.orbs[orbId]
-            orb.update()
+            if (orb.x > boundaries.xMin
+                && orb.x < boundaries.xMax
+                && orb.y > boundaries.yMin
+                && orb.y < boundaries.yMax
+            ) {
+                orb.visible = true
+            } else {
+                orb.visible = false
+            }
         }
+
 
         if (this.cursors.left.isDown || this.keystate.A == true) {
             this.left()
@@ -528,8 +551,5 @@ export default class Scene extends Phaser.Scene {
             this.down()
         }
 
-        // if (this.cursors.space.isDown || this.keystate.Space == true) {
-        //     this.split()
-        // }
     }
 }
