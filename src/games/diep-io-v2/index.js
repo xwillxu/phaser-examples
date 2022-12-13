@@ -3,7 +3,7 @@ import Phaser from 'phaser'
 import Scene from './Scene'
 
 const config = {
-    type: Phaser.AUTO,
+    type: Phaser.CANVAS, // using canvas greatly improve the performance
     scale: {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,
@@ -17,6 +17,7 @@ const config = {
             debug: false
         }
     },
+    backgroundColor: 0xCDCDCD,
     scene: [Scene]
 };
 

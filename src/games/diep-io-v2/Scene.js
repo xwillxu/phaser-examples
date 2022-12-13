@@ -299,42 +299,42 @@ export default class Scene extends Phaser.Scene {
                     this.startFollowPlayer(1000)
                     this.startFollowPlayer(1500)
                     this.startFollowPlayer(2000)
-                    this.startFollowPlayer(2500)
-                    this.startFollowPlayer(3000)
-                    this.startFollowPlayer(3500)
-                    this.startFollowPlayer(4000)
-                    this.startFollowPlayer(4500)
-                    this.startFollowPlayer(5000)
-                    this.startFollowPlayer(5500)
-                    this.startFollowPlayer(6000)
-                    this.startFollowPlayer(6500)
-                    this.startFollowPlayer(7000)
-                    this.startFollowPlayer(7500)
-                    this.startFollowPlayer(8000)
-                    this.startFollowPlayer(8500)
-                    this.startFollowPlayer(9000)
-                    this.startFollowPlayer(9500)
-                    this.startFollowPlayer(10000)
-                    this.startFollowPlayer(10500)
-                    this.startFollowPlayer(11000)
-                    this.startFollowPlayer(11500)
-                    this.startFollowPlayer(12000)
-                    this.startFollowPlayer(12500)
-                    this.startFollowPlayer(13000)
-                    this.startFollowPlayer(13500)
-                    this.startFollowPlayer(14000)
-                    this.startFollowPlayer(14500)
-                    this.startFollowPlayer(15000)
-                    this.startFollowPlayer(15500)
-                    this.startFollowPlayer(16000)
-                    this.startFollowPlayer(16500)
-                    this.startFollowPlayer(17000)
-                    this.startFollowPlayer(17500)
-                    this.startFollowPlayer(18000)
-                    this.startFollowPlayer(18500)
-                    this.startFollowPlayer(19000)
-                    this.startFollowPlayer(19500)
-                    this.startFollowPlayer(20000)
+                    // this.startFollowPlayer(2500)
+                    // this.startFollowPlayer(3000)
+                    // this.startFollowPlayer(3500)
+                    // this.startFollowPlayer(4000)
+                    // this.startFollowPlayer(4500)
+                    // this.startFollowPlayer(5000)
+                    // this.startFollowPlayer(5500)
+                    // this.startFollowPlayer(6000)
+                    // this.startFollowPlayer(6500)
+                    // this.startFollowPlayer(7000)
+                    // this.startFollowPlayer(7500)
+                    // this.startFollowPlayer(8000)
+                    // this.startFollowPlayer(8500)
+                    // this.startFollowPlayer(9000)
+                    // this.startFollowPlayer(9500)
+                    // this.startFollowPlayer(10000)
+                    // this.startFollowPlayer(10500)
+                    // this.startFollowPlayer(11000)
+                    // this.startFollowPlayer(11500)
+                    // this.startFollowPlayer(12000)
+                    // this.startFollowPlayer(12500)
+                    // this.startFollowPlayer(13000)
+                    // this.startFollowPlayer(13500)
+                    // this.startFollowPlayer(14000)
+                    // this.startFollowPlayer(14500)
+                    // this.startFollowPlayer(15000)
+                    // this.startFollowPlayer(15500)
+                    // this.startFollowPlayer(16000)
+                    // this.startFollowPlayer(16500)
+                    // this.startFollowPlayer(17000)
+                    // this.startFollowPlayer(17500)
+                    // this.startFollowPlayer(18000)
+                    // this.startFollowPlayer(18500)
+                    // this.startFollowPlayer(19000)
+                    // this.startFollowPlayer(19500)
+                    // this.startFollowPlayer(20000)
                     playerCircle.onChange = updateChanges(playerCircle, worldId, this.tweens, this.circles, 25);
                 }
 
@@ -416,8 +416,6 @@ export default class Scene extends Phaser.Scene {
                 let targetX = container.x
                 let targetY = container.y
 
-                console.log(stateObject, 'stateObject')
-
                 changes.forEach(({ field, value }) => {
                     switch (field) {
                         case 'x':
@@ -452,7 +450,7 @@ export default class Scene extends Phaser.Scene {
                         x: targetX,
                         y: targetY,
                         duration: 200,
-                        ease: 'Elastic'
+                        ease: 'Power1'
                     });
                 }
 
