@@ -514,10 +514,10 @@ export default class Scene extends Phaser.Scene {
         // We don't need to update orbs, since orb position won't change
         const cameraView = this.cameras.main.worldView;
         const boundaries = {
-            xMin: cameraView.x - cameraView.width,
-            xMax: cameraView.x + cameraView.width,
-            yMin: cameraView.y - cameraView.height,
-            yMax: cameraView.y + cameraView.height,
+            xMin: cameraView.x - (cameraView.width - 145.4),
+            xMax: cameraView.x + (cameraView.width + 145.4),
+            yMin: cameraView.y - (cameraView.height - 160),
+            yMax: cameraView.y + (cameraView.height + 160),
         }
         for (const orbId in this.orbs) {
             const orb = this.orbs[orbId]
