@@ -52,6 +52,7 @@ export default class GUISceneUntouched extends Phaser.Scene {
                 // Happens 1 min later or something
                 upgradeOptionName = containerKey
                 // Need to call on the main scene when this happens
+                console.log(upgradeOptionName, "sending")
                 this.scene.get("diep.io-2-phaser").sendUpgradeInfo(upgradeOptionName)
             })
         }
