@@ -45,6 +45,7 @@ export default class GUISceneUntouched extends Phaser.Scene {
             container.x = 50 + 150 * id
             container.y = 650
             const containerRectangle = container.getAt(0)
+            console.log("I'm here")
             containerRectangle.on("pointerdown", () => {
                 for (const container of this.oldContainers) {
                     container.destroy()
@@ -52,7 +53,7 @@ export default class GUISceneUntouched extends Phaser.Scene {
                 // Happens 1 min later or something
                 upgradeOptionName = containerKey
                 // Need to call on the main scene when this happens
-                console.log(upgradeOptionName, "sending")
+                console.log(upgradeOptionName, "is going to be the new tank.")
                 this.scene.get("diep.io-2-phaser").sendUpgradeInfo(upgradeOptionName)
             })
         }
