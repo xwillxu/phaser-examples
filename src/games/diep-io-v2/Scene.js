@@ -110,7 +110,7 @@ export default class Scene extends Phaser.Scene {
 
     switchAutoShoot() {
         if (!this.autoShoot) {
-            this.shootInterval = setInterval(() => this.shoot(), (this.tankInfo[this.myTankName].reload * 50))
+            this.shootInterval = setInterval(() => this.shoot(), (this.tankInfo[this.myTankName]?.reload * 50))
             this.autoShoot = true
         } else {
             clearInterval(this.shootInterval)
@@ -240,9 +240,7 @@ export default class Scene extends Phaser.Scene {
         if (!this.scene.get("DisplayUpgrades")) {
             this.scene.add("DisplayUpgrades", GUISceneUntouched, true, { value: newChange, tankInfo: this.tankInfo })
         }
-        console.log("I'm processing")
         const tankName = this.scene.get("DisplayUpgrades").listUpgrades(newChange)
-        this.myTankName = tankName
         return tankName
     }
 
