@@ -33,6 +33,7 @@ export default class Scene extends Phaser.Scene {
         this.tankInfo = null
         this.guiSceneCreated = false
         this.myTankName = "Basic"
+        this.canShoot = true
     }
 
     setupKeys() {
@@ -110,7 +111,7 @@ export default class Scene extends Phaser.Scene {
 
     switchAutoShoot() {
         if (!this.autoShoot) {
-            this.shootInterval = setInterval(() => this.shoot(), (this.tankInfo[this.myTankName]?.reload * 50))
+            this.shootInterval = setInterval(() => this.shoot(), (this.tankInfo[this.myTankName]?.reload * 25))
             this.autoShoot = true
         } else {
             clearInterval(this.shootInterval)
@@ -232,6 +233,13 @@ export default class Scene extends Phaser.Scene {
 
     setupHp(container, value) {
         container.hp?.setHp(value)
+    }
+
+    setupReload() {
+        this.canShoot = false
+        setTimeout(() => {
+            this.canShoot = true
+        }, this.tankInfo[this.myTankName]?.reload * 25)
     }
 
     displayUpgrades(change) {
@@ -470,6 +478,8 @@ export default class Scene extends Phaser.Scene {
 
     shoot() {
         if (!this.room) return
+        if (!this.canShoot) return
+        this.setupReload()
         const targetXY = {
             targetX: this.pointerPosX,
             targetY: this.pointerPosY,
