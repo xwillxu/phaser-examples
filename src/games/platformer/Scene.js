@@ -660,7 +660,7 @@ export default class Scene extends Phaser.Scene {
         this.playerSprite.setFixedRotation()
         this.playerSprite.setPosition(200, 200)
 
-        this.speed = 10
+        this.speed = 20
 
         this.canJump = false
 
