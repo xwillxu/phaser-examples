@@ -258,7 +258,7 @@ export default class Scene extends Phaser.Scene {
 
             let xDist = targetX - this.playerSprite.x;
             let yDist = targetY - this.playerSprite.y;
-            let angle = Math.atan2(yDist, xDist) + x / 5
+            let angle = Math.atan2(yDist, xDist) + (x / 5 - x / 2.5) + 1
             let velocityX = Math.cos(angle) * velocity
             let velocityY = Math.sin(angle) * velocity
 
@@ -660,7 +660,7 @@ export default class Scene extends Phaser.Scene {
         this.playerSprite.setFixedRotation()
         this.playerSprite.setPosition(200, 200)
 
-        this.speed = 20
+        this.speed = 10
 
         this.canJump = false
 

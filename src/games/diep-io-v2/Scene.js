@@ -245,10 +245,11 @@ export default class Scene extends Phaser.Scene {
     displayUpgrades(change) {
         if (!change.value) return
         const newChange = JSON.parse(String(change.value))
-        if (!this.scene.get("DisplayUpgrades")) {
+        const scene = this.scene.get("DisplayUpgrades")
+        if (!scene) {
             this.scene.add("DisplayUpgrades", GUISceneUntouched, true, { value: newChange, tankInfo: this.tankInfo })
         }
-        const tankName = this.scene.get("DisplayUpgrades").listUpgrades(newChange)
+        const tankName = scene.listUpgrades(newChange)
         return tankName
     }
 
@@ -289,10 +290,17 @@ export default class Scene extends Phaser.Scene {
                     // Get tank attributes
                     const circle = this.add.circle(0, 0, 25, initialColor)
                     let text = this.add.text(0, 0, `${player?.name || "Guest"}`)
-                    const turret = this.add.rectangle(0, 0, 45, 25, 0xa9a9a9)
-                    turret.setOrigin(-0.1, 0.5)
+                    for (let x = 0; x < this.tankInfo[this.myTankName]?.turrets; x++) {
+                        const xDist = playerCircle.x - 0;
+                        const yDist = playerCircle.y - 0;
+                        const spacing = x / 5 - x / 2.5
+                        const angle = Math.atan2(yDist, xDist) + spacing + 1
+                        const turret = this.add.rectangle(0, 0, 45, 25, 0xa9a9a9)
+                        turret.setAngle(angle)
+                        turret.setOrigin(-0.1, 0.5)
+                        container.add(turret)
+                    }
                     text.setOrigin(0.5, 0.5);
-                    container.add(turret)
                     container.add(circle)
                     container.add(text)
                     this.listClients()
@@ -302,47 +310,13 @@ export default class Scene extends Phaser.Scene {
                     }
                     this.playerCircles[playerCircle.playerId].push(worldId)
 
-                    // Very Long but safe proof
+                    // Less lag but not as safe
                     this.startFollowPlayer(500)
                     this.startFollowPlayer(1000)
                     this.startFollowPlayer(1500)
                     this.startFollowPlayer(2000)
                     this.startFollowPlayer(2500)
                     this.startFollowPlayer(3000)
-                    this.startFollowPlayer(3500)
-                    this.startFollowPlayer(4000)
-                    this.startFollowPlayer(4500)
-                    this.startFollowPlayer(5000)
-                    this.startFollowPlayer(5500)
-                    this.startFollowPlayer(6000)
-                    this.startFollowPlayer(6500)
-                    this.startFollowPlayer(7000)
-                    this.startFollowPlayer(7500)
-                    this.startFollowPlayer(8000)
-                    this.startFollowPlayer(8500)
-                    this.startFollowPlayer(9000)
-                    this.startFollowPlayer(9500)
-                    this.startFollowPlayer(10000)
-                    this.startFollowPlayer(10500)
-                    this.startFollowPlayer(11000)
-                    this.startFollowPlayer(11500)
-                    this.startFollowPlayer(12000)
-                    this.startFollowPlayer(12500)
-                    this.startFollowPlayer(13000)
-                    this.startFollowPlayer(13500)
-                    this.startFollowPlayer(14000)
-                    this.startFollowPlayer(14500)
-                    this.startFollowPlayer(15000)
-                    this.startFollowPlayer(15500)
-                    this.startFollowPlayer(16000)
-                    this.startFollowPlayer(16500)
-                    this.startFollowPlayer(17000)
-                    this.startFollowPlayer(17500)
-                    this.startFollowPlayer(18000)
-                    this.startFollowPlayer(18500)
-                    this.startFollowPlayer(19000)
-                    this.startFollowPlayer(19500)
-                    this.startFollowPlayer(20000)
                     playerCircle.onChange = updateChanges(playerCircle, worldId, this.tweens, this.circles, 25);
                 }
 
