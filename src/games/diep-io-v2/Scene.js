@@ -195,7 +195,8 @@ export default class Scene extends Phaser.Scene {
         // Set the fill style for client's circles
         for (const playerCircle of playerCircles) {
             if (!playerCircle) return
-            if (!playerCircle.getAt(1).setFillStyle(0x00b0e1)) return
+            console.log("This function's value is", playerCircle.getAt(1)?.setFillStyle(0x00b0e1))
+            if (this.tankInfo[this.myTankName]?.turrets == 0) return
             playerCircle.getAt(1)?.setFillStyle(0x00b0e1)
         }
         // Set the background color and start following the circle
