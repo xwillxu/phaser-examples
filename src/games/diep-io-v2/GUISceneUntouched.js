@@ -49,9 +49,8 @@ export default class GUISceneUntouched extends Phaser.Scene {
                 for (const container of this.oldContainers) {
                     container.destroy()
                 }
-                // Happens 1 min later or something
+                console.log("Hello, I'm a diep.io v2 tank that is called the", containerKey, "which has better stats than the previous tank.")
                 upgradeOptionName = containerKey
-                // Need to call on the main scene when this happens
                 this.scene.get("diep.io-2-phaser").sendUpgradeInfo(upgradeOptionName)
             })
         }
