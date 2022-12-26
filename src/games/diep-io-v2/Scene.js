@@ -195,10 +195,15 @@ export default class Scene extends Phaser.Scene {
         // Set the fill style for client's circles
         for (const playerCircle of playerCircles) {
             if (!playerCircle) return
-            console.log("This function's value is", /*typeof playerCircle.getAt(1)?.setFillStyle(0x00b0e1)*/)
-            for (let x = 0; this.tankInfo[this.myTankName]?.turrets > x; x++) {
-                const turretNumber = x + 1
-                playerCircle.getAt(turretNumber)?.setFillStyle(0x00b0e1)
+            if (!playerCircle.setFillStyle("0x00b0e1")) return
+            const turretAmount = this.tankInfo[this.myTankName]?.turret
+
+            for (let i = 0; i < turretAmount; i++) {
+                const turretIdInContainer = i + 1
+                if (!playerCircle.getAt(turretIdInContainer)) return
+                if (playerCircle.getAt(turretIdInContainer) != Phaser.GameObjects.Rectangle) return
+                if (!playerCircle.getAt(turretIdInContainer).setFillStyle("0x00b0e1")) return
+                playerCircle.getAt(turretIdInContainer).setFillStyle("0x00b0e1")
             }
 
         }
@@ -231,11 +236,11 @@ export default class Scene extends Phaser.Scene {
             const radian = Phaser.Math.DegToRad(angleIncrease * i + angleIncrease / 2)
             points.push(Phaser.Math.RotateTo(iPoint, 0, 0, radian, size))
         }
-        const poly = this.add.polygon(0, 0, points, color)
-        poly.x = poly.x + poly.displayOriginX;
-        poly.y = poly.y + poly.displayOriginY;
-        return poly
-    }
+        const polygon = this.add.polygon(0, 0, points, color)
+        polygon.x = polygon.x + polygon.displayOriginX
+        polygon.y = polygon.y + polygon.displayOriginY
+        return polygon
+    } s
 
     setupHp(container, value) {
         container.hp?.setHp(value)
