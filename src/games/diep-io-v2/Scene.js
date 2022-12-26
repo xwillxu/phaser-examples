@@ -298,14 +298,17 @@ export default class Scene extends Phaser.Scene {
                     let text = this.add.text(0, 0, `${statePlayer?.name || "Guest"}`)
                     const amountOfTurrets = this.tankInfo[this.myTankName]?.turrets
                     for (let x = 0; x < this.tankInfo[this.myTankName]?.turrets; x++) {
-                        const xDist = ((x + 1) + 45) - ((x + 1));
-                        const yDist = ((x + 1) + 25) - playerCircle.y;
+                        console.log("Turret is created")
+                        const xDist = ((x + 1) * 45) - playerCircle.x;
+                        const yDist = ((x + 1) * 25) - playerCircle.y;
                         const spacing = (x / 5 - x / 2.5)
                         const angle = Math.atan2(yDist, xDist) + spacing + (amountOfTurrets * 0.1)
                         const turret = this.add.rectangle(0, 0, 45, 25, 0xa9a9a9)
                         turret.setAngle(angle)
                         turret.setOrigin(-0.1, 0.5)
+                        turret.angle = angle
                         container.add(turret)
+                        console.log("X Distance:", xDist, "Y Distance:", yDist)
                     }
                     text.setOrigin(0.5, 0.5);
                     container.add(circle)
