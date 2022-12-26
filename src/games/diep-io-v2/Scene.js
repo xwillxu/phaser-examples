@@ -195,9 +195,17 @@ export default class Scene extends Phaser.Scene {
         // Set the fill style for client's circles
         for (const playerCircle of playerCircles) {
             if (!playerCircle) return
-            console.log("This function's value is", playerCircle.getAt(1)?.setFillStyle(0x00b0e1))
-            if (this.tankInfo[this.myTankName]?.turrets == 0) return
-            playerCircle.getAt(1)?.setFillStyle(0x00b0e1)
+            if (!playerCircle.setFillStyle(0x00b0e1)) return
+            const turretAmount = this.tankInfo[this.myTankName]?.turret
+
+            for (let i = 0; i < turretAmount; i++) {
+                const turretIdInContainer = i + 1
+                if (!playerCircle.getAt(turretIdInContainer)) return
+                if (playerCircle.getAt(turretIdInContainer) != Phaser.GameObjects.Rectangle) return
+                if (!playerCircle.getAt(turretIdInContainer).setFillStyle(0x00b0e1)) return
+                playerCircle.getAt(turretIdInContainer).setFillStyle(0x00b0e1)
+            }
+
         }
         // Set the background color and start following the circle
         this.cameras.main.backgroundColor = Phaser.Display.Color.HexStringToColor('0xCDCDCD');
@@ -228,12 +236,11 @@ export default class Scene extends Phaser.Scene {
             const radian = Phaser.Math.DegToRad(angleIncrease * i + angleIncrease / 2)
             points.push(Phaser.Math.RotateTo(iPoint, 0, 0, radian, size))
         }
-        const poly = this.add.polygon(0, 0, points, color)
-        poly.x = poly.x + poly.displayOriginX;
-        poly.y = poly.y + poly.displayOriginY;
-        return poly
+        const polygon = this.add.polygon(0, 0, points, color)
+        polygon.x = polygon.x + polygon.displayOriginX
+        polygon.y = polygon.y + polygon.displayOriginY
+        return polygon
     }
-
     setupHp(container, value) {
         container.hp?.setHp(value)
     }
@@ -295,14 +302,17 @@ export default class Scene extends Phaser.Scene {
                     let text = this.add.text(0, 0, `${statePlayer?.name || "Guest"}`)
                     const amountOfTurrets = this.tankInfo[this.myTankName]?.turrets
                     for (let x = 0; x < this.tankInfo[this.myTankName]?.turrets; x++) {
-                        const xDist = playerCircle.x - 0;
-                        const yDist = playerCircle.y - 0;
+                        console.log("Turret is created")
+                        const xDist = ((x + 1) * 45) - playerCircle.x;
+                        const yDist = ((x + 1) * 25) - playerCircle.y;
                         const spacing = (x / 5 - x / 2.5)
                         const angle = Math.atan2(yDist, xDist) + spacing + (amountOfTurrets * 0.1)
                         const turret = this.add.rectangle(0, 0, 45, 25, 0xa9a9a9)
                         turret.setAngle(angle)
                         turret.setOrigin(-0.1, 0.5)
+                        turret.angle = angle
                         container.add(turret)
+                        console.log("X Distance:", xDist, "Y Distance:", yDist)
                     }
                     text.setOrigin(0.5, 0.5);
                     container.add(circle)
