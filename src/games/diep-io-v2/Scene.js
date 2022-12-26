@@ -195,15 +195,15 @@ export default class Scene extends Phaser.Scene {
         // Set the fill style for client's circles
         for (const playerCircle of playerCircles) {
             if (!playerCircle) return
-            if (!playerCircle.setFillStyle("0x00b0e1")) return
+            if (!playerCircle.setFillStyle(0x00b0e1)) return
             const turretAmount = this.tankInfo[this.myTankName]?.turret
 
             for (let i = 0; i < turretAmount; i++) {
                 const turretIdInContainer = i + 1
                 if (!playerCircle.getAt(turretIdInContainer)) return
                 if (playerCircle.getAt(turretIdInContainer) != Phaser.GameObjects.Rectangle) return
-                if (!playerCircle.getAt(turretIdInContainer).setFillStyle("0x00b0e1")) return
-                playerCircle.getAt(turretIdInContainer).setFillStyle("0x00b0e1")
+                if (!playerCircle.getAt(turretIdInContainer).setFillStyle(0x00b0e1)) return
+                playerCircle.getAt(turretIdInContainer).setFillStyle(0x00b0e1)
             }
 
         }
@@ -240,8 +240,7 @@ export default class Scene extends Phaser.Scene {
         polygon.x = polygon.x + polygon.displayOriginX
         polygon.y = polygon.y + polygon.displayOriginY
         return polygon
-    } s
-
+    }
     setupHp(container, value) {
         container.hp?.setHp(value)
     }
