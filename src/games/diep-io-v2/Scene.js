@@ -195,21 +195,24 @@ export default class Scene extends Phaser.Scene {
         // Set the fill style for client's circles
         for (const playerCircle of playerCircles) {
             if (!playerCircle) return
-            if (!playerCircle.setFillStyle(0x00b0e1)) return
             const turretAmount = this.tankInfo[this.myTankName]?.turret
 
             for (let i = 0; i < turretAmount; i++) {
                 const turretIdInContainer = i + 1
                 if (!playerCircle.getAt(turretIdInContainer)) return
                 if (playerCircle.getAt(turretIdInContainer) != Phaser.GameObjects.Rectangle) return
-                if (!playerCircle.getAt(turretIdInContainer).setFillStyle(0x00b0e1)) return
-                playerCircle.getAt(turretIdInContainer).setFillStyle(0x00b0e1)
+                if (!playerCircle.getAt(turretIdInContainer).setFillStyle([0x00b0e1])) return
+                playerCircle.getAt(turretIdInContainer).setFillStyle([0x00b0e1])
             }
 
         }
         // Set the background color and start following the circle
         this.cameras.main.backgroundColor = Phaser.Display.Color.HexStringToColor('0xCDCDCD');
         this.cameras.main.startFollow(mycircle)
+
+        // setInterval(() => {
+        //     this.setupCamera()
+        // }, 16.6666666666668)
     }
 
     findMyCircles() {
@@ -332,6 +335,7 @@ export default class Scene extends Phaser.Scene {
                     this.startFollowPlayer(2500)
                     this.startFollowPlayer(3000)
                     playerCircle.onChange = updateChanges(playerCircle, worldId, this.tweens, this.circles, 25);
+                    this.setupCamera()
                 }
 
                 this.room.state.playerBullets.onAdd = (playerBullet, worldId) => {
