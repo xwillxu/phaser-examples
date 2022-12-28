@@ -301,10 +301,16 @@ export default class Scene extends Phaser.Scene {
                     // You will know that the playerCircle Belongs With This Player If The Players SessionId is The PlayerCircles PlayerId
                     if (playerCircle.playerId == this.myId) initialColor = 0x00B1DE
                     // Get tank attributes
+                    const tankAttributes = this.tankInfo[this.myTankName]
                     const circle = this.add.circle(0, 0, 25, initialColor)
+                    if (tankAttributes?.bodyDamage >= 10) {
+                        circle.setStrokeStyle(1 + tankAttributes?.bodyDamage / 50, 0x000000)
+                    } else {
+                        circle.setStrokeStyle()
+                    }
                     let text = this.add.text(0, 0, `${statePlayer?.name || "Guest"}`)
                     const amountOfTurrets = this.tankInfo[this.myTankName]?.turrets
-                    for (let x = 0; x < this.tankInfo[this.myTankName]?.turrets; x++) {
+                    for (let x = 0; x < tankAttributes?.turrets; x++) {
                         console.log("Turret is created")
                         const xDist = ((x + 1) * 45) - playerCircle.x;
                         const yDist = ((x + 1) * 25) - playerCircle.y;
