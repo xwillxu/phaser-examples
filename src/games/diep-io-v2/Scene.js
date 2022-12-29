@@ -317,10 +317,13 @@ export default class Scene extends Phaser.Scene {
                         const spacing = (x / 5 - x / 2.5)
                         const angle = Math.atan2(yDist, xDist) + spacing + (amountOfTurrets * 0.1)
                         const turret = this.add.rectangle(0, 0, 45, 25, 0xa9a9a9)
-                        turret.setAngle(angle)
+                        // console.log(angle)
+                        const degreeAngle = Phaser.Math.RadToDeg(angle)
+                        console.log(degreeAngle)
+                        turret.setAngle(degreeAngle)
                         turret.setOrigin(-0.1, 0.5)
-                        turret.angle = angle
                         container.add(turret)
+                        // turret.angle = angle
                         console.log("X Distance:", xDist, "Y Distance:", yDist)
                     }
                     text.setOrigin(0.5, 0.5);
@@ -373,7 +376,6 @@ export default class Scene extends Phaser.Scene {
                     circle?.removeHp()
                     circle?.destroy()
                     delete this.circles[worldId]
-
                     const currentPlayerCircles = this.playerCircles[playerCircle.playerId]
                     const newPlayerCircleIds = currentPlayerCircles.filter(x => x != worldId)
                     this.playerCircles[playerCircle.playerId] = newPlayerCircleIds
