@@ -312,18 +312,17 @@ export default class Scene extends Phaser.Scene {
                     const amountOfTurrets = this.tankInfo[this.myTankName]?.turrets
                     for (let x = 0; x < tankAttributes?.turrets; x++) {
                         console.log("Turret is created")
-                        const xDist = ((x + 1) * 45) - playerCircle.x;
-                        const yDist = ((x + 1) * 25) - playerCircle.y;
+                        const xDist = this.pointerPosX - playerCircle.x;
+                        const yDist = this.pointerPosY - playerCircle.y;
                         const spacing = (x / 5 - x / 2.5)
                         const angle = Math.atan2(yDist, xDist) + spacing + (amountOfTurrets * 0.1)
                         const turret = this.add.rectangle(0, 0, 45, 25, 0xa9a9a9)
-                        // console.log(angle)
                         const degreeAngle = Phaser.Math.RadToDeg(angle)
+
                         console.log(degreeAngle)
                         turret.setAngle(degreeAngle)
                         turret.setOrigin(-0.1, 0.5)
                         container.add(turret)
-                        // turret.angle = angle
                         console.log("X Distance:", xDist, "Y Distance:", yDist)
                     }
                     text.setOrigin(0.5, 0.5);
