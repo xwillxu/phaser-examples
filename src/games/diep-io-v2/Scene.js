@@ -263,6 +263,7 @@ export default class Scene extends Phaser.Scene {
         }
 
         const tankName = this.scene.get("DisplayUpgrades").listUpgrades(newChange)
+        clearInterval(this.shootInterval)
         return tankName
     }
 
@@ -294,6 +295,9 @@ export default class Scene extends Phaser.Scene {
                 }
 
                 this.room.state.playerCircles.onAdd = (playerCircle, worldId) => {
+                    debugger
+                    console.log("new playercircle")
+                    // clearInterval(this.shootInterval)
                     const statePlayer = this.statePlayers[playerCircle.playerId]
                     if (!statePlayer) return
                     let container = new ContainerWithHealthBar(this, playerCircle.x, playerCircle.y, [], 77, -75, 2, playerCircle.hp);
@@ -302,6 +306,7 @@ export default class Scene extends Phaser.Scene {
                     if (playerCircle.playerId == this.myId) initialColor = 0x00B1DE
                     // Get tank attributes
                     const tankAttributes = this.tankInfo[this.myTankName]
+
                     const circle = this.add.circle(0, 0, 25, initialColor)
                     if (tankAttributes?.bodyDamage >= 10) {
                         circle.setStrokeStyle(1 + tankAttributes?.bodyDamage / 50, 0x000000)
