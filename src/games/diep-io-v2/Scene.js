@@ -209,10 +209,6 @@ export default class Scene extends Phaser.Scene {
         // Set the background color and start following the circle
         this.cameras.main.backgroundColor = Phaser.Display.Color.HexStringToColor('0xCDCDCD');
         this.cameras.main.startFollow(mycircle)
-
-        // setInterval(() => {
-        //     this.setupCamera()
-        // }, 16.6666666666668)
     }
 
     findMyCircles() {
@@ -263,7 +259,6 @@ export default class Scene extends Phaser.Scene {
         }
 
         const tankName = this.scene.get("DisplayUpgrades").listUpgrades(newChange)
-        clearInterval(this.shootInterval)
         return tankName
     }
 
@@ -295,9 +290,12 @@ export default class Scene extends Phaser.Scene {
                 }
 
                 this.room.state.playerCircles.onAdd = (playerCircle, worldId) => {
-                    debugger
-                    console.log("new playercircle")
-                    // clearInterval(this.shootInterval)
+                    clearInterval(this.shootInterval)
+                    if (!playerCircle.upgrading) {
+                        this.myTankName = "Basic"
+                    } else {
+                        playerCircle.upgrading = false
+                    }
                     const statePlayer = this.statePlayers[playerCircle.playerId]
                     if (!statePlayer) return
                     let container = new ContainerWithHealthBar(this, playerCircle.x, playerCircle.y, [], 77, -75, 2, playerCircle.hp);
