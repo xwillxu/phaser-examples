@@ -258,6 +258,7 @@ export default class Scene extends Phaser.Scene {
             this.scene.add("DisplayUpgrades", GUISceneUntouched, true, { value: newChange, tankInfo: this.tankInfo })
         }
 
+        // @ts-ignore
         const tankName = this.scene.get("DisplayUpgrades").listUpgrades(newChange)
         return tankName
     }
@@ -290,7 +291,7 @@ export default class Scene extends Phaser.Scene {
                 }
 
                 this.room.state.playerCircles.onAdd = (playerCircle, worldId) => {
-                    clearInterval(this.shootInterval)
+                    if (this.myId == worldId) clearInterval(this.shootInterval)
                     if (!playerCircle.upgrading) {
                         this.myTankName = "Basic"
                     } else {
@@ -467,6 +468,7 @@ export default class Scene extends Phaser.Scene {
 
     listClients() {
         // Create And Update The Leader Board
+        // @ts-ignore
         this.scene.get('UiScene').listClients();
     }
 
@@ -497,6 +499,7 @@ export default class Scene extends Phaser.Scene {
         }, this);
 
         this.input.on('pointermove', function (pointer) {
+            // @ts-ignore
             if (!this.room) return
             const targetXY = {
                 targetX: pointer.worldX,
@@ -504,6 +507,7 @@ export default class Scene extends Phaser.Scene {
             }
             this.pointerPosX = targetXY.targetX
             this.pointerPosY = targetXY.targetY
+            // @ts-ignore
             this.room.send("pointermove", targetXY)
         }, this);
 
