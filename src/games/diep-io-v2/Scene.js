@@ -26,14 +26,17 @@ export default class Scene extends Phaser.Scene {
         this.canSplit = true
         // Keyboard Utilties
         this.autoShoot = false
+        this.keystate = {}
+        // Tank Utilites
+        this.tankInfo = null
+        this.myTankName = "Basic"
+        // Camera Utilities
+        this.guiSceneCreated = false
+        // Shoot Utilties
+        this.canShoot = true
         this.pointerPosX = 0
         this.pointerPosY = 0
         this.shootInterval = 0
-        this.keystate = {}
-        this.tankInfo = null
-        this.guiSceneCreated = false
-        this.myTankName = "Basic"
-        this.canShoot = true
     }
 
     setupKeys() {
@@ -291,12 +294,17 @@ export default class Scene extends Phaser.Scene {
                 }
 
                 this.room.state.playerCircles.onAdd = (playerCircle, worldId) => {
-                    if (this.myId == worldId) clearInterval(this.shootInterval)
-                    if (!playerCircle.upgrading) {
-                        this.myTankName = "Basic"
-                    } else {
-                        playerCircle.upgrading = false
+                    if (this.myId == playerCircle.playerId) {
+                        clearInterval(this.shootInterval)
+                        this.autoShoot = false
                     }
+                    if (playerCircle.playerId != this.myId)
+                        if (!playerCircle.upgrading) {
+                            if (playerCircle.playerId != this.myId) return
+                            this.myTankName = "Basic"
+                        } else {
+                            playerCircle.upgrading = false
+                        }
                     const statePlayer = this.statePlayers[playerCircle.playerId]
                     if (!statePlayer) return
                     let container = new ContainerWithHealthBar(this, playerCircle.x, playerCircle.y, [], 77, -75, 2, playerCircle.hp);
