@@ -298,13 +298,13 @@ export default class Scene extends Phaser.Scene {
                         clearInterval(this.shootInterval)
                         this.autoShoot = false
                     }
-                    if (playerCircle.playerId != this.myId)
+                    if (playerCircle.playerId != this.myId) {
                         if (!playerCircle.upgrading) {
-                            if (playerCircle.playerId != this.myId) return
                             this.myTankName = "Basic"
                         } else {
                             playerCircle.upgrading = false
                         }
+                    }
                     const statePlayer = this.statePlayers[playerCircle.playerId]
                     if (!statePlayer) return
                     let container = new ContainerWithHealthBar(this, playerCircle.x, playerCircle.y, [], 77, -75, 2, playerCircle.hp);
