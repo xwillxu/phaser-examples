@@ -294,15 +294,12 @@ export default class Scene extends Phaser.Scene {
                 }
 
                 this.room.state.playerCircles.onAdd = (playerCircle, worldId) => {
-
-
                     if (this.myId == playerCircle.playerId) {
                         clearInterval(this.shootInterval)
                         this.autoShoot = false
                     }
                     if (playerCircle.playerId == this.myId) {
                         if (!playerCircle.upgrading) {
-                            console.log(playerCircle.playerId, this.myId)
                             this.myTankName = "Basic"
                         } else {
                             playerCircle.upgrading = false
