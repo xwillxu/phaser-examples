@@ -294,16 +294,21 @@ export default class Scene extends Phaser.Scene {
                 }
 
                 this.room.state.playerCircles.onAdd = (playerCircle, worldId) => {
+
+
                     if (this.myId == playerCircle.playerId) {
                         clearInterval(this.shootInterval)
                         this.autoShoot = false
                     }
-                    if (playerCircle.playerId != this.myId) {
+                    if (playerCircle.playerId == this.myId) {
                         if (!playerCircle.upgrading) {
+                            console.log(playerCircle.playerId, this.myId)
                             this.myTankName = "Basic"
                         } else {
                             playerCircle.upgrading = false
                         }
+                    } else {
+                        this.myTankName = "Basic"
                     }
                     const statePlayer = this.statePlayers[playerCircle.playerId]
                     if (!statePlayer) return
@@ -323,13 +328,10 @@ export default class Scene extends Phaser.Scene {
                     let text = this.add.text(0, 0, `${statePlayer?.name || "Guest"}`)
                     const amountOfTurrets = this.tankInfo[this.myTankName]?.turrets
                     for (let x = 0; x < tankAttributes?.turrets; x++) {
-                        console.log("Turret is created")
                         const spacing = (x / 5 - x / 2.5)
                         const angle = 0 + spacing + (amountOfTurrets * 0.1)
                         const turret = this.add.rectangle(0, 0, 45, 25, 0xa9a9a9)
                         const degreeAngle = Phaser.Math.RadToDeg(angle)
-
-                        console.log(degreeAngle)
                         turret.setAngle(degreeAngle)
                         turret.setOrigin(-0.1, 0.5)
                         container.add(turret)
