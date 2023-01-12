@@ -5,6 +5,8 @@
 
 ![License](https://img.shields.io/badge/license-MIT_Kids_Version-green)
 
+![Games](https://img.shields.io/badge/Game-Needs_to_use_Phaser.Canvas-diamond)
+
 ## Prerequisites
 
 You'll need [Node.js](https://nodejs.org/en/), [npm](https://www.npmjs.com/), and [Parcel](https://parceljs.org/) installed.
