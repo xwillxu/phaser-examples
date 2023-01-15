@@ -114,7 +114,7 @@ export default class Scene extends Phaser.Scene {
 
     switchAutoShoot() {
         if (!this.autoShoot) {
-            this.shootInterval = setInterval(() => this.shoot(), (this.tankInfo[this.myTankName]?.reload * 25))
+            this.shootInterval = setInterval(() => this.shoot(), ((this.tankInfo[this.myTankName]?.reload * 25) / 1.5))
             this.autoShoot = true
         } else {
             clearInterval(this.shootInterval)
@@ -251,7 +251,7 @@ export default class Scene extends Phaser.Scene {
         this.canShoot = false
         setTimeout(() => {
             this.canShoot = true
-        }, this.tankInfo[this.myTankName]?.reload * 25)
+        }, (this.tankInfo[this.myTankName]?.reload * 25) / 1.5)
     }
 
     displayUpgrades(change) {
