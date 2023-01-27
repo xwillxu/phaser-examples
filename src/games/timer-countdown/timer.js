@@ -1,4 +1,3 @@
-import displayMessage from '../-useful-stuff-/createMessage'
 import * as workerTimers from 'worker-timers';
 
 let currentTimeout;
