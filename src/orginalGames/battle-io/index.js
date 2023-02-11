@@ -17,6 +17,7 @@ const config = {
             debug: false
         }
     },
+    backgroundColor: 0x50C878,
     scene: [Scene]
 };
 
