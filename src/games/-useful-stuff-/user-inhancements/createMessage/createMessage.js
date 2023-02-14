@@ -39,7 +39,7 @@ export default function displayMessage(msgText, msgType, msgName = 'User') {
         case 'chat':
 
             msg.style.backgroundImage = 'url(https://raw.githubusercontent.com/mdn/learning-area/main/javascript/building-blocks/functions/icons/chat.png)'
-            panel.style.backgroundColor = 'green'
+            panel.style.backgroundColor = 'blue'
             break
         case 'happy':
             msg.style.backgroundImage = 'url(http://www.get-emoji.com/images/emoji/2705.png)'
