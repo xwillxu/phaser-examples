@@ -25,8 +25,8 @@ export default class Scene extends Phaser.Scene {
         this.instructionsFive = displayMessage("You may change your weapon everytime you kill a enemy. Once you switch weapons you keep your mastery for you old weapon (just in case you want to switch back). Your new weapon will have mastery 1 or if you used it before you will get the old mastery.", "chat", "Battle.io")
         this.instructionsSix = displayMessage("There are currently three types of weapons, that each have three types of weapons in each catergory. These weapons in each catergory have different stats, but all belong to the same catergory. The three types of weapons are, swords, long ranged weapons, and abilitys. ", "chat", "Battle.io")
         this.instructionsSeven = displayMessage("Sword Catergory: [Double Iron Katana: [Damage: 15, Reload: 0.3secs, Range: 8], Emerald Sword: [Damage: 20, Reload: 0.4secs, Range: 7], Daggers: [Damage 6, Reload: 0.1secs, Range: 5]], Range Catergory: [Crossbow: [Damage: 50, Reload: 1.1secs, Speed: 35], Bazooka: [Damage: 100, Reload: 2.5secs, Speed: 25], Minigunner: [Damage: 4, Reload: 0.1secs, Speed: 30]]", "chat", "Battle.io")
-        this.instructionsEight = displayMessage("Ability Catergory: [Light: Player becomes a star and moves at increased speed of 12, deals 2 damage every 0.07 secs ]", "chat", "Battle.io")
-
+        this.instructionsEight = displayMessage("Ability Catergory: [Light: Player uses the Light sword: Damage: 8, Reload: 0.2secs, Range: 7. Also the player with Light gets a speed multiplier of x1.2. Fire: Uses the Fire sword: Damage: 17, Reload: 0.4secs, Range: 7. Also the player with Fire gets the fire affect which after a hit gives 3 damage over one second.", "chat", "Battle.io")
+        this.instructionsNine = displayMessage("")
 
     }
 }
