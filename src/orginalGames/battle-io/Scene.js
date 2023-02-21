@@ -36,7 +36,7 @@ export default class Scene extends Phaser.Scene {
 
         this.instructionsEight = displayMessage("Ability Catergory: [Light: Player uses the Light sword: Damage: 8, Reload: 0.2secs, Range: 7, Knockback: 8. Also the player with Light gets the Light Affect. Fire: Uses the Fire sword: Damage: 17, Reload: 0.4secs, Range: 7,  Knockback: 9. Also the player with Fire gets the Fire Affect. Wind: Player uses the Knockback Crossbow: Damage: 25, Reload: 0.7secs, Speed: 50, Knockback: 15. The player with wind also gets the Wind Affect.", "chat", "Battle.io")
 
-        this.instructionsNine = displayMessage("")
+        this.instructionsNine = displayMessage("There are currently three teams, you can actively join red team or blue team. The third team is the AI team, the amount of AIs depends on the mean of the player amount of the red team and blue team. The AI team can win and in that case all the players lost.", "chat", "Battle.io")
 
     }
 }
