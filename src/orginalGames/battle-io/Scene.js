@@ -34,10 +34,10 @@ export default class Scene extends Phaser.Scene {
 
         this.instructionsSeven = displayMessage("Sword Catergory: [Double Iron Katana: [Damage: 15, Reload: 0.3secs, Range: 8, Knockback: 10], Emerald Sword: [Damage: 20, Reload: 0.4secs, Range: 7, Knockback: 9], Daggers: [Damage 6, Reload: 0.1secs, Range: 5, Knockback: 4]], Range Catergory: [Crossbow: [Damage: 50, Reload: 1.1secs, Speed: 35, Knockback: 14], Bazooka: [Damage: 99, Reload: 2.1secs, Speed: 25, Knockback: 30], Minigunner: [Damage: 4, Reload: 0.1secs, Speed: 30, Knockback: 2]]", "chat", "Battle.io")
 
-        this.instructionsEight = displayMessage("Ability Catergory: [Light: Player uses the Light sword: Damage: 8, Reload: 0.2secs, Range: 7, Knockback: 8. Also the player with Light gets the Light Affect. Fire: Uses the Fire sword: Damage: 17, Reload: 0.4secs, Range: 7,  Knockback: 9. Also the player with Fire gets the Fire Affect. Wind: Player uses the Knockback Crossbow: Damage: 25, Reload: 0.7secs, Speed: 50, Knockback: 15. The player with wind also gets the Wind Affect.", "chat", "Battle.io")
+        this.instructionsEight = displayMessage("Ability Catergory: [Light: Player uses the Light Bow: Damage: 20, Reload: 0.5secs, Speed: 50, Knockback: 14, Knockback: 8. Also the player with Light gets the Light Affect. Fire: Uses the Fire sword: Damage: 17, Reload: 0.4secs, Range: 7,  Knockback: 9. Also the player with Fire gets the Fire Affect. Wind: Player uses the Knockback Crossbow: Damage: 25, Reload: 0.7secs, Speed: 50, Knockback: 15. The player with wind also gets the Wind Affect.", "chat", "Battle.io")
 
         this.instructionsNine = displayMessage("There are currently three teams, you can actively join red team or blue team. The third team is the AI team, the amount of AIs depends on the mean of the player amount of the red team and blue team. The AI team can win and in that case all the players lost. Win", "chat", "Battle.io")
 
-
+        this.instructionsTen = displayMessage("Currently the version of this game is 1.0, each new update will have more stuff. This is still a test version though. Updates coming up in an unknown amount of time.")
     }
 }
