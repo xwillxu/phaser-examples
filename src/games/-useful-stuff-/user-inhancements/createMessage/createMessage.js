@@ -23,14 +23,14 @@ export default function displayMessage(msgText, msgType, msgName = 'User') {
     closeBtn.addEventListener('click', () => panel.parentNode.removeChild(panel))
     switch (msgType) {
         case 'warning':
-            msg.style.backgroundImage = 'url(https://raw.githubusercontent.com/mdn/learning-area/main/javascript/building-blocks/functions/icons/warning.png)'
+            msg.style.backgroundImage = 'url(https://static.vecteezy.com/system/resources/previews/012/042/292/original/warning-sign-icon-transparent-background-free-png.png)'
             panel.style.backgroundColor = 'red'
             panel.style.width = "342px"
             msg.style.textTransform = "uppercase";
             msg.style.fontWeight = 'bolder'
             break;
         case 'sorry':
-            msg.style.backgroundImage = 'url(https://raw.githubusercontent.com/mdn/learning-area/main/javascript/building-blocks/functions/icons/warning.png)'
+            msg.style.backgroundImage = 'url(https://static.vecteezy.com/system/resources/previews/012/042/301/original/warning-sign-icon-transparent-background-free-png.png)'
             panel.style.backgroundColor = 'yellow'
             panel.style.width = "342px"
             msg.style.textTransform = "uppercase";
