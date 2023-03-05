@@ -6,11 +6,14 @@ function wildFire(event) {
     setTimeout(() => {
         item.textContent = '💧'
         item.style.backgroundColor = 'blue'
-    }, 4000)
+    }, 8000)
     setTimeout(() => {
+        if (item.textContent = '🔥') {
+            return
+        }
         item.textContent = '🌲'
         item.style.backgroundColor = 'green'
-    }, 8000)
+    }, 24000)
 
 }
 for (let x = 1; x <= 5000; x++) {
