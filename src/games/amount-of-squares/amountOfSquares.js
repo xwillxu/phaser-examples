@@ -1,31 +1,6 @@
 // Import Stuff
 import displayMessage from "../-useful-stuff-/user-inhancements/createMessage/createMessage.js"
 
-let alertBox;
-let alertClose;
-
-function closeAlertBox() {
-    alertBox = document.getElementById("alertBox");
-    alertClose = document.getElementById("alertClose");
-    alertBox.style.visibility = "hidden";
-    alertClose.style.visibility = "hidden";
-}
-window.alert = function (msg) {
-    var id = "alertBox", alertBox, closeId = "alertClose", alertClose;
-    alertBox = document.createElement("div");
-    document.body.appendChild(alertBox);
-    alertBox.id = id;
-    alertBox.innerHTML = msg;
-    alertClose = document.createElement("div");
-    alertClose.id = closeId;
-    alertClose.innerHTML = "x";
-    alertBox.appendChild(alertClose);
-    alertBox.style.visibility = "visible";
-    alertClose.style.visibility = "visible";
-    alertClose.onclick = closeAlertBox;
-};
-
-
 // Get HTML Elements
 const enterNumberBtn = document.querySelector('.enterButton')
 const enterNumberText = document.querySelector('.typeNumber')
@@ -46,7 +21,9 @@ const bannedNumbers = ['0']
 
 
 enterNumberBtn.addEventListener('click', () => {
+    // @ts-ignore
     const text = enterNumberText.value
+    // @ts-ignore
     enterNumberText.value = ''
 
     if (isNaN(text)) {
@@ -68,7 +45,9 @@ enterNumberBtn.addEventListener('click', () => {
 })
 
 answerQuestionBtn.addEventListener('click', () => {
+    // @ts-ignore
     const text = answerQuestionText.value
+    // @ts-ignore
     answerQuestionText.value = ''
     if (!ableAnswer == true) {
         displayMessage("Can't Answer", "warning")
@@ -120,20 +99,25 @@ function reset() {
     answer = 0
     ableAnswer = false
     squareContainer.innerHTML = ''
+    // @ts-ignore
     answerQuestionText.value = ''
+    // @ts-ignore
     showAnswer.style.visibility = 'hidden'
     showAnswer.textContent = 'Show Answer'
 }
 
 // Show answer
 function showAnswerBtn() {
+    // @ts-ignore
     showAnswer.style.visibility = 'visible'
 }
 
 showAnswer.addEventListener('click', () => {
+    // @ts-ignore
     showAnswer.textContent = answer
     ableAnswer = false
     setTimeout(() => displayMessage('You have cheated. You must do another puzzle.', 'warning'), 200)
+    // @ts-ignore
     bannedNumbers.push(currentSquares)
     setTimeout(() => reset(), 2200)
 
