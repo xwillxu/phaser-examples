@@ -1,5 +1,30 @@
 // Import Stuff
-import displayMessage from "../-useful-stuff-/createMessage.js"
+import displayMessage from "../-useful-stuff-/user-inhancements/createMessage/createMessage.js"
+
+let alertBox;
+let alertClose;
+
+function closeAlertBox() {
+    alertBox = document.getElementById("alertBox");
+    alertClose = document.getElementById("alertClose");
+    alertBox.style.visibility = "hidden";
+    alertClose.style.visibility = "hidden";
+}
+window.alert = function (msg) {
+    var id = "alertBox", alertBox, closeId = "alertClose", alertClose;
+    alertBox = document.createElement("div");
+    document.body.appendChild(alertBox);
+    alertBox.id = id;
+    alertBox.innerHTML = msg;
+    alertClose = document.createElement("div");
+    alertClose.id = closeId;
+    alertClose.innerHTML = "x";
+    alertBox.appendChild(alertClose);
+    alertBox.style.visibility = "visible";
+    alertClose.style.visibility = "visible";
+    alertClose.onclick = closeAlertBox;
+};
+
 
 // Get HTML Elements
 const enterNumberBtn = document.querySelector('.enterButton')
@@ -31,6 +56,7 @@ enterNumberBtn.addEventListener('click', () => {
     for (const number of bannedNumbers) {
         if (text == number) {
             displayMessage('Unable To Create Squares.', 'warning')
+            alert("test")
             return
         }
     }
