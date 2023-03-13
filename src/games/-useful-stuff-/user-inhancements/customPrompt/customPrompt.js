@@ -13,15 +13,17 @@ export function createCustomPrompt(text, buttonText, backgroundRGB, textRGB, pla
     promptInputText.placeholder = String(placeholderInput)
     const promptButton = document.createElement("button")
     promptButton.innerText = String(buttonText)
-    promptButton.addEventListener("click", () => {
-
-    })
-
-
-    promptDiv.append(promptInnerDiv, promptButton)
+    promptDiv.append(promptInnerDiv, promptButton, promptInputText)
     promptDiv.style.backgroundColor = backgroundRGB
     promptParaText.style.fontFamily = "sans-serif"
     promptParaText.style.color = textRGB
+
+    promptButton.addEventListener("click", () => {
+        if (promptDiv.hidden == false) {
+            // TODO: Submit stuff to the file that wants the info
+        }
+    })
+
     return promptDiv
 }
 
