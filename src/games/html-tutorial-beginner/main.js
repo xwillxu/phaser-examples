@@ -5,7 +5,7 @@ let title = 'Google is Cool, '
 const myCoolInterval = setInterval(function () {
     changeH1(h1, 'Xwill Hacked')
     setTimeout(function () { changeH1(h1, 'Google is Cool') }, 3000)
-}, 6000)
+}, 2000)
 
 setTimeout(function () {
     clearInterval(myCoolInterval)
