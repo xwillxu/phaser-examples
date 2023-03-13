@@ -1,16 +1,35 @@
-export default function createCustomPrompt(text, buttonText, backgroundRGB, textRGB) {
+export function createCustomPrompt(text, buttonText, backgroundRGB, textRGB, placeholderInput) {
     const promptDiv = document.createElement("div")
-    promptDiv.id = "custom-prompt"
+    promptDiv.id = "customPrompt"
     const promptInnerDiv = document.createElement("div")
-    promptInnerDiv.id = "prompt-inner-div"
+    promptInnerDiv.id = "promptInnerDiv"
     const promptParaText = document.createElement("p")
     promptParaText.innerText = String(text)
+    promptParaText.id = "paraText"
     promptInnerDiv.append(promptParaText)
+    const promptInputText = document.createElement("input")
+    promptInputText.type = "text"
+    promptInputText.id = "inputText"
+    promptInputText.placeholder = String(placeholderInput)
     const promptButton = document.createElement("button")
     promptButton.innerText = String(buttonText)
+    promptButton.addEventListener("click", () => {
+
+    })
+
+
     promptDiv.append(promptInnerDiv, promptButton)
     promptDiv.style.backgroundColor = backgroundRGB
     promptParaText.style.fontFamily = "sans-serif"
     promptParaText.style.color = textRGB
     return promptDiv
+}
+
+export function openCloseCustomPrompt(customPrompt) {
+    if (customPrompt.hidden == false) {
+        customPrompt.hidden = true
+    } else {
+        customPrompt.hidden = false
+    }
+
 }
