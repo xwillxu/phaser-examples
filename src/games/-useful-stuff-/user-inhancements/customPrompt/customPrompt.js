@@ -20,6 +20,7 @@ export function createCustomPrompt(text, buttonText, backgroundRGB, textRGB, pla
 
     promptButton.addEventListener("click", () => {
         if (promptDiv.hidden == false) {
+            openCloseCustomPrompt(promptDiv)
             // TODO: Submit stuff to the file that wants the info
         }
     })
