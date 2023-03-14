@@ -37,15 +37,24 @@ export default class Scene extends Phaser.Scene {
     }
 
     getUserName() {
-
+        prompt("Enter Name", "")?.slice(0, 30)
     }
 
     connectToServer() {
+        var host = window.document.location.host.replace(/:.*/, '');
+        let serverAdress = location.protocol.replace("http", "ws") + "//" + host + ':' + '2567'
+        if (host.indexOf('localhost') === -1) {
+            serverAdress = 'wss://ws.imini.app'
+        }
 
-    }
+        var client = new Colyseus.Client(serverAdress);
+
+        client.joinOrCreate("diep_io_v2-hybrid", { name: this.name }).then(room_instance => {
+            this.room = room_instance
+        }
 
     create() {
-        this.getUserName()
+            this.getUserName()
         this.connectToServer()
-    }
+        }
 }
