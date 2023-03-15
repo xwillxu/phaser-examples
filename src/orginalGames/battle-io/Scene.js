@@ -32,11 +32,10 @@ export default class Scene extends Phaser.Scene {
         this.instructionsNine = displayMessage("There are currently three teams, you can actively join red team or blue team. The third team is the AI team, the amount of AIs depends on the mean of the player amount of the red team and blue team. The AI team can win and in that case all the players lost. When you win, you will basically become god and it's a free for all.", "chat", "Battle.io")
         this.instructionsTen = displayMessage("Currently the version of this game is 1.0, each new update will have more stuff. This is still a test version though. Updates coming up in an unknown amount of time. Each update should happen about every six months. Each update I'll add more stuff in the game.", "chat", "Battle.io")
         this.instructionsEleven = displayMessage("HAVE FUN!", "happy")
-
-
     }
 
     getUserName() {
+        // TODO: V1 menu will be added later.
         prompt("Enter Name", "")?.slice(0, 30)
     }
 
@@ -51,10 +50,10 @@ export default class Scene extends Phaser.Scene {
 
         client.joinOrCreate("diep_io_v2-hybrid", { name: this.name }).then(room_instance => {
             this.room = room_instance
-        }
-
+        })
+    }
     create() {
-            this.getUserName()
+        this.getUserName()
         this.connectToServer()
-        }
+    }
 }
