@@ -3,7 +3,7 @@
 # Phaser 3 + Parcel Template
 > For people who want to spend time making games instead of configuring build tools.
 
-![License](https://img.shields.io/badge/license-MIT-green)
+![License](https://img.shields.io/badge/license-MIT_License-green) ![Games](https://img.shields.io/badge/Advise-Use_Phaser.Canvas-informational)
 
 ## Prerequisites
 
