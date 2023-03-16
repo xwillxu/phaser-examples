@@ -48,7 +48,7 @@ export default class Scene extends Phaser.Scene {
 
         var client = new Colyseus.Client(serverAdress);
 
-        client.joinOrCreate("diep_io_v2-hybrid", { name: this.name }).then(room_instance => {
+        client.joinOrCreate("battle_io", { name: this.name }).then(room_instance => {
             this.room = room_instance
         })
     }
