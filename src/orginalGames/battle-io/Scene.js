@@ -61,7 +61,7 @@ export default class Scene extends Phaser.Scene {
     }
 
     setupKeys() {
-        // Get All Keyboard Stuff
+        // Create all the keys that will be used:
         this.cursors = this.input.keyboard.createCursorKeys()
         this.WKey = this.input.keyboard.addKey("W")
         this.AKey = this.input.keyboard.addKey("A")
@@ -70,6 +70,12 @@ export default class Scene extends Phaser.Scene {
         this.EKey = this.input.keyboard.addKey("E")
         this.ZKey = this.input.keyboard.addKey("Z")
         this.XKey = this.input.keyboard.addKey("X")
+
+        // Make the keys created accessible:
+        this.keystate = {
+            "W": false, "A": false, "S": false, "D": false, "E": false, "Z": false, "X": false
+        }
+
     }
 
     create() {
