@@ -17,6 +17,8 @@ export default class Scene extends Phaser.Scene {
         this.enemys = {}
         // The AI/Enemy's weapons list
         this.enemysWeapoms = {}
+        // The list were all the players state info is
+        this.statePlayers = {}
         // The player's name
         this.name = ""
         // The player's instuctions 1-11
@@ -50,11 +52,22 @@ export default class Scene extends Phaser.Scene {
 
         client.joinOrCreate("battle_io", { name: this.name }).then(room_instance => {
             this.room = room_instance
+
+            this.room.state.players.onAdd = (player, sessionId) => {
+                this.statePlayers[sessionId] = player
+
+            }
         })
     }
+
+    setupKeys() {
+
+    }
+
     create() {
         this.getUserName()
         this.connectToServer()
+        this.setupKeys()
     }
 
     update() {
