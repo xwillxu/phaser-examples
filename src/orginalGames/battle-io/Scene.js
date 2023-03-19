@@ -21,6 +21,8 @@ export default class Scene extends Phaser.Scene {
         this.statePlayers = {}
         // The player's name
         this.name = ""
+        // State for the keys
+        this.keystate = {}
         // The player's instuctions 1-11
         this.instructionsOne = displayMessage("Hello guest/user welcome to battle.io.", "chat", "Battle.io")
         this.instructionsTwo = displayMessage("The objectives of the game are to fight enemies (both AI, and other guests/users), stay alive for as long as possible, and gain lots of EXP for you team. The team with the most score will win the game!", "chat", "Battle.io")
@@ -75,6 +77,63 @@ export default class Scene extends Phaser.Scene {
         this.keystate = {
             "W": false, "A": false, "S": false, "D": false, "E": false, "Z": false, "X": false
         }
+
+        // Add the events that will trigger the changes in the state for all the keys:
+        this.WKey.on("down", () => {
+            this.keystate.W = true
+        }, this)
+
+        this.WKey.on("up", () => {
+            this.keystate.W = true
+        }, this)
+
+        this.AKey.on("down", () => {
+            this.keystate.A = true
+        }, this)
+
+        this.AKey.on("up", () => {
+            this.keystate.A = true
+        }, this)
+
+        this.SKey.on("down", () => {
+            this.keystate.S = true
+        }, this)
+
+        this.SKey.on("up", () => {
+            this.keystate.S = true
+        }, this)
+
+        this.DKey.on("down", () => {
+            this.keystate.D = true
+        }, this)
+
+        this.DKey.on("up", () => {
+            this.keystate.D = true
+        }, this)
+
+        this.EKey.on("down", () => {
+            this.keystate.E = true
+        }, this)
+
+        this.EKey.on("up", () => {
+            this.keystate.E = true
+        }, this)
+
+        this.ZKey.on("down", () => {
+            this.keystate.Z = true
+        }, this)
+
+        this.ZKey.on("up", () => {
+            this.keystate.Z = true
+        }, this)
+
+        this.XKey.on("down", () => {
+            this.keystate.X = true
+        }, this)
+
+        this.XKey.on("up", () => {
+            this.keystate.X = true
+        }, this)
 
     }
 
