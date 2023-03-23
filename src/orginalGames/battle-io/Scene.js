@@ -155,9 +155,14 @@ export default class Scene extends Phaser.Scene {
     }
 
     startTimer(eventHappens) {
-        let time = 0
-        if (!eventHappens) {
+        let time;
+        const timeInterval = setInterval(() => {
+            time + 0.1
+        }, 100)
+        if (eventHappens) {
             time += 16.67
+        } else {
+            time = time
         }
 
         return time
