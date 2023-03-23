@@ -150,7 +150,14 @@ export default class Scene extends Phaser.Scene {
     }
 
     specialAttackXStrike(fightingStyle, weapon, mastery, time) {
-
+        //
+        // Just realised that this stuff should be on server side.
+        //
+        //What can I do?
+        //
+        // Should take me time to figure out what to do.
+        //
+        //
     }
 
     startTimerXMove(fightingStyle, weapon, mastery, eventHappens) {
