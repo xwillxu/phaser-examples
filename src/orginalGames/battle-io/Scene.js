@@ -144,8 +144,7 @@ export default class Scene extends Phaser.Scene {
 
     specialAttackXPowerUp(fightingStyle, weapon, mastery) {
         if (this.keystate.X) {
-            const time = this.startTimer(!this.keystate.X)
-            this.specialAttackXStrike(fightingStyle, weapon, mastery, time)
+            const time = this.startTimerXMove(fightingStyle, weapon, mastery, !this.keystate.X)
         }
 
     }
@@ -154,18 +153,18 @@ export default class Scene extends Phaser.Scene {
 
     }
 
-    startTimer(eventHappens) {
+    startTimerXMove(fightingStyle, weapon, mastery, eventHappens) {
         let time;
+
         const timeInterval = setInterval(() => {
-            time + 0.1
+            time += 0.1
         }, 100)
+
         if (eventHappens) {
-            time += 16.67
-        } else {
-            time = time
+            clearInterval(timeInterval)
+            this.specialAttackXStrike(fightingStyle, weapon, mastery, time)
         }
 
-        return time
     }
 
 
