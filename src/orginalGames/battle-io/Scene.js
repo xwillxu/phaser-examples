@@ -144,7 +144,13 @@ export default class Scene extends Phaser.Scene {
 
     specialAttackXPowerUp(fightingStyle, weapon, mastery) {
         if (this.keystate.X) {
-            const time = this.startTimerXMove(fightingStyle, weapon, mastery, !this.keystate.X) // room
+            const specialAttackXObject = {
+                fightingStyle: fightingStyle,
+                weapon: weapon,
+                mastery: mastery,
+                event: !this.keystate.X
+            }
+            this.room.send("specialAttackXStart", specialAttackXObject)
         }
 
     }
