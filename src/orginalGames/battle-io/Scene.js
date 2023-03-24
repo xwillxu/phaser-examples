@@ -144,32 +144,13 @@ export default class Scene extends Phaser.Scene {
 
     specialAttackXPowerUp(fightingStyle, weapon, mastery) {
         if (this.keystate.X) {
-            const time = this.startTimerXMove(fightingStyle, weapon, mastery, !this.keystate.X)
-        }
-
-    }
-
-    specialAttackXStrike(fightingStyle, weapon, mastery, time) {
-        //
-        // Just realised that this stuff should be on server side.
-        //
-        //What can I do?
-        //
-        // Should take me time to figure out what to do.
-        //
-        //
-    }
-
-    startTimerXMove(fightingStyle, weapon, mastery, eventHappens) {
-        let time;
-
-        const timeInterval = setInterval(() => {
-            time += 0.1
-        }, 100)
-
-        if (eventHappens) {
-            clearInterval(timeInterval)
-            this.specialAttackXStrike(fightingStyle, weapon, mastery, time)
+            const specialAttackXObject = {
+                fightingStyle: fightingStyle,
+                weapon: weapon,
+                mastery: mastery,
+                event: !this.keystate.X
+            }
+            this.room.send("specialAttackXStart", specialAttackXObject)
         }
 
     }
