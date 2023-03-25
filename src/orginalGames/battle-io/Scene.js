@@ -138,8 +138,13 @@ export default class Scene extends Phaser.Scene {
     }
 
     sendToRoomAttackZ(fightingStyle, weapon, mastery) {
-        if () {
-
+        if (this.keystate.Z) {
+            const specialAttackZObject = {
+                fightingStyle: fightingStyle,
+                weapon: weapon,
+                mastery: mastery
+            }
+            this.room.send("specialAttackZ", specialAttackZObject)
         }
     }
 
@@ -151,7 +156,7 @@ export default class Scene extends Phaser.Scene {
                 mastery: mastery,
                 event: !this.keystate.X
             }
-            this.room.send("specialAttackXStart", specialAttackXObject)
+            this.room.send("specialAttackX", specialAttackXObject)
         }
 
     }
