@@ -121,7 +121,6 @@ export default class Scene extends Phaser.Scene {
 
         this.ZKey.on("down", () => {
             this.keystate.Z = true
-            this.specialAttackZ()
         }, this)
 
         this.ZKey.on("up", () => {
@@ -138,11 +137,13 @@ export default class Scene extends Phaser.Scene {
 
     }
 
-    specialAttackZ(fightingStyle, weapon, mastery) {
+    sendToRoomAttackZ(fightingStyle, weapon, mastery) {
+        if () {
 
+        }
     }
 
-    specialAttackXPowerUp(fightingStyle, weapon, mastery) {
+    sendToRoomAttackX(fightingStyle, weapon, mastery) {
         if (this.keystate.X) {
             const specialAttackXObject = {
                 fightingStyle: fightingStyle,
