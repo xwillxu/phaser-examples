@@ -161,7 +161,19 @@ export default class Scene extends Phaser.Scene {
 
     }
 
-    //TODO: MOve timer BacK tO cLieNt sIdE
+    startTimerXMove(fightingStyle, weapon, mastery, eventHappens) {
+        let time;
+
+        const timeInterval = setInterval(() => {
+            time += 0.1
+        }, 100)
+
+        if (eventHappens) {
+            clearInterval(timeInterval)
+            this.specialAttackXStrike(fightingStyle, weapon, mastery, time)
+        }
+
+    }
 
 
     create() {
