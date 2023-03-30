@@ -148,6 +148,8 @@ export default class Scene extends Phaser.Scene {
         }
     }
 
+    // TODO: Do something to add stuff to room attack Z
+
     sendToRoomAttackX(fightingStyle, weapon, mastery, time) {
         if (this.keystate.X) {
             const specialAttackXObject = {
