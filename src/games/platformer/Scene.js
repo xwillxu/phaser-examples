@@ -2,21 +2,37 @@ import Phaser from 'phaser'
 import SpriteWithHealthBar from './SpriteWithHealthBar'
 import BossSprite from './BossSprite'
 
+// @ts-ignore
 import map0 from '../../assets/Platformer-Template.json'
+// @ts-ignore
 import map1 from '../../assets/Platformer-Template2.json'
+// @ts-ignore
 import map2 from '../../assets/Platformer-Template3.json'
+// @ts-ignore
 import bossMap from '../../assets/Boss-Map.json'
+// @ts-ignore
 import texture from '../../assets/texture.extruded.png'
+// @ts-ignore
 import player_image from '../../assets/dude-cropped.png'
+// @ts-ignore
 import player_image2 from '../../assets/dude-cropped-red.png'
+// @ts-ignore
 import player_image3 from '../../assets/dude-cropped-blue.png'
+// @ts-ignore
 import box_image from '../../assets/box-item-boxed.png'
+// @ts-ignore
 import slimeBlue from '../../assets/slimeBlue.png'
+// @ts-ignore
 import bossSprite from '../../assets/SlimeMonster.png'
+// @ts-ignore
 import bossLaser from '../../assets/laser.png'
+// @ts-ignore
 import missleItem from '../../assets/MultiShotItem.png'
+// @ts-ignore
 import slimeBlue_move from '../../assets/slimeBlue_move.png'
+// @ts-ignore
 import gameover from '../../assets/gameover1.wav'
+// @ts-ignore
 import backmusic from '../../assets/background-music.wav'
 
 export default class Scene extends Phaser.Scene {
@@ -147,6 +163,7 @@ export default class Scene extends Phaser.Scene {
             fontSize: '50px',
             padding: { x: 20, y: 10 },
             backgroundColor: '#ffffff',
+            // @ts-ignore
             fill: 'red'
         });
 
@@ -186,6 +203,7 @@ export default class Scene extends Phaser.Scene {
             fontSize: '50px',
             padding: { x: 20, y: 10 },
             backgroundColor: '#ffffff',
+            // @ts-ignore
             fill: 'green'
         });
 
@@ -377,18 +395,19 @@ export default class Scene extends Phaser.Scene {
             for (const pair of event.pairs) {
                 let bodyA = pair.bodyA;
                 let bodyB = pair.bodyB;
-
+                // @ts-ignore
                 if (bodyA == this.playerSprite.body) {
                     const tile = bodyB.gameObject?.tile
 
                     if (tile && tile.properties.die) {
                         this.die()
                     }
-                }
+                }// @ts-ignore
                 if (bodyB == this.playerSprite.body) {
                     const tile = bodyA.gameObject?.tile
 
                     if (tile && tile.properties.die) {
+                        // @ts-ignore
                         this.die()
                     }
                 }
@@ -398,6 +417,7 @@ export default class Scene extends Phaser.Scene {
                 if (bodyA.label == 'bullet' && bodyB.label == 'enemy') {
                     enemyHit = bodyB
                     bodyA.gameObject?.destroy()
+                    // @ts-ignore
                     this.matter.world.remove(bodyA)
 
                 }
@@ -405,6 +425,7 @@ export default class Scene extends Phaser.Scene {
                 if (bodyB.label == 'bullet' && bodyA.label == 'enemy') {
                     enemyHit = bodyA
                     bodyB.gameObject?.destroy()
+                    // @ts-ignore
                     this.matter.world.remove(bodyB)
 
                 }
@@ -416,9 +437,12 @@ export default class Scene extends Phaser.Scene {
                         enemyHit.gameObject?.removeHp()
                         // Enemy has zero hp now
                         enemyHit.gameObject?.destroy()
+                        // @ts-ignore
                         this.matter.world.remove(enemyHit)
+                        // @ts-ignore
                         // Earn Score
                         this.score += 20
+                        // @ts-ignore
                         // Respawn Enemy
                         this.enemy()
                     }
@@ -429,6 +453,7 @@ export default class Scene extends Phaser.Scene {
                 if (bodyA.label == 'bullet' && bodyB.label == 'boss') {
                     bossHit = bodyB
                     bodyA.gameObject?.destroy()
+                    // @ts-ignore
                     this.matter.world.remove(bodyA)
 
                 }
@@ -436,22 +461,24 @@ export default class Scene extends Phaser.Scene {
                 if (bodyB.label == 'bullet' && bodyA.label == 'boss') {
                     bossHit = bodyA
                     bodyB.gameObject?.destroy()
+                    // @ts-ignore
                     this.matter.world.remove(bodyB)
 
                 }
 
                 // Process enemy hp bar
-
                 if (bossHit) {
                     const result = bossHit.gameObject?.damage(5)
                     if (result === true) {
                         bossHit.gameObject?.removeHp()
                         // Enemy has zero hp now
                         bossHit.gameObject?.destroy()
+                        // @ts-ignore
                         this.matter.world.remove(bossHit)
+                        // @ts-ignore
                         // Earn Score
                         this.score += 500
-
+                        // @ts-ignore
                         this.bossKilled += 1
                         // Killed 10 Bosses? You Win!
                         if (this.bossKilled >= 10) {
