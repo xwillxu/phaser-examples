@@ -1,6 +1,7 @@
-import Phaser, { FacebookInstantGamesLeaderboard } from 'phaser'
+import Phaser from 'phaser'
 import * as Colyseus from "colyseus.js"
-import displayMessage from "../../games/-useful-stuff-/user-inhancements/createMessage/createMessage"
+import displayMessage from "../-useful-stuff-/user-inhancements/createMessage/createMessage"
+import playerImage from "../../assets/battleIoPlayer.png"
 
 export default class Scene extends Phaser.Scene {
     constructor() {
@@ -43,6 +44,10 @@ export default class Scene extends Phaser.Scene {
         prompt("Enter Name", "")?.slice(0, 30)
     }
 
+    preload() {
+        this.load.image("playerImage", playerImage)
+    }
+
     connectToServer() {
         var host = window.document.location.host.replace(/:.*/, '');
         let serverAdress = location.protocol.replace("http", "ws") + "//" + host + ':' + '2567'
@@ -57,6 +62,10 @@ export default class Scene extends Phaser.Scene {
 
             this.room.state.players.onAdd = (player, sessionId) => {
                 this.statePlayers[sessionId] = player
+
+                let playerContainer = this.add.container(player.x, player.y, [])
+                const playerMainBody = this.add.sprite()
+
 
             }
         })
