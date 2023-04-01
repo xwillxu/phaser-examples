@@ -148,23 +148,25 @@ export default class Scene extends Phaser.Scene {
         }
     }
 
-    // TODO: Do something to add stuff to room attack Z
 
     sendToRoomAttackX(fightingStyle, weapon, mastery, time) {
-        if (this.keystate.X) {
-            const specialAttackXObject = {
-                fightingStyle: fightingStyle,
-                weapon: weapon,
-                mastery: mastery,
-                time: time
-            }
-            this.room.send("specialAttackX", specialAttackXObject)
+
+        const specialAttackXObject = {
+            fightingStyle: fightingStyle,
+            weapon: weapon,
+            mastery: mastery,
+            time: time
         }
+        this.room.send("specialAttackX", specialAttackXObject)
+
 
     }
 
     startTimerXMove(fightingStyle, weapon, mastery, eventHappens) {
+        if (!this.keystate.X) return
+
         let time;
+
 
         const timeInterval = setInterval(() => {
             time += 0.1
