@@ -400,6 +400,7 @@ export default class Scene extends Phaser.Scene {
                     const tile = bodyB.gameObject?.tile
 
                     if (tile && tile.properties.die) {
+                        // @ts-ignore
                         this.die()
                     }
                 }// @ts-ignore
@@ -422,7 +423,8 @@ export default class Scene extends Phaser.Scene {
 
                 }
 
-                if (bodyB.label == 'bullet' && bodyA.label == 'enemy') {
+                if (bodyB.label == 'bullet' && bodyA.label
+                    == 'enemy') {
                     enemyHit = bodyA
                     bodyB.gameObject?.destroy()
                     // @ts-ignore
@@ -481,12 +483,15 @@ export default class Scene extends Phaser.Scene {
                         // @ts-ignore
                         this.bossKilled += 1
                         // Killed 10 Bosses? You Win!
+                        // @ts-ignore
                         if (this.bossKilled >= 10) {
+                            // @ts-ignore
                             this.youWon()
                         }
 
                         else {
                             // Respawn Enemy
+                            // @ts-ignore
                             this.createBoss()
                         }
                     }
@@ -494,55 +499,67 @@ export default class Scene extends Phaser.Scene {
 
                 if (bodyA.label == 'bullet' && bodyB.label == 'bossbullet') {
                     bodyA.gameObject?.destroy()
+                    // @ts-ignore
                     this.matter.world.remove(bodyA)
                     bodyB.gameObject?.destroy()
+                    // @ts-ignore
                     this.matter.world.remove(bodyB)
 
                 }
 
                 if (bodyB.label == 'bullet' && bodyA.label == 'bossbullet') {
                     bodyB.gameObject?.destroy()
+                    // @ts-ignore
                     this.matter.world.remove(bodyB)
                     bodyA.gameObject?.destroy()
+                    // @ts-ignore
                     this.matter.world.remove(bodyA)
 
                 }
-
+                // @ts-ignore
                 if (bodyA == this.playerSprite.body && bodyB.label == 'bossbullet') {
+                    // @ts-ignore
                     this.die()
                     bodyB.gameObject?.destroy()
+                    // @ts-ignore
                     this.matter.world.remove(bodyB)
 
                 }
-
+                // @ts-ignore
                 if (bodyB == this.playerSprite.body && bodyA.label == 'bossbullet') {
+                    // @ts-ignore
                     this.die()
                     bodyA.gameObject?.destroy()
+                    // @ts-ignore
                     this.matter.world.remove(bodyA)
 
                 }
-
+                // @ts-ignore
                 if (bodyA == this.playerSprite.body && bodyB.label == 'item') {
+                    // @ts-ignore
                     this.bulletCount += 2
                     bodyB.gameObject?.destroy()
+                    // @ts-ignore
                     this.matter.world.remove(bodyB)
 
                 }
-
+                // @ts-ignore
                 if (bodyB == this.playerSprite.body && bodyA.label == 'item') {
+                    // @ts-ignore
                     this.bulletCount += 2
                     bodyA.gameObject?.destroy()
+                    // @ts-ignore
                     this.matter.world.remove(bodyA)
 
                 }
-
+                // @ts-ignore
                 if (bodyA == this.playerSprite.body) {
                     const tile = bodyB.gameObject?.tile
 
                     if (tile && tile.properties.collides) {
                         this.canJump = true
                     }
-                }
+                }// @ts-ignore
                 if (bodyB == this.playerSprite.body) {
                     const tile = bodyA.gameObject?.tile
 
@@ -654,6 +671,7 @@ export default class Scene extends Phaser.Scene {
             fontSize: '20px',
             padding: { x: 20, y: 10 },
             backgroundColor: '#ffffff',
+            // @ts-ignore
             fill: '#000000'
         });
 
@@ -678,7 +696,7 @@ export default class Scene extends Phaser.Scene {
         this.matter.world.drawDebug = false;
 
         this.playerSprite = this.matter.add.sprite(0, 0, 'player', 4)
-
+        // @ts-ignore
         let M = Phaser.Physics.Matter.Matter;
 
         let playerBody = M.Bodies.rectangle(100, 100, 32, 42)
