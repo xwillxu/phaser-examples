@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 import * as Colyseus from "colyseus.js"
 import displayMessage from "../-useful-stuff-/user-inhancements/createMessage/createMessage"
+// @ts-ignore
 import playerImage from "../../assets/battleIoPlayer.png"
 
 export default class Scene extends Phaser.Scene {
@@ -63,9 +64,16 @@ export default class Scene extends Phaser.Scene {
             this.room.state.players.onAdd = (player, sessionId) => {
                 this.statePlayers[sessionId] = player
 
-                let playerContainer = this.add.container(player.x, player.y, [])
-                const playerMainBody = this.add.sprite()
+                const playerContainer = this.add.container(player.x, player.y, [])
+                const playerMainBody = this.add.sprite(0, 0, "playerImage", 0)
+                playerContainer.add(playerMainBody)
 
+                const playerName = this.add.text(0, 0, `${this.name || "User"}`)
+                playerName.setOrigin(0.5, 0.5)
+                playerContainer.add(playerName)
+
+                this.players[sessionId] = playerContainer
+                player.onChange = //TODO: function
 
             }
         })
@@ -190,9 +198,11 @@ export default class Scene extends Phaser.Scene {
 
 
     create() {
+        const IDK = "I Don't Know"
         this.getUserName()
         this.connectToServer()
         this.setupKeys()
+        this.startTimerXMove(IDK, IDK, IDK, IDK)
     }
 
     update() {
