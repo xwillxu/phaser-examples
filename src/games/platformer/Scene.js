@@ -423,8 +423,7 @@ export default class Scene extends Phaser.Scene {
 
                 }
 
-                if (bodyB.label == 'bullet' && bodyA.label
-                    == 'enemy') {
+                if (bodyB.label == 'bullet' && bodyA.label == 'enemy') {
                     enemyHit = bodyA
                     bodyB.gameObject?.destroy()
                     // @ts-ignore
