@@ -200,6 +200,7 @@ export default class Scene extends Phaser.Scene {
     }
 
     listClients() {
+        // @ts-ignorenore
         this.scene.get('UiScene').listClients();
     }
 
