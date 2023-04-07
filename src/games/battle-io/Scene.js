@@ -79,6 +79,9 @@ export default class Scene extends Phaser.Scene {
 
             }
         })
+
+        const updateChanges = (stateObject, sessionId, tweens) => (changes) => {
+        }
     }
 
     setupKeys() {
