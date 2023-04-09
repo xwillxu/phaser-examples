@@ -7,27 +7,33 @@ import playerImage from "../../assets/battleIoPlayer.png"
 export default class Scene extends Phaser.Scene {
     constructor() {
         super("battle-io-phaser")
-        // The client's sessionId
+        // The client's sessionId:
         this.mySessionId = null
-        // The serverside room
+        // The serverside room:
         this.serverRoom = null
-        // The player list
+        // The player list:
         this.players = {}
-        // The player's weapons list
+        // The player's weapons list:
         this.playerWeapons = {}
-        // The AI/Enemy list
+        // The AI/Enemy list:
         this.enemys = {}
-        // The AI/Enemy's weapons list
+        // The AI/Enemy's weapons list:
         this.enemysWeapoms = {}
-        // The list were all the players state info is
+        // The list were all the players state info is:
         this.statePlayers = {}
-        // The player's name
+        // The player's name:
         this.name = ""
-        // State for the keys
+        // State for the keys:
         this.keystate = {}
-        // Speed Multiplier
+        // Mastery for the player:
+        this.myMastery = 1
+        // Fighting type for the player:
+        this.myFightingStyle = "Unknown"
+        // The player's weapon name:
+        this.myWeapon = "Unknown"
+        // Speed multiplier:
         this.speedMultiplier = 1
-        // The player's instuctions 1-11
+        // The player's instuctions 1-11:
         this.instructionsOne = displayMessage("Hello guest/user, welcome to battle.io.", "chat", "Battle.io")
         this.instructionsTwo = displayMessage("The objectives of the game are to fight enemies (both AI, and other guests/users), stay alive for as long as possible, and gain lots of EXP for you team. The team with the most score will win the game!", "chat", "Battle.io")
         this.instructionsThree = displayMessage("Use arrow keys or WASD to move and space key/right click will fight with the regular move. To aim, you will need to use your pointer or use the auto-aim ability. Press the E Key for auto attack. Z Key & X Key can be both used to activate a special attack. Though inbetween attacks there is some reload time.", "chat", "Battle.io")
