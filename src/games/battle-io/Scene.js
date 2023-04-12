@@ -86,7 +86,12 @@ export default class Scene extends Phaser.Scene {
             }
         })
 
-        const updateChanges = (stateObject, sessionId, tweens) => (changes) => {
+        const updateChanges = (stateObject, worldId, tweens, dictionary) => (changes) => {
+            if (!dictionary) return
+            let container = dictionary[worldId] //TODO: dict stuff
+            if (!container) return
+            let targetX = container.x
+            let targetY = container.y
         }
     }
 
