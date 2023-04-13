@@ -1,6 +1,16 @@
 import * as workerTimers from 'worker-timers';
 
 let currentTimeout;
+let repeatOn = false
+const repeatButton = document.createElement("button")
+repeatButton.textContent = "repeat"
+repeatButton.addEventListener("click", () => {
+    if (!repeatOn) {
+        repeatOn = true
+    } else {
+        repeatOn = false
+    }
+})
 
 export default function setupTimer() {
     // Create / Get HTML Elements
@@ -31,6 +41,7 @@ export default function setupTimer() {
     container.appendChild(mintext)
     container.appendChild(sectext)
     container.appendChild(button)
+    container.appendChild(repeatButton)
 
     // Style
     for (const item of container.children) {
@@ -83,13 +94,41 @@ export default function setupTimer() {
         newPara.textContent = timerDisplay
         timerContainer.innerHTML = ''
         timerContainer.appendChild(newPara)
+        let repeating = repeatOn
+        let repeatMin;
+        let repeatHour;
+        let repeatSecond;
+        let timerRepeatOn = false
+        if (repeating) {
+            const repeatMinScope = min
+            const repeatHourScope = hour
+            const repeatSecondScope = second
+            repeatMin = repeatMinScope
+            repeatHour = repeatHourScope
+            repeatSecond = repeatSecondScope
+            repeating = false
+            repeatOn = false
+            timerRepeatOn = true
+            console.log(timerRepeatOn)
+        }
 
         if (min <= 0 && hour <= 0 && second <= 0) {
             sound.play()
-            currentTimeout = workerTimers.setTimeout(() => {
-                sound.pause()
-                sound.currentTime = 0
-            }, 60000)
+            if (!timerRepeatOn) {
+                currentTimeout = workerTimers.setTimeout(() => {
+                    sound.pause()
+                    sound.currentTime = 0
+                }, 60000)
+            } else {
+                currentTimeout = workerTimers.setTimeout(() => {
+                    sound.pause()
+                    sound.currentTime = 0
+                    console.log(repeatMin, repeatHour, repeatSecond)
+
+                    timer(repeatMin, repeatHour, repeatSecond)
+
+                }, 2000)
+            }
             return
         }
 
