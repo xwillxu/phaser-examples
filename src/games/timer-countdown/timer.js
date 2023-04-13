@@ -3,12 +3,14 @@ import * as workerTimers from 'worker-timers';
 let currentTimeout;
 let repeatOn = false
 const repeatButton = document.createElement("button")
-repeatButton.textContent = "repeat"
+repeatButton.textContent = "Repeat: False"
 repeatButton.addEventListener("click", () => {
     if (!repeatOn) {
         repeatOn = true
+        repeatButton.textContent = "Repeat: False"
     } else {
         repeatOn = false
+        repeatButton.textContent = "Repeat: True"
     }
 })
 
@@ -101,32 +103,16 @@ export default function setupTimer() {
         newPara.textContent = timerDisplay
         timerContainer.innerHTML = ''
         timerContainer.appendChild(newPara)
-        let repeating = repeatOn
-        let repeatMin;
-        let repeatHour;
-        let repeatSecond;
-        let timerRepeatOn = false
-        if (repeating) {
-            const repeatMinScope = min
-            const repeatHourScope = hour
-            const repeatSecondScope = second
-            repeatMin = repeatMinScope
-            repeatHour = repeatHourScope
-            repeatSecond = repeatSecondScope
-            repeating = false
-            repeatOn = false
-            timerRepeatOn = true
-            console.log(timerRepeatOn)
-        }
 
         if (min <= 0 && hour <= 0 && second <= 0) {
             sound.play()
-            if (timerRepeatOn == false) {
+            if (!repeatOn) {
                 currentTimeout = setTimeoutCustom(sound, 60000)
-            } else if (timerRepeatOn == true) {
-                console.log("I'm here")
-                currentTimeout = setTimeoutCustom(sound, 1000)
-                timer()
+            } else {
+                currentTimeout = setInterval(() => {
+                    sound.pause()
+                    sound.currentTime = 0
+                }, 1000)
             }
             return
         }
