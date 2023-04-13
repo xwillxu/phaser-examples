@@ -114,12 +114,13 @@ export default function setupTimer() {
 
         if (min <= 0 && hour <= 0 && second <= 0) {
             sound.play()
-            if (!timerRepeatOn) {
+            if (timerRepeatOn == false) {
                 currentTimeout = workerTimers.setTimeout(() => {
                     sound.pause()
                     sound.currentTime = 0
                 }, 60000)
-            } else {
+            } else if (timerRepeatOn == true) {
+                console.log("I'm here")
                 currentTimeout = workerTimers.setTimeout(() => {
                     sound.pause()
                     sound.currentTime = 0
@@ -127,7 +128,7 @@ export default function setupTimer() {
 
                     timer(repeatMin, repeatHour, repeatSecond)
 
-                }, 2000)
+                }, 1)
             }
             return
         }
