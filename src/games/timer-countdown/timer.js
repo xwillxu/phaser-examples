@@ -87,6 +87,13 @@ export default function setupTimer() {
         }, 1000)
     }
 
+    function setTimeoutCustom(sound, time) {
+        workerTimers.setTimeout(() => {
+            sound.pause()
+            sound.currentTime = 0
+        }, time)
+    }
+
     function timer(min, hour = 0, second = 0) {
         const newPara = document.createElement('p')
         const timerDisplay = hour + ':' + String(min).padStart(2, '0') + ':' + String(second).padStart(2, '0')
@@ -115,20 +122,11 @@ export default function setupTimer() {
         if (min <= 0 && hour <= 0 && second <= 0) {
             sound.play()
             if (timerRepeatOn == false) {
-                currentTimeout = workerTimers.setTimeout(() => {
-                    sound.pause()
-                    sound.currentTime = 0
-                }, 60000)
+                currentTimeout = setTimeoutCustom(sound, 60000)
             } else if (timerRepeatOn == true) {
                 console.log("I'm here")
-                currentTimeout = workerTimers.setTimeout(() => {
-                    sound.pause()
-                    sound.currentTime = 0
-                    console.log(repeatMin, repeatHour, repeatSecond)
-
-                    timer(repeatMin, repeatHour, repeatSecond)
-
-                }, 1)
+                currentTimeout = setTimeoutCustom(sound, 1000)
+                timer()
             }
             return
         }
