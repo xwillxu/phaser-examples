@@ -1,6 +1,16 @@
 import * as workerTimers from 'worker-timers';
 
 let currentTimeout;
+let repeatOn = false
+const repeatButton = document.createElement("button")
+repeatButton.textContent = "repeat"
+repeatButton.addEventListener("click", () => {
+    if (!repeatOn) {
+        repeatOn = true
+    } else {
+        repeatOn = false
+    }
+})
 
 export default function setupTimer() {
     // Create / Get HTML Elements
@@ -31,6 +41,7 @@ export default function setupTimer() {
     container.appendChild(mintext)
     container.appendChild(sectext)
     container.appendChild(button)
+    container.appendChild(repeatButton)
 
     // Style
     for (const item of container.children) {
@@ -76,6 +87,13 @@ export default function setupTimer() {
         }, 1000)
     }
 
+    function setTimeoutCustom(sound, time) {
+        workerTimers.setTimeout(() => {
+            sound.pause()
+            sound.currentTime = 0
+        }, time)
+    }
+
     function timer(min, hour = 0, second = 0) {
         const newPara = document.createElement('p')
         const timerDisplay = hour + ':' + String(min).padStart(2, '0') + ':' + String(second).padStart(2, '0')
@@ -83,13 +101,33 @@ export default function setupTimer() {
         newPara.textContent = timerDisplay
         timerContainer.innerHTML = ''
         timerContainer.appendChild(newPara)
+        let repeating = repeatOn
+        let repeatMin;
+        let repeatHour;
+        let repeatSecond;
+        let timerRepeatOn = false
+        if (repeating) {
+            const repeatMinScope = min
+            const repeatHourScope = hour
+            const repeatSecondScope = second
+            repeatMin = repeatMinScope
+            repeatHour = repeatHourScope
+            repeatSecond = repeatSecondScope
+            repeating = false
+            repeatOn = false
+            timerRepeatOn = true
+            console.log(timerRepeatOn)
+        }
 
         if (min <= 0 && hour <= 0 && second <= 0) {
             sound.play()
-            currentTimeout = workerTimers.setTimeout(() => {
-                sound.pause()
-                sound.currentTime = 0
-            }, 60000)
+            if (timerRepeatOn == false) {
+                currentTimeout = setTimeoutCustom(sound, 60000)
+            } else if (timerRepeatOn == true) {
+                console.log("I'm here")
+                currentTimeout = setTimeoutCustom(sound, 1000)
+                timer()
+            }
             return
         }
 
