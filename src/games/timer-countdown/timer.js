@@ -7,10 +7,10 @@ repeatButton.textContent = "Repeat: False"
 repeatButton.addEventListener("click", () => {
     if (!repeatOn) {
         repeatOn = true
-        repeatButton.textContent = "Repeat: False"
+        repeatButton.textContent = "Repeat: True"
     } else {
         repeatOn = false
-        repeatButton.textContent = "Repeat: True"
+        repeatButton.textContent = "Repeat: False"
     }
 })
 
@@ -105,14 +105,16 @@ export default function setupTimer() {
         timerContainer.appendChild(newPara)
 
         if (min <= 0 && hour <= 0 && second <= 0) {
+            console.log(repeatOn)
             sound.play()
             if (!repeatOn) {
                 currentTimeout = setTimeoutCustom(sound, 60000)
             } else {
-                currentTimeout = setInterval(() => {
+                currentTimeout = setTimeout(() => {
                     sound.pause()
                     sound.currentTime = 0
-                }, 1000)
+                    timer(0, 0, 5)
+                }, 2000)
             }
             return
         }
