@@ -2,6 +2,9 @@ import * as workerTimers from 'worker-timers';
 
 let currentTimeout;
 let repeatOn = false
+let repeatMin = 0
+let repeatHour = 0
+let repeatSecond = 0
 const repeatButton = document.createElement("button")
 repeatButton.textContent = "Repeat: False"
 repeatButton.addEventListener("click", () => {
@@ -13,6 +16,7 @@ repeatButton.addEventListener("click", () => {
         repeatButton.textContent = "Repeat: False"
     }
 })
+
 
 export default function setupTimer() {
     // Create / Get HTML Elements
@@ -86,6 +90,9 @@ export default function setupTimer() {
                 return
             }
             timer(mtext, htext, stext)
+            repeatMin = mtext
+            repeatHour = htext
+            repeatSecond = stext
         }, 1000)
     }
 
@@ -113,7 +120,7 @@ export default function setupTimer() {
                 currentTimeout = setTimeout(() => {
                     sound.pause()
                     sound.currentTime = 0
-                    timer(0, 0, 5)
+                    timer(repeatMin, repeatHour, repeatSecond)
                 }, 2000)
             }
             return
