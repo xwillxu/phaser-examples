@@ -37,9 +37,14 @@ export default function displayMessage(msgText, msgType, msgName = 'User') {
             msg.style.fontWeight = 'bolder'
             break;
         case 'chat':
-
-            msg.style.backgroundImage = 'url(https://raw.githubusercontent.com/mdn/learning-area/main/javascript/building-blocks/functions/icons/chat.png)'
-            panel.style.backgroundColor = 'blue'
+            panel.style.backgroundColor = '#132B24'
+            msg.style.color = "#54D6AC"
+            msg.style.paddingLeft = '200px'
+            msg.style.paddingRight = '200px'
+            panel.style.paddingLeft = '180px'
+            panel.style.paddingRight = '180px'
+            panel.style.maxWidth = "50%"
+            panel.style.margin = "auto"
             break
         case 'happy':
             msg.style.backgroundImage = 'url(http://www.get-emoji.com/images/emoji/2705.png)'
