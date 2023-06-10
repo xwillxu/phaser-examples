@@ -19,7 +19,14 @@ export default function displayMessage(msgText, msgType, msgName = 'User') {
     const closeBtn = document.createElement('button')
     closeBtn.textContent = 'x'
     panel.appendChild(closeBtn)
-
+    closeBtn.addEventListener("mouseover", () => {
+        closeBtn.style.color = "white"
+        closeBtn.style.backgroundColor = "red"
+    })
+    closeBtn.addEventListener("mouseout", () => {
+        closeBtn.style.color = "black"
+        closeBtn.style.backgroundColor = "#D7D7D7"
+    })
     closeBtn.addEventListener('click', () => panel.parentNode.removeChild(panel))
     switch (msgType) {
         case 'warning':
@@ -39,12 +46,14 @@ export default function displayMessage(msgText, msgType, msgName = 'User') {
         case 'chat':
             panel.style.backgroundColor = '#132B24'
             msg.style.color = "#54D6AC"
-            msg.style.paddingLeft = '200px'
-            msg.style.paddingRight = '200px'
-            panel.style.paddingLeft = '180px'
-            panel.style.paddingRight = '180px'
-            panel.style.maxWidth = "50%"
+            msg.style.paddingLeft = '20px'
+            msg.style.paddingRight = '20px'
+            panel.style.maxWidth = "30%"
             panel.style.margin = "auto"
+            closeBtn.style.width = "25px"
+            closeBtn.style.height = "25px"
+            closeBtn.style.color = "black"
+            closeBtn.style.backgroundColor = "#D7D7D7"
             break
         case 'happy':
             msg.style.backgroundImage = 'url(http://www.get-emoji.com/images/emoji/2705.png)'
