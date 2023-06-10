@@ -44,8 +44,9 @@ export default function displayMessage(msgText, msgType, msgName = 'User') {
             msg.style.fontWeight = 'bolder'
             break;
         case 'chat':
-            panel.style.backgroundColor = '#132B24'
-            msg.style.color = "#54D6AC"
+            panel.style.backgroundColor = '#0C71E0'
+            // msg.style.color = "#00BCD4"
+            msg.style.color = "#FFDBE0"
             msg.style.paddingLeft = '20px'
             msg.style.paddingRight = '20px'
             panel.style.maxWidth = "30%"
