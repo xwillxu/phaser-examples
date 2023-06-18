@@ -46,7 +46,8 @@ export default function displayMessage(msgText, msgType, msgName = 'User') {
         case 'chat':
             panel.style.backgroundColor = '#0C71E0'
             // msg.style.color = "#00BCD4"
-            msg.style.color = "#FFDBE0"
+            msg.style.color = "#FFF9FF"
+            msg.style.fontFamily = "Cookie"
             msg.style.paddingLeft = '20px'
             msg.style.paddingRight = '20px'
             panel.style.maxWidth = "30%"
