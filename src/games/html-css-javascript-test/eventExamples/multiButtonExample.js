@@ -6,20 +6,26 @@ function wildFire(event) {
     setTimeout(() => {
         item.textContent = '💧'
         item.style.backgroundColor = 'blue'
-    }, 8000)
+    }, 3600.0)
     setTimeout(() => {
-        if (item.textContent = '🔥') {
+        if (item.textContent = '🔥' && item.style.backgroundColor == 'red') {
+            console.log(item)
             return
         }
+        console.log(item)
         item.textContent = '🌲'
         item.style.backgroundColor = 'green'
-    }, 24000)
+        if (item.textContent = 'true') {
+            item.textContent = '🔥'
+            item.style.backgroundColor = 'red'
+        }
+    }, 6000.0)
 
 }
 for (let x = 1; x <= 5000; x++) {
     const button = document.createElement('button')
-    button.style.backgroundColor = 'green'
     button.textContent = '🌲'
+    button.style.backgroundColor = 'green'
     button.addEventListener('mouseover', wildFire)
     button.style.width = '30px'
     button.style.height = '30px'

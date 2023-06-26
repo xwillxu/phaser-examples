@@ -206,38 +206,31 @@ export default class Scene extends Phaser.Scene {
     }
 
 
-    sendToRoomAttackZ(fightingStyle, weapon, mastery) {
-        const specialAttackZObject = {
-            fightingStyle: fightingStyle,
-            weapon: weapon,
-            mastery: mastery
-        }
-        this.room.send("specialAttackZ", specialAttackZObject)
-
-    }
-
-
-    sendToRoomAttackX(fightingStyle, weapon, mastery, time) {
-
-        const specialAttackXObject = {
+    sendToRoomAttack(fightingStyle, weapon, mastery, moveType, time = 0) {
+        const specialAttackObject = {
             fightingStyle: fightingStyle,
             weapon: weapon,
             mastery: mastery,
+            moveType: moveType,
             time: time
         }
-        this.room.send("specialAttackX", specialAttackXObject)
+        this.room.send("specialAttack", specialAttackObject)
 
 
     }
 
-    startTimerXMove(fightingStyle, weapon, mastery) {
-        let time;
+    startTimerMove(fightingStyle, weapon, mastery, moveType) {
+        let time = 0
         const timeInterval = setInterval(() => {
             time += 0.1
         }, 100)
+        if (time <= 3) {
+            clearInterval(timeInterval)
+            this.sendToRoomAttack(fightingStyle, weapon, mastery, moveType, time)
+        }
         if (!this.keystate.X) {
             clearInterval(timeInterval)
-            this.sendToRoomAttackX(fightingStyle, weapon, mastery, time)
+            this.sendToRoomAttack(fightingStyle, weapon, mastery, moveType, time)
         }
 
     }
@@ -297,11 +290,86 @@ export default class Scene extends Phaser.Scene {
             this.right()
         }
 
-        if (this.keystate.Z) {
-            this.sendToRoomAttackZ()
-        }
         if (this.keystate.X) {
-            this.startTimerXMove()
+            this.startTimerMove(this.myFightingStyle, this.myWeapon, this.myMastery, "X")
+        }
+
+        if (this.keystate.Z) {
+            this.sendToRoomAttack(this.myFightingStyle, this.myWeapon, this.myMastery, "Z")
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//                           👾👾👾 THANKS FOR SCROLLING DOWN FOR NOTHING! 👾👾👾
