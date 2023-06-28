@@ -43,6 +43,7 @@ export default class Scene extends Phaser.Scene {
 
     preload() {
         this.load.image("playerImage", playerImage)
+        this.load.spritesheet('boom', 'assets/sprites/explosion.png', { frameWidth: 128, frameHeight: 128, endFrame: 23 });
     }
 
     connectToServer() {
@@ -205,7 +206,6 @@ export default class Scene extends Phaser.Scene {
         this.room.send("move", movement);
     }
 
-
     sendToRoomAttack(fightingStyle, weapon, mastery, moveType, time = 0) {
         const specialAttackObject = {
             fightingStyle: fightingStyle,
@@ -259,7 +259,6 @@ export default class Scene extends Phaser.Scene {
         this.instructionsTen = displayMessage("Currently the version of this game is 1.0, each new update will have more stuff. This is still a test version though. Updates coming up in an unknown amount of time. Each update should happen about every six months. Each update I'll add more stuff in the game.", "chat", "Battle.io")
         this.instructionsEleven = displayMessage("HAVE FUN!", "chat", "Battle.io")
     }
-
 
     create() {
         this.getUserName()
@@ -373,3 +372,7 @@ export default class Scene extends Phaser.Scene {
 
 
 //                           👾👾👾 THANKS FOR SCROLLING DOWN FOR NOTHING! 👾👾👾
+
+//                           👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾
+//                           👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾
+//                           👾👾👾👾👾👾👾👾👾👾👾👾   👾👾👾👾👾👾👾👾 
