@@ -12,11 +12,14 @@ export default class GUISceneUntouched extends Phaser.Scene {
 
     create(data) {
         this.upgradeData = data.value
-        this.tankInfo = data.tankInfo
+        this.tankInfo = data.tankInfoW
         this.scene.bringToTop()
     }
 
     listUpgrades(data) {
+        for (const oldContainer of this.oldContainers) {
+            oldContainer.destroy()
+        }
         this.upgradeData = data
         const containers = {}
         let id = 1
