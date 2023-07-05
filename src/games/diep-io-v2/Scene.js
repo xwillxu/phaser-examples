@@ -3,6 +3,11 @@ import * as Colyseus from "colyseus.js"
 import UiScene from "./UiScene"
 import GUISceneUntouched from "./GUISceneUntouched.js"
 import ContainerWithHealthBar from "../platformer/ContainerWithHealthBar"
+import basicImage from "../../assets/images.png"
+import basicImage2 from "../../assets/Sniper.png"
+import basicImage3 from "../../assets/TwinFlank.png"
+import basicImage4 from "../../assets/Triangle.png"
+import basicImage5 from "../../assets/Booster.png"
 
 export default class Scene extends Phaser.Scene {
     constructor() {
@@ -37,6 +42,14 @@ export default class Scene extends Phaser.Scene {
         this.pointerPosX = 0
         this.pointerPosY = 0
         this.shootInterval = 0
+    }
+
+    preload() {
+        this.load.image("Basic", basicImage)
+        this.load.image("Sniper", basicImage2)
+        this.load.image("Flank-Guard", basicImage3)
+        this.load.image("Tri-Angle", basicImage4)
+        this.load.image("Booster", basicImage5)
     }
 
     setupKeys() {
@@ -312,29 +325,26 @@ export default class Scene extends Phaser.Scene {
                     let container = new ContainerWithHealthBar(this, playerCircle.x, playerCircle.y, [], 77, -75, 2, playerCircle.hp);
                     let initialColor = 0xf04f54
                     // You will know that the playerCircle Belongs With This Player If The Players SessionId is The PlayerCircles PlayerId
-                    if (playerCircle.playerId == this.myId) initialColor = 0x00B1DE
+                    if (playerCircle.playerId != this.myId) this.myTankName = "Enemy" + this.myTankName
                     // Get tank attributes
                     const tankAttributes = this.tankInfo[this.myTankName]
 
-                    const circle = this.add.circle(0, 0, 25, initialColor)
-                    if (tankAttributes?.bodyDamage >= 10) {
-                        circle.setStrokeStyle(1 + tankAttributes?.bodyDamage / 50, 0x000000)
-                    } else {
-                        circle.setStrokeStyle()
-                    }
+                    const playerImage = this.add.sprite(0, 0, String(this.myTankName))
+                    playerImage.setScale(0.12, 0.12)
                     let text = this.add.text(0, 0, `${statePlayer?.name || "Guest"}`)
-                    const amountOfTurrets = this.tankInfo[this.myTankName]?.turrets
-                    for (let x = 0; x < tankAttributes?.turrets; x++) {
-                        const spacing = (x / 5 - x / 2.5)
-                        const angle = 0 + spacing + (amountOfTurrets * 0.1)
-                        const turret = this.add.rectangle(0, 0, 45, 25, 0xa9a9a9)
-                        const degreeAngle = Phaser.Math.RadToDeg(angle)
-                        turret.setAngle(degreeAngle)
-                        turret.setOrigin(-0.1, 0.5)
-                        container.add(turret)
-                    }
-                    text.setOrigin(0.5, 0.5);
-                    container.add(circle)
+                    // const amountOfTurrets = this.tankInfo[this.myTankName]?.turrets
+                    // for (let x = 0; x < tankAttributes?.turrets; x++) {
+                    //     const spacing = (x / 5 - x / 2.5)
+                    //     const angle = 0 + spacing + (amountOfTurrets * 0.1)
+                    //     const turret = this.add.rectangle(0, 0, 45, 25, 0xa9a9a9)
+                    //     const degreeAngle = Phaser.Math.RadToDeg(angle)
+                    //     turret.setAngle(degreeAngle)
+                    //     turret.setOrigin(-0.1, 0.5)
+                    //     container.add(turret)
+                    // }
+                    text.setOrigin(0.5, 3.5);
+                    text.style.setShadow(2, 2, "black")
+                    container.add(playerImage)
                     container.add(text)
                     this.listClients()
                     this.circles[worldId] = container
