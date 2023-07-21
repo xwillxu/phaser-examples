@@ -3,11 +3,12 @@ import * as Colyseus from "colyseus.js"
 import UiScene from "./UiScene"
 import GUISceneUntouched from "./GUISceneUntouched.js"
 import ContainerWithHealthBar from "../platformer/ContainerWithHealthBar"
-import basicImage from "../../assets/images.png"
-import basicImage2 from "../../assets/Sniper.png"
-import basicImage3 from "../../assets/TwinFlank.png"
-import basicImage4 from "../../assets/Triangle.png"
-import basicImage5 from "../../assets/Booster.png"
+import Tank from "../../assets/Diep.io Skins/Tank.png"
+import Twin from "../../assets/Diep.io Skins/Twin.png"
+import FlankGuard from "../../assets/Diep.io Skins/Flank-Guard.png"
+import MachineGun from "../../assets/Diep.io Skins/Machine_Gun.png"
+import Sniper from "../../assets/Diep.io Skins/Sniper.png"
+import Smasher from "../../assets/Diep.io Skins/Smasher.png"
 
 export default class Scene extends Phaser.Scene {
     constructor() {
@@ -34,7 +35,7 @@ export default class Scene extends Phaser.Scene {
         this.keystate = {}
         // Tank Utilites
         this.tankInfo = null
-        this.myTankName = "Basic"
+        this.myTankName = "Tank"
         // Camera Utilities
         this.guiSceneCreated = false
         // Shoot Utilties
@@ -45,11 +46,12 @@ export default class Scene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image("Basic", basicImage)
-        this.load.image("Sniper", basicImage2)
-        this.load.image("Flank-Guard", basicImage3)
-        this.load.image("Tri-Angle", basicImage4)
-        this.load.image("Booster", basicImage5)
+        this.load.image("Tank", Tank)
+        this.load.image("Twin", Twin)
+        this.load.image("Flank-Guard", FlankGuard)
+        this.load.image("Machine-Gun", MachineGun)
+        this.load.image("Sniper", Sniper)
+        this.load.image("Smasher", Smasher)
     }
 
     setupKeys() {
@@ -313,12 +315,12 @@ export default class Scene extends Phaser.Scene {
                     }
                     if (playerCircle.playerId == this.myId) {
                         if (!playerCircle.upgrading) {
-                            this.myTankName = "Basic"
+                            this.myTankName = "Tank"
                         } else {
                             playerCircle.upgrading = false
                         }
                     } else {
-                        this.myTankName = "Basic"
+                        this.myTankName = "Tank"
                     }
                     const statePlayer = this.statePlayers[playerCircle.playerId]
                     if (!statePlayer) return
@@ -328,20 +330,9 @@ export default class Scene extends Phaser.Scene {
                     if (playerCircle.playerId != this.myId) this.myTankName = "Enemy" + this.myTankName
                     // Get tank attributes
                     const tankAttributes = this.tankInfo[this.myTankName]
-
                     const playerImage = this.add.sprite(0, 0, String(this.myTankName))
-                    playerImage.setScale(0.12, 0.12)
                     let text = this.add.text(0, 0, `${statePlayer?.name || "Guest"}`)
-                    // const amountOfTurrets = this.tankInfo[this.myTankName]?.turrets
-                    // for (let x = 0; x < tankAttributes?.turrets; x++) {
-                    //     const spacing = (x / 5 - x / 2.5)
-                    //     const angle = 0 + spacing + (amountOfTurrets * 0.1)
-                    //     const turret = this.add.rectangle(0, 0, 45, 25, 0xa9a9a9)
-                    //     const degreeAngle = Phaser.Math.RadToDeg(angle)
-                    //     turret.setAngle(degreeAngle)
-                    //     turret.setOrigin(-0.1, 0.5)
-                    //     container.add(turret)
-                    // }
+                    playerImage.setScale(0.24, 0.24)
                     text.setOrigin(0.5, 3.5);
                     text.style.setShadow(2, 2, "black")
                     container.add(playerImage)
@@ -360,6 +351,7 @@ export default class Scene extends Phaser.Scene {
                     this.startFollowPlayer(2000)
                     this.startFollowPlayer(2500)
                     this.startFollowPlayer(3000)
+                    this.startFollowPlayer(5000)
                     playerCircle.onChange = updateChanges(playerCircle, worldId, this.tweens, this.circles, 25);
                     this.setupCamera()
                 }
