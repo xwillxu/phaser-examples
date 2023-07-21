@@ -3,7 +3,7 @@ import * as Colyseus from "colyseus.js"
 import displayMessage from "../-useful-stuff-/user-inhancements/createMessage/createMessage"
 import UiScene from "../circle-io-v1/UiScene"
 // @ts-ignore
-import playerImage from "../../assets/battleIoPlayer.png"
+import playerImage from "../../assets/Battle.io Skins/Etheral.png"
 
 export default class Scene extends Phaser.Scene {
     constructor() {
