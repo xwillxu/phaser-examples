@@ -9,6 +9,8 @@ import FlankGuard from "../../assets/Diep.io Skins/Flank-Guard.png"
 import MachineGun from "../../assets/Diep.io Skins/Machine_Gun.png"
 import Sniper from "../../assets/Diep.io Skins/Sniper.png"
 import Smasher from "../../assets/Diep.io Skins/Smasher.png"
+import Single from "../../assets/Diep.io Skins/Single.png"
+import Ball from "../../assets/Diep.io Skins/Ball.png"
 
 export default class Scene extends Phaser.Scene {
     constructor() {
@@ -52,6 +54,10 @@ export default class Scene extends Phaser.Scene {
         this.load.image("Machine-Gun", MachineGun)
         this.load.image("Sniper", Sniper)
         this.load.image("Smasher", Smasher)
+        this.load.image("Single", Single)
+        this.load.image("Mayhem", Single)
+        this.load.image("Ratatatata", Single)
+        this.load.image("Ball", Ball)
     }
 
     setupKeys() {
