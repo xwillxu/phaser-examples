@@ -54,9 +54,11 @@ export default class Scene extends Phaser.Scene {
         this.load.image("Machine-Gun", MachineGun)
         this.load.image("Sniper", Sniper)
         this.load.image("Smasher", Smasher)
+        this.load.image("Spike", Smasher)
+        this.load.image("Mega-Smasher", Smasher)
         this.load.image("Single", Single)
-        this.load.image("Mayhem", Single)
-        this.load.image("Ratatatata", Single)
+        // this.load.image("Mayhem", Single)
+        // this.load.image("Ratatatata", Single)
         this.load.image("Ball", Ball)
     }
 
