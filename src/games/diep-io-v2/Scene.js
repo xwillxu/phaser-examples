@@ -326,7 +326,7 @@ export default class Scene extends Phaser.Scene {
                     const amountOfTurrets = this.tankInfo[this.myTankName]?.turrets
                     for (let x = 0; x < tankAttributes?.turrets; x++) {
                         const spacing = (x / 5 - x / 2.5)
-                        const angle = x + spacing + (amountOfTurrets * 0.1)
+                        const angle = 0 + spacing + (amountOfTurrets * 0.1)
                         const turret = this.add.rectangle(0, 0, 45, 25, 0xa9a9a9)
                         const degreeAngle = Phaser.Math.RadToDeg(angle)
                         turret.setAngle(degreeAngle)
