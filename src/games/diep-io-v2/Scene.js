@@ -1,7 +1,7 @@
 import Phaser from 'phaser'
 import * as Colyseus from "colyseus.js"
 import UiScene from "./UiScene"
-import GUISceneUntouched from "../diep-io-v2/GUISceneUntouched"
+import GUISceneUntouched from "../diep-io-v3/GUISceneUntouched"
 import ContainerWithHealthBar from "../platformer/ContainerWithHealthBar"
 
 export default class Scene extends Phaser.Scene {
