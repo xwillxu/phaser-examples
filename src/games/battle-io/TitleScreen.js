@@ -1,5 +1,5 @@
 import Phaser from 'phaser'
-import start_image from '../../assets/start-button.png'
+import start_image from '../../assets/start-word.png'
 
 export default class TitleScreen extends Phaser.Scene {
     constructor() {
@@ -8,5 +8,9 @@ export default class TitleScreen extends Phaser.Scene {
         this.name = "User"
         // Player clicks a button to check instructions
         this.instructions = ""
+    }
+
+    preload() {
+
     }
 }
