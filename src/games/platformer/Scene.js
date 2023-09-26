@@ -355,7 +355,7 @@ export default class Scene extends Phaser.Scene {
     createBoss() {
         const offset = 256
         let posX = Math.random() * 3334 + offset
-        let posY = 3330 - offset
+        let posY = Math.random() * 3330 + 300 - offset
 
         // Get the position of all the tiles if overlapping redo. 
         let canSpawn = false
@@ -651,7 +651,7 @@ export default class Scene extends Phaser.Scene {
     }
 
     loopBoss() {
-        let bossSpawn = 1 + this.currentLevel
+        let bossSpawn = (this.currentLevel + 1) * 2
 
         for (let x = 0; x < bossSpawn; x++) {
             this.createBoss()
@@ -730,6 +730,7 @@ export default class Scene extends Phaser.Scene {
         for (const boss of this.bossList) {
             boss?.update()
             boss?.shoot(this, time)
+            console.log(time)
         }
 
         for (const enemy of this.enemyList) {
