@@ -267,7 +267,8 @@ export default class Scene extends Phaser.Scene {
     }
 
     shoot(targetX, targetY) {
-        for (let x = 0; x < this.bulletCount; x++) {
+        for (let x = 0; x < 7; x++) {
+            console.log("here")
             const projectile_sprite = this.matter.add.sprite(this.playerSprite.x, this.playerSprite.y, 'box', 0, {
                 isSensor: false, label: 'bullet', ignoreGravity: true, gravityScale: { x: 0, y: 0 }, frictionAir: 0, friction: 0
             })
@@ -276,7 +277,7 @@ export default class Scene extends Phaser.Scene {
 
             let xDist = targetX - this.playerSprite.x;
             let yDist = targetY - this.playerSprite.y;
-            let angle = Math.atan2(yDist, xDist) + (x / 5 - x / 2.5)
+            let angle = Math.atan2(yDist, xDist)
             let velocityX = Math.cos(angle) * velocity
             let velocityY = Math.sin(angle) * velocity
 
@@ -730,7 +731,6 @@ export default class Scene extends Phaser.Scene {
         for (const boss of this.bossList) {
             boss?.update()
             boss?.shoot(this, time)
-            console.log(time)
         }
 
         for (const enemy of this.enemyList) {
