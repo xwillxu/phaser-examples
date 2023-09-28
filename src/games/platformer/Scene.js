@@ -34,6 +34,14 @@ import slimeBlue_move from '../../assets/slimeBlue_move.png'
 import gameover from '../../assets/gameover1.wav'
 // @ts-ignore
 import backmusic from '../../assets/background-music.wav'
+// @ts-ignore
+import slimeGreen from '../../assets/slimeGreen.png'
+// @ts-ignore
+import slimeGreen_move from '../../assets/slimeGreen_move.png'
+// @ts-ignore
+import slimePurple from '../../assets/slimePurple.png'
+// @ts-ignore
+import slimePurple_move from '../../assets/slimePurple_move.png'
 
 export default class Scene extends Phaser.Scene {
     constructor() {
@@ -74,8 +82,12 @@ export default class Scene extends Phaser.Scene {
         this.load.image('boss', bossSprite)
         this.load.image('laser', bossLaser)
         this.load.image('missle', missleItem)
-        this.load.image('slime', slimeBlue)
-        this.load.image('slime2', slimeBlue_move)
+        this.load.image('slimeB', slimeBlue)
+        this.load.image('slimeB2', slimeBlue_move)
+        this.load.image('slimeG', slimeGreen)
+        this.load.image('slimeG2', slimeGreen_move)
+        this.load.image('slimeP', slimePurple)
+        this.load.image('slimeP2', slimePurple_move)
         this.load.tilemapTiledJSON('map0', map0)
         this.load.tilemapTiledJSON('map1', map1)
         this.load.tilemapTiledJSON('map2', map2)
@@ -245,10 +257,30 @@ export default class Scene extends Phaser.Scene {
 
         // Slime Animation
         this.anims.create({
-            key: 'slimeanims',
+            key: 'slimeanimsblue',
             frames: [
-                { key: 'slime' },
-                { key: 'slime2' },
+                { key: 'slimeB' },
+                { key: 'slimeB2' },
+            ],
+            frameRate: 2,
+            repeat: Infinity
+        });
+
+        this.anims.create({
+            key: 'slimeanimsgreen',
+            frames: [
+                { key: 'slimeG' },
+                { key: 'slimeG2' },
+            ],
+            frameRate: 2,
+            repeat: Infinity
+        });
+
+        this.anims.create({
+            key: 'slimeanimspurple',
+            frames: [
+                { key: 'slimeP' },
+                { key: 'slimeP2' },
             ],
             frameRate: 2,
             repeat: Infinity
@@ -310,7 +342,25 @@ export default class Scene extends Phaser.Scene {
 
         }
 
-        const enemy = new SpriteWithHealthBar(this, posX, posY, 'slime', 0, {
+        let slimeImage
+        let slimeColor
+        let randomPercent = Math.random() * 100
+        if (randomPercent <= 33.333333333) {
+            slimeImage = 'slimeB'
+            slimeColor = 'blue'
+        }
+
+        if (randomPercent > 33.333333333 && randomPercent <= 66.666666666) {
+            slimeImage = 'slimeG'
+            slimeColor = 'green'
+        }
+
+        if (randomPercent > 66.666666666) {
+            slimeImage = 'slimeP'
+            slimeColor = 'purple'
+        }
+
+        const enemy = new SpriteWithHealthBar(this, posX, posY, slimeImage, 0, {
             isSensor: false, label: 'enemy', friction: 0, restitution: 1, frictionAir: 0
         })
 
@@ -320,7 +370,7 @@ export default class Scene extends Phaser.Scene {
         const velocity = Math.random() * 20 - 10
         enemy.setVelocityX(velocity)
         enemy.setFixedRotation()
-        enemy.anims.play('slimeanims', false)
+        enemy.anims.play('slimeanims' + slimeColor, false)
 
         this.enemyList.push(enemy)
     }

@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
-import dead_image from '../../assets/you-died.png'
+// @ts-ignore
 import restart_image from '../../assets/restart-button.png'
+// @ts-ignore
 import restart_word_image from '../../assets/restart-word.png'
 
 export default class SceneDie extends Phaser.Scene {
@@ -9,19 +10,13 @@ export default class SceneDie extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('dead', dead_image)
         this.load.image('restart', restart_image)
         this.load.image('restart-word', restart_word_image)
     }
 
     create() {
-        // Add a image and asign it to a varible
-        const dead = this.add.image(0, 0, 'dead')
 
-        //  Center the picture in the game
-        Phaser.Display.Align.In.Center(dead, this.add.zone(600, 600, 1600, 800));
-
-        this.cameras.main.backgroundColor = Phaser.Display.Color.HexStringToColor("#DD0000");
+        this.cameras.main.backgroundColor = Phaser.Display.Color.HexStringToColor("#1A3640");
 
         this.restartWord = this.add.sprite(0, 0, 'restart-word').setInteractive();
         this.restartWord.setScale(2, 2)
@@ -32,7 +27,7 @@ export default class SceneDie extends Phaser.Scene {
         this.restartButton.setScale(0.12, 0.12)
 
         //  Center the picture in the game
-        Phaser.Display.Align.In.Center(this.restartButton, this.add.zone(1000, 600, 1600, 800));
+        Phaser.Display.Align.In.Center(this.restartButton, this.add.zone(800, 600, 1600, 800));
 
         const self = this
 
