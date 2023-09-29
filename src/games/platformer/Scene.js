@@ -42,6 +42,8 @@ import slimeGreen_move from '../../assets/slimeGreen_move.png'
 import slimePurple from '../../assets/slimePurple.png'
 // @ts-ignore
 import slimePurple_move from '../../assets/slimePurple_move.png'
+// @ts-ignore
+import slimeBlock from '../../assets/slimeBlock.png'
 
 export default class Scene extends Phaser.Scene {
     constructor() {
@@ -88,6 +90,7 @@ export default class Scene extends Phaser.Scene {
         this.load.image('slimeG2', slimeGreen_move)
         this.load.image('slimeP', slimePurple)
         this.load.image('slimeP2', slimePurple_move)
+        this.load.image('slimeBlock', slimeBlock)
         this.load.tilemapTiledJSON('map0', map0)
         this.load.tilemapTiledJSON('map1', map1)
         this.load.tilemapTiledJSON('map2', map2)
@@ -375,6 +378,38 @@ export default class Scene extends Phaser.Scene {
         this.enemyList.push(enemy)
     }
 
+    slimeBlock() {
+        const offset = 100
+        let posX = Math.random() * 7936 + offset
+        let posY = Math.random() * 4608 + offset
+
+        // Get the position of all the tiles if overlapping redo. 
+        let canSpawn = false
+        while (canSpawn == false) {
+            const tile = this.map.getTileAtWorldXY(posX, posY)
+
+            if (tile == null) {
+                canSpawn = true
+                break;
+            }
+            posX = Math.random() * 7936 + offset
+            posY = Math.random() * 4608 + offset
+
+        }
+        const enemy = new SpriteWithHealthBar(this, posX, posY, 'slimeBlock', 0, {
+            isSensor: false, label: 'slimeBlock', friction: 0, restitution: 1, frictionAir: 0
+        })
+
+        enemy.setMass(0.5)
+        enemy.setScale(1, 1)
+
+        const velocity = Math.random() * 50 - 10
+        enemy.setVelocityX(velocity)
+        enemy.setFixedRotation()
+
+        this.enemyList.push(enemy)
+    }
+
     MultiShoot() {
         const offset = 100
         let posX = Math.random() * 7936 + offset
@@ -465,6 +500,7 @@ export default class Scene extends Phaser.Scene {
                 }
 
                 let enemyHit = null
+                let slimeHit = null
 
                 if (bodyA.label == 'bullet' && bodyB.label == 'enemy') {
                     enemyHit = bodyB
@@ -476,6 +512,22 @@ export default class Scene extends Phaser.Scene {
 
                 if (bodyB.label == 'bullet' && bodyA.label == 'enemy') {
                     enemyHit = bodyA
+                    bodyB.gameObject?.destroy()
+                    // @ts-ignore
+                    this.matter.world.remove(bodyB)
+
+                }
+
+                if (bodyA.label == 'bullet' && bodyB.label == 'slimeBlock') {
+                    slimeHit = bodyB
+                    bodyA.gameObject?.destroy()
+                    // @ts-ignore
+                    this.matter.world.remove(bodyA)
+
+                }
+
+                if (bodyB.label == 'bullet' && bodyA.label == 'slimeBlock') {
+                    slimeHit = bodyA
                     bodyB.gameObject?.destroy()
                     // @ts-ignore
                     this.matter.world.remove(bodyB)
@@ -497,6 +549,23 @@ export default class Scene extends Phaser.Scene {
                         // @ts-ignore
                         // Respawn Enemy
                         this.enemy()
+                    }
+                }
+
+                if (slimeHit) {
+                    const result = slimeHit.gameObject?.damage(25)
+                    if (result === true) {
+                        slimeHit.gameObject?.removeHp()
+                        // Enemy has zero hp now
+                        slimeHit.gameObject?.destroy()
+                        // @ts-ignore
+                        this.matter.world.remove(slimeHit)
+                        // @ts-ignore
+                        // Earn Score
+                        this.score += 50
+                        // @ts-ignore
+                        // Respawn Enemy
+                        this.slimeBlock()
                     }
                 }
 
@@ -696,7 +765,10 @@ export default class Scene extends Phaser.Scene {
         // Spawn Enemys
         for (let x = 0; x < 50; x++) {
             this.enemy()
+        }
 
+        for (let x = 0; x < 10; x++) {
+            this.slimeBlock()
         }
 
     }
