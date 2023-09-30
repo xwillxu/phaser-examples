@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 import SpriteWithHealthBar from './SpriteWithHealthBar'
 import BossSprite from './BossSprite'
+import random from '../-useful-stuff-/math/randomMinimumMaximum'
 
 // @ts-ignore
 import map0 from '../../assets/Platformer-Template.json'
@@ -367,7 +368,7 @@ export default class Scene extends Phaser.Scene {
             isSensor: false, label: 'enemy', friction: 0, restitution: 1, frictionAir: 0
         })
 
-        enemy.setMass(0.5)
+        enemy.setMass(10)
         enemy.setScale(1, 1)
 
         const velocity = Math.random() * 20 - 10
@@ -397,15 +398,14 @@ export default class Scene extends Phaser.Scene {
 
         }
         const enemy = new SpriteWithHealthBar(this, posX, posY, 'slimeBlock', 0, {
-            isSensor: false, label: 'slimeBlock', friction: 0, restitution: 1, frictionAir: 0
+            isSensor: false, label: 'slimeBlock', friction: 0, restitution: 0, frictionAir: 0
         })
 
-        enemy.setMass(0.5)
+        enemy.setMass(50)
         enemy.setScale(1, 1)
 
-        const velocity = Math.random() * 50 - 10
+        const velocity = random(20, 50)
         enemy.setVelocityX(velocity)
-        enemy.setFixedRotation()
 
         this.enemyList.push(enemy)
     }
@@ -553,7 +553,7 @@ export default class Scene extends Phaser.Scene {
                 }
 
                 if (slimeHit) {
-                    const result = slimeHit.gameObject?.damage(25)
+                    const result = slimeHit.gameObject?.damage(6.75)
                     if (result === true) {
                         slimeHit.gameObject?.removeHp()
                         // Enemy has zero hp now
@@ -822,7 +822,7 @@ export default class Scene extends Phaser.Scene {
         let M = Phaser.Physics.Matter.Matter;
 
         let playerBody = M.Bodies.rectangle(100, 100, 32, 42)
-
+        this.playerSprite.setMass(10)
         this.playerSprite.setBody(playerBody)
         this.playerSprite.setFixedRotation()
         this.playerSprite.setPosition(200, 200)
