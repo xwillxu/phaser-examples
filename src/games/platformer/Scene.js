@@ -303,8 +303,7 @@ export default class Scene extends Phaser.Scene {
     }
 
     shoot(targetX, targetY) {
-        for (let x = 0; x < 7; x++) {
-            console.log("here")
+        for (let x = 0; x < this.bulletCount; x++) {
             const projectile_sprite = this.matter.add.sprite(this.playerSprite.x, this.playerSprite.y, 'box', 0, {
                 isSensor: false, label: 'bullet', ignoreGravity: true, gravityScale: { x: 0, y: 0 }, frictionAir: 0, friction: 0
             })
@@ -401,10 +400,10 @@ export default class Scene extends Phaser.Scene {
             isSensor: false, label: 'slimeBlock', friction: 0, restitution: 0, frictionAir: 0
         })
 
-        enemy.setMass(50)
-        enemy.setScale(1, 1)
+        enemy.setMass(100)
+        enemy.setScale(1.2, 1.2)
 
-        const velocity = random(20, 50)
+        const velocity = random(40, 70)
         enemy.setVelocityX(velocity)
 
         this.enemyList.push(enemy)
