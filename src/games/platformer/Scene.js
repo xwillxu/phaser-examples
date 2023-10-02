@@ -229,6 +229,7 @@ export default class Scene extends Phaser.Scene {
 
         setTimeout(function () { self.scene.start('die') }, 3000)
 
+
         this.playerDead = true
 
 
@@ -841,7 +842,7 @@ export default class Scene extends Phaser.Scene {
         this.createEnemy();
         this.playMusic();
         this.loopBoss();
-        for (let x = 0; x < 7; x++) {
+        for (let x = 0; x < 70; x++) {
             this.MultiShoot()
         }
 
