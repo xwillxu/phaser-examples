@@ -24,7 +24,15 @@ import box_image from '../../assets/box-item-boxed.png'
 // @ts-ignore
 import slimeBlue from '../../assets/slimeBlue.png'
 // @ts-ignore
-import bossSprite from '../../assets/SlimeMonster.png'
+import slimeBossSprite from '../../assets/SlimeMonster.png'
+// @ts-ignore
+import iceBossSprite from '../../assets/IceMonster.png'
+// @ts-ignore
+import snowBossSprite from '../../assets/WhiteSlimeMonster.png'
+// @ts-ignore
+import lavaBossSprite from '../../assets/RedSlimeMonster.png'
+// @ts-ignore
+import rockBossSprite from '../../assets/BlackSlimeMonster.jpg'
 // @ts-ignore
 import bossLaser from '../../assets/laser.png'
 // @ts-ignore
@@ -82,7 +90,11 @@ export default class Scene extends Phaser.Scene {
         // Preload
 
         this.load.image('box', box_image)
-        this.load.image('boss', bossSprite)
+        this.load.image('slimeBoss', slimeBossSprite)
+        this.load.image('iceBoss', iceBossSprite)
+        this.load.image('snowBoss', snowBossSprite)
+        this.load.image('lavaBoss', lavaBossSprite)
+        this.load.image('rockBoss', rockBossSprite)
         this.load.image('laser', bossLaser)
         this.load.image('missle', missleItem)
         this.load.image('slimeB', slimeBlue)
@@ -457,12 +469,26 @@ export default class Scene extends Phaser.Scene {
 
         }
 
-        const boss = new BossSprite(this, posX, posY, 'boss', 0, {
+        let bossSkin
+        let randomPercent = Math.random() * 100
+        if (randomPercent <= 20) {
+            bossSkin = 'slimeBoss'
+        } else if (randomPercent > 20 && randomPercent <= 40) {
+            bossSkin = 'iceBoss'
+        } else if (randomPercent > 40 && randomPercent <= 60) {
+            bossSkin = 'snowBoss'
+        } else if (randomPercent > 60 && randomPercent <= 80) {
+            bossSkin = 'lavaBoss'
+        } else if (randomPercent > 80) {
+            bossSkin = 'rockBoss'
+        }
+
+        const boss = new BossSprite(this, posX, posY, bossSkin, 0, {
             isSensor: false, label: 'boss', friction: 0, restitution: 0.1, frictionAir: 0
         })
 
-        boss.setMass(50)
-        boss.setScale(0.1 + this.currentLevel / 10, 0.1 + this.currentLevel / 10)
+        boss.setMass(100)
+        boss.setScale(0.4 + this.currentLevel / 10, 0.4 + this.currentLevel / 10)
 
         const velocity = Math.random() * 20 - 10
         boss.setVelocityX(velocity)

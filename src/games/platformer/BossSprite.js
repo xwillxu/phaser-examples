@@ -34,7 +34,7 @@ export default class BossSprite extends SpriteWithHealthBar {
         })
 
 
-        projectile_sprite.setScale(0.06, 0.12)
+        projectile_sprite.setScale(0.12, 0.24)
         const velocity = scene.speed * 1.1
         let angle = Math.atan2(yDist, xDist);
         let velocityX = Math.cos(angle) * velocity
