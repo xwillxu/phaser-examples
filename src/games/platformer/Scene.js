@@ -32,7 +32,7 @@ import snowBossSprite from '../../assets/WhiteSlimeMonster.png'
 // @ts-ignore
 import lavaBossSprite from '../../assets/RedSlimeMonster.png'
 // @ts-ignore
-import rockBossSprite from '../../assets/BlackSlimeMonster.jpg'
+import rockBossSprite from '../../assets/BlackSlimeMonster.png'
 // @ts-ignore
 import bossLaser from '../../assets/laser.png'
 // @ts-ignore
