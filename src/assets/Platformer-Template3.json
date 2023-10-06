@@ -2391,6 +2391,20 @@
                 }],
          "tilewidth":128,
          "transparentcolor":"#ff00ff"
+        }, 
+        {
+         "columns":16,
+         "firstgid":257,
+         "image":"texture.png",
+         "imageheight":2048,
+         "imagewidth":2048,
+         "margin":0,
+         "name":"texture",
+         "spacing":0,
+         "tilecount":256,
+         "tileheight":128,
+         "tilewidth":128,
+         "transparentcolor":"#ff00ff"
         }],
  "tilewidth":128,
  "type":"map",
