@@ -10,6 +10,8 @@ import map1 from '../../assets/Platformer-Template2.json'
 // @ts-ignore
 import map2 from '../../assets/Platformer-Template3.json'
 // @ts-ignore
+import map3 from '../../assets/Platformer-Template4.json'
+// @ts-ignore
 import bossMap from '../../assets/Boss-Map.json'
 // @ts-ignore
 import texture from '../../assets/texture.extruded.png'
@@ -107,7 +109,8 @@ export default class Scene extends Phaser.Scene {
         this.load.tilemapTiledJSON('map0', map0)
         this.load.tilemapTiledJSON('map1', map1)
         this.load.tilemapTiledJSON('map2', map2)
-        this.load.tilemapTiledJSON('map3', bossMap)
+        this.load.tilemapTiledJSON('map3', map3)
+        this.load.tilemapTiledJSON('map4', bossMap)
         if (this.spriteChoice == 0) {
             this.load.spritesheet('player', player_image, { frameWidth: 32, frameHeight: 42 });
         } else if (this.spriteChoice == 1) {
