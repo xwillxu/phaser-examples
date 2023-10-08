@@ -107,7 +107,7 @@ export default class Scene extends Phaser.Scene {
         this.load.image('slimeP2', slimePurple_move)
         this.load.image('slimeBlock', slimeBlock)
         this.load.tilemapTiledJSON('map0', map0)
-        this.load.tilemapTiledJSON('map1', map1)
+        this.load.tilemapTiledJSON('map1', map3)
         this.load.tilemapTiledJSON('map2', map2)
         this.load.tilemapTiledJSON('map3', map3)
         this.load.tilemapTiledJSON('map4', bossMap)
