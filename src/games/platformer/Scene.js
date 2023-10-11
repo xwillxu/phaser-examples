@@ -6,7 +6,7 @@ import random from '../-useful-stuff-/math/randomMinimumMaximum'
 // @ts-ignore
 import map0 from '../../assets/Platformer-Template.json'
 // @ts-ignore
-import map1 from '../../assets/Platformer-Template2.json'
+import map1 from '../../assets/untitled.json'
 // @ts-ignore
 import map2 from '../../assets/Platformer-Template3.json'
 // @ts-ignore
