@@ -107,7 +107,7 @@ export default class Scene extends Phaser.Scene {
         this.load.image('slimeP2', slimePurple_move)
         this.load.image('slimeBlock', slimeBlock)
         this.load.tilemapTiledJSON('map0', map0)
-        this.load.tilemapTiledJSON('map1', map3)
+        this.load.tilemapTiledJSON('map1', map1)
         this.load.tilemapTiledJSON('map2', map2)
         this.load.tilemapTiledJSON('map3', map3)
         this.load.tilemapTiledJSON('map4', bossMap)
@@ -173,7 +173,7 @@ export default class Scene extends Phaser.Scene {
     }
 
     jump() {
-        const speed = this.speed * 1.3
+        const speed = this.speed * 1.6
         this.playerSprite.setVelocityY(-speed)
         this.playerSprite.anims.play('idle', true);
         this.canJump = false
@@ -630,9 +630,9 @@ export default class Scene extends Phaser.Scene {
                         this.score += 500
                         // @ts-ignore
                         this.bossKilled += 1
-                        // Killed 10 Bosses? You Win!
+                        // Killed 30 Bosses? You Win!
                         // @ts-ignore
-                        if (this.bossKilled >= 10) {
+                        if (this.bossKilled >= 30) {
                             // @ts-ignore
                             this.youWon()
                         }
