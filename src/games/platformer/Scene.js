@@ -4,9 +4,9 @@ import BossSprite from './BossSprite'
 import random from '../-useful-stuff-/math/randomMinimumMaximum'
 
 // @ts-ignore
-import map0 from '../../assets/Platformer-Template2.json'
+import map0 from '../../assets/Platformer-Template.json'
 // @ts-ignore
-import map1 from '../../assets/test4.json'
+import map1 from '../../assets/Platformer-Template2.json'
 // @ts-ignore
 import map2 from '../../assets/Platformer-Template3.json'
 // @ts-ignore
@@ -106,7 +106,7 @@ export default class Scene extends Phaser.Scene {
         this.load.image('slimeP', slimePurple)
         this.load.image('slimeP2', slimePurple_move)
         this.load.image('slimeBlock', slimeBlock)
-        this.load.tilemapTiledJSON('map0', map1)
+        this.load.tilemapTiledJSON('map0', map0)
         this.load.tilemapTiledJSON('map1', map1)
         this.load.tilemapTiledJSON('map2', map2)
         this.load.tilemapTiledJSON('map3', map3)
@@ -835,7 +835,7 @@ export default class Scene extends Phaser.Scene {
         const mapKey = 'map' + this.currentLevel
         const map = this.make.tilemap({ key: mapKey })
         this.map = map
-        let tileset = map.addTilesetImage('texture', 'texture', 128, 128, 1, 2)
+        let tileset = map.addTilesetImage('texture', 'texture', 128, 128, 1,)
 
         map.setCollisionByProperty({ collides: true });
         let layer = map.createLayer('Tile Layer 1', tileset, 0, 0)
