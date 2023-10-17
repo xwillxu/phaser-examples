@@ -4,7 +4,7 @@ import BossSprite from './BossSprite'
 import random from '../-useful-stuff-/math/randomMinimumMaximum'
 
 // @ts-ignore
-import map0 from '../../assets/Platformer-Template.json'
+import map0 from '../../assets/Platformer-Template2.json'
 // @ts-ignore
 import map1 from '../../assets/Platformer-Template2.json'
 // @ts-ignore
@@ -835,7 +835,7 @@ export default class Scene extends Phaser.Scene {
         const mapKey = 'map' + this.currentLevel
         const map = this.make.tilemap({ key: mapKey })
         this.map = map
-        let tileset = map.addTilesetImage('texture', 'texture', 128, 128, 1,)
+        let tileset = map.addTilesetImage('texture', 'texture', 128, 128, 1, 2)
 
         map.setCollisionByProperty({ collides: true });
         let layer = map.createLayer('Tile Layer 1', tileset, 0, 0)
