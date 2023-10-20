@@ -4,7 +4,7 @@ import BossSprite from './BossSprite'
 import random from '../-useful-stuff-/math/randomMinimumMaximum'
 
 // @ts-ignore
-import map0 from '../../assets/Platformer-Template2.json'
+import map0 from '../../assets/Platformer-Template.json'
 // @ts-ignore
 import map1 from '../../assets/Platformer-Template2.json'
 // @ts-ignore
@@ -319,7 +319,7 @@ export default class Scene extends Phaser.Scene {
     }
 
     shoot(targetX, targetY) {
-        for (let x = 0; x < this.bulletCount; x++) {
+        for (let x = 0; x < 19; x++) {
             const projectile_sprite = this.matter.add.sprite(this.playerSprite.x, this.playerSprite.y, 'box', 0, {
                 isSensor: false, label: 'bullet', ignoreGravity: true, gravityScale: { x: 0, y: 0 }, frictionAir: 0, friction: 0
             })
