@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 import SpriteWithHealthBar from './SpriteWithHealthBar'
 import BossSprite from './BossSprite'
+import random from '../-useful-stuff-/math/randomMinimumMaximum'
 
 // @ts-ignore
 import map0 from '../../assets/Platformer-Template.json'
@@ -8,6 +9,8 @@ import map0 from '../../assets/Platformer-Template.json'
 import map1 from '../../assets/Platformer-Template2.json'
 // @ts-ignore
 import map2 from '../../assets/Platformer-Template3.json'
+// @ts-ignore
+import map3 from '../../assets/Platformer-Template4.json'
 // @ts-ignore
 import bossMap from '../../assets/Boss-Map.json'
 // @ts-ignore
@@ -23,7 +26,15 @@ import box_image from '../../assets/box-item-boxed.png'
 // @ts-ignore
 import slimeBlue from '../../assets/slimeBlue.png'
 // @ts-ignore
-import bossSprite from '../../assets/SlimeMonster.png'
+import slimeBossSprite from '../../assets/SlimeMonster.png'
+// @ts-ignore
+import iceBossSprite from '../../assets/IceMonster.png'
+// @ts-ignore
+import snowBossSprite from '../../assets/WhiteSlimeMonster.png'
+// @ts-ignore
+import lavaBossSprite from '../../assets/RedSlimeMonster.png'
+// @ts-ignore
+import rockBossSprite from '../../assets/BlackSlimeMonster.png'
 // @ts-ignore
 import bossLaser from '../../assets/laser.png'
 // @ts-ignore
@@ -34,6 +45,16 @@ import slimeBlue_move from '../../assets/slimeBlue_move.png'
 import gameover from '../../assets/gameover1.wav'
 // @ts-ignore
 import backmusic from '../../assets/background-music.wav'
+// @ts-ignore
+import slimeGreen from '../../assets/slimeGreen.png'
+// @ts-ignore
+import slimeGreen_move from '../../assets/slimeGreen_move.png'
+// @ts-ignore
+import slimePurple from '../../assets/slimePurple.png'
+// @ts-ignore
+import slimePurple_move from '../../assets/slimePurple_move.png'
+// @ts-ignore
+import slimeBlock from '../../assets/slimeBlock.png'
 
 export default class Scene extends Phaser.Scene {
     constructor() {
@@ -71,15 +92,25 @@ export default class Scene extends Phaser.Scene {
         // Preload
 
         this.load.image('box', box_image)
-        this.load.image('boss', bossSprite)
+        this.load.image('slimeBoss', slimeBossSprite)
+        this.load.image('iceBoss', iceBossSprite)
+        this.load.image('snowBoss', snowBossSprite)
+        this.load.image('lavaBoss', lavaBossSprite)
+        this.load.image('rockBoss', rockBossSprite)
         this.load.image('laser', bossLaser)
         this.load.image('missle', missleItem)
-        this.load.image('slime', slimeBlue)
-        this.load.image('slime2', slimeBlue_move)
+        this.load.image('slimeB', slimeBlue)
+        this.load.image('slimeB2', slimeBlue_move)
+        this.load.image('slimeG', slimeGreen)
+        this.load.image('slimeG2', slimeGreen_move)
+        this.load.image('slimeP', slimePurple)
+        this.load.image('slimeP2', slimePurple_move)
+        this.load.image('slimeBlock', slimeBlock)
         this.load.tilemapTiledJSON('map0', map0)
         this.load.tilemapTiledJSON('map1', map1)
         this.load.tilemapTiledJSON('map2', map2)
-        this.load.tilemapTiledJSON('map3', bossMap)
+        this.load.tilemapTiledJSON('map3', map3)
+        this.load.tilemapTiledJSON('map4', bossMap)
         if (this.spriteChoice == 0) {
             this.load.spritesheet('player', player_image, { frameWidth: 32, frameHeight: 42 });
         } else if (this.spriteChoice == 1) {
@@ -142,7 +173,7 @@ export default class Scene extends Phaser.Scene {
     }
 
     jump() {
-        const speed = this.speed * 1.3
+        const speed = this.speed * 1.6
         this.playerSprite.setVelocityY(-speed)
         this.playerSprite.anims.play('idle', true);
         this.canJump = false
@@ -213,6 +244,7 @@ export default class Scene extends Phaser.Scene {
 
         setTimeout(function () { self.scene.start('die') }, 3000)
 
+
         this.playerDead = true
 
 
@@ -245,10 +277,30 @@ export default class Scene extends Phaser.Scene {
 
         // Slime Animation
         this.anims.create({
-            key: 'slimeanims',
+            key: 'slimeanimsblue',
             frames: [
-                { key: 'slime' },
-                { key: 'slime2' },
+                { key: 'slimeB' },
+                { key: 'slimeB2' },
+            ],
+            frameRate: 2,
+            repeat: Infinity
+        });
+
+        this.anims.create({
+            key: 'slimeanimsgreen',
+            frames: [
+                { key: 'slimeG' },
+                { key: 'slimeG2' },
+            ],
+            frameRate: 2,
+            repeat: Infinity
+        });
+
+        this.anims.create({
+            key: 'slimeanimspurple',
+            frames: [
+                { key: 'slimeP' },
+                { key: 'slimeP2' },
             ],
             frameRate: 2,
             repeat: Infinity
@@ -267,7 +319,7 @@ export default class Scene extends Phaser.Scene {
     }
 
     shoot(targetX, targetY) {
-        for (let x = 0; x < this.bulletCount; x++) {
+        for (let x = 0; x < 19; x++) {
             const projectile_sprite = this.matter.add.sprite(this.playerSprite.x, this.playerSprite.y, 'box', 0, {
                 isSensor: false, label: 'bullet', ignoreGravity: true, gravityScale: { x: 0, y: 0 }, frictionAir: 0, friction: 0
             })
@@ -276,7 +328,7 @@ export default class Scene extends Phaser.Scene {
 
             let xDist = targetX - this.playerSprite.x;
             let yDist = targetY - this.playerSprite.y;
-            let angle = Math.atan2(yDist, xDist) + (x / 5 - x / 2.5) + 1
+            let angle = Math.atan2(yDist, xDist)
             let velocityX = Math.cos(angle) * velocity
             let velocityY = Math.sin(angle) * velocity
 
@@ -309,17 +361,66 @@ export default class Scene extends Phaser.Scene {
 
         }
 
-        const enemy = new SpriteWithHealthBar(this, posX, posY, 'slime', 0, {
+        let slimeImage
+        let slimeColor
+        let randomPercent = Math.random() * 100
+        if (randomPercent <= 33.333333333) {
+            slimeImage = 'slimeB'
+            slimeColor = 'blue'
+        }
+
+        if (randomPercent > 33.333333333 && randomPercent <= 66.666666666) {
+            slimeImage = 'slimeG'
+            slimeColor = 'green'
+        }
+
+        if (randomPercent > 66.666666666) {
+            slimeImage = 'slimeP'
+            slimeColor = 'purple'
+        }
+
+        const enemy = new SpriteWithHealthBar(this, posX, posY, slimeImage, 0, {
             isSensor: false, label: 'enemy', friction: 0, restitution: 1, frictionAir: 0
         })
 
-        enemy.setMass(0.5)
+        enemy.setMass(10)
         enemy.setScale(1, 1)
 
         const velocity = Math.random() * 20 - 10
         enemy.setVelocityX(velocity)
         enemy.setFixedRotation()
-        enemy.anims.play('slimeanims', false)
+        enemy.anims.play('slimeanims' + slimeColor, false)
+
+        this.enemyList.push(enemy)
+    }
+
+    slimeBlock() {
+        const offset = 100
+        let posX = Math.random() * 7936 + offset
+        let posY = Math.random() * 4608 + offset
+
+        // Get the position of all the tiles if overlapping redo. 
+        let canSpawn = false
+        while (canSpawn == false) {
+            const tile = this.map.getTileAtWorldXY(posX, posY)
+
+            if (tile == null) {
+                canSpawn = true
+                break;
+            }
+            posX = Math.random() * 7936 + offset
+            posY = Math.random() * 4608 + offset
+
+        }
+        const enemy = new SpriteWithHealthBar(this, posX, posY, 'slimeBlock', 0, {
+            isSensor: false, label: 'slimeBlock', friction: 0, restitution: 0, frictionAir: 0
+        })
+
+        enemy.setMass(100)
+        enemy.setScale(1.2, 1.2)
+
+        const velocity = random(40, 70)
+        enemy.setVelocityX(velocity)
 
         this.enemyList.push(enemy)
     }
@@ -355,7 +456,7 @@ export default class Scene extends Phaser.Scene {
     createBoss() {
         const offset = 256
         let posX = Math.random() * 3334 + offset
-        let posY = 3330 - offset
+        let posY = Math.random() * 3330 + 300 - offset
 
         // Get the position of all the tiles if overlapping redo. 
         let canSpawn = false
@@ -371,12 +472,26 @@ export default class Scene extends Phaser.Scene {
 
         }
 
-        const boss = new BossSprite(this, posX, posY, 'boss', 0, {
+        let bossSkin
+        let randomPercent = Math.random() * 100
+        if (randomPercent <= 20) {
+            bossSkin = 'slimeBoss'
+        } else if (randomPercent > 20 && randomPercent <= 40) {
+            bossSkin = 'iceBoss'
+        } else if (randomPercent > 40 && randomPercent <= 60) {
+            bossSkin = 'snowBoss'
+        } else if (randomPercent > 60 && randomPercent <= 80) {
+            bossSkin = 'lavaBoss'
+        } else if (randomPercent > 80) {
+            bossSkin = 'rockBoss'
+        }
+
+        const boss = new BossSprite(this, posX, posY, bossSkin, 0, {
             isSensor: false, label: 'boss', friction: 0, restitution: 0.1, frictionAir: 0
         })
 
-        boss.setMass(50)
-        boss.setScale(0.1 + this.currentLevel / 10, 0.1 + this.currentLevel / 10)
+        boss.setMass(100)
+        boss.setScale(0.4 + this.currentLevel / 10, 0.4 + this.currentLevel / 10)
 
         const velocity = Math.random() * 20 - 10
         boss.setVelocityX(velocity)
@@ -414,6 +529,7 @@ export default class Scene extends Phaser.Scene {
                 }
 
                 let enemyHit = null
+                let slimeHit = null
 
                 if (bodyA.label == 'bullet' && bodyB.label == 'enemy') {
                     enemyHit = bodyB
@@ -425,6 +541,22 @@ export default class Scene extends Phaser.Scene {
 
                 if (bodyB.label == 'bullet' && bodyA.label == 'enemy') {
                     enemyHit = bodyA
+                    bodyB.gameObject?.destroy()
+                    // @ts-ignore
+                    this.matter.world.remove(bodyB)
+
+                }
+
+                if (bodyA.label == 'bullet' && bodyB.label == 'slimeBlock') {
+                    slimeHit = bodyB
+                    bodyA.gameObject?.destroy()
+                    // @ts-ignore
+                    this.matter.world.remove(bodyA)
+
+                }
+
+                if (bodyB.label == 'bullet' && bodyA.label == 'slimeBlock') {
+                    slimeHit = bodyA
                     bodyB.gameObject?.destroy()
                     // @ts-ignore
                     this.matter.world.remove(bodyB)
@@ -446,6 +578,23 @@ export default class Scene extends Phaser.Scene {
                         // @ts-ignore
                         // Respawn Enemy
                         this.enemy()
+                    }
+                }
+
+                if (slimeHit) {
+                    const result = slimeHit.gameObject?.damage(6.75)
+                    if (result === true) {
+                        slimeHit.gameObject?.removeHp()
+                        // Enemy has zero hp now
+                        slimeHit.gameObject?.destroy()
+                        // @ts-ignore
+                        this.matter.world.remove(slimeHit)
+                        // @ts-ignore
+                        // Earn Score
+                        this.score += 50
+                        // @ts-ignore
+                        // Respawn Enemy
+                        this.slimeBlock()
                     }
                 }
 
@@ -481,9 +630,9 @@ export default class Scene extends Phaser.Scene {
                         this.score += 500
                         // @ts-ignore
                         this.bossKilled += 1
-                        // Killed 10 Bosses? You Win!
+                        // Killed 30 Bosses? You Win!
                         // @ts-ignore
-                        if (this.bossKilled >= 10) {
+                        if (this.bossKilled >= 30) {
                             // @ts-ignore
                             this.youWon()
                         }
@@ -645,13 +794,16 @@ export default class Scene extends Phaser.Scene {
         // Spawn Enemys
         for (let x = 0; x < 50; x++) {
             this.enemy()
+        }
 
+        for (let x = 0; x < 10; x++) {
+            this.slimeBlock()
         }
 
     }
 
     loopBoss() {
-        let bossSpawn = 1 + this.currentLevel
+        let bossSpawn = (this.currentLevel + 1) * 2
 
         for (let x = 0; x < bossSpawn; x++) {
             this.createBoss()
@@ -699,7 +851,7 @@ export default class Scene extends Phaser.Scene {
         let M = Phaser.Physics.Matter.Matter;
 
         let playerBody = M.Bodies.rectangle(100, 100, 32, 42)
-
+        this.playerSprite.setMass(10)
         this.playerSprite.setBody(playerBody)
         this.playerSprite.setFixedRotation()
         this.playerSprite.setPosition(200, 200)
@@ -719,7 +871,7 @@ export default class Scene extends Phaser.Scene {
         this.createEnemy();
         this.playMusic();
         this.loopBoss();
-        for (let x = 0; x < 7; x++) {
+        for (let x = 0; x < 70; x++) {
             this.MultiShoot()
         }
 

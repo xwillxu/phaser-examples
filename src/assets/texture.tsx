@@ -75,7 +75,7 @@
   <properties>
    <property name="collides" type="bool" value="true"/>
   </properties>
-  <objectgroup draworder="index" id="2">
+  <objectgroup draworder="index">
    <object id="1" x="0.666667" y="0">
     <polygon points="0,0 -0.666667,126 126,128"/>
    </object>
@@ -143,7 +143,7 @@
  </tile>
  <tile id="27">
   <properties>
-   <property name="collides" type="bool" value="false"/>
+   <property name="collides" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="28">
@@ -163,7 +163,7 @@
  </tile>
  <tile id="31">
   <properties>
-   <property name="collides" type="bool" value="false"/>
+   <property name="collides" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="32">
@@ -178,7 +178,7 @@
  </tile>
  <tile id="34">
   <properties>
-   <property name="collides" type="bool" value="false"/>
+   <property name="collides" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="35">
@@ -258,7 +258,7 @@
  </tile>
  <tile id="50">
   <properties>
-   <property name="collides" type="bool" value="false"/>
+   <property name="collides" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="51">
@@ -338,7 +338,7 @@
  </tile>
  <tile id="66">
   <properties>
-   <property name="collides" type="bool" value="false"/>
+   <property name="collides" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="67">
@@ -418,7 +418,7 @@
  </tile>
  <tile id="82">
   <properties>
-   <property name="collides" type="bool" value="false"/>
+   <property name="collides" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="83">
@@ -499,7 +499,7 @@
  </tile>
  <tile id="98">
   <properties>
-   <property name="collides" type="bool" value="false"/>
+   <property name="collides" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="99">
@@ -579,7 +579,7 @@
  </tile>
  <tile id="114">
   <properties>
-   <property name="collides" type="bool" value="false"/>
+   <property name="collides" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="115">
@@ -654,12 +654,13 @@
  </tile>
  <tile id="129">
   <properties>
-   <property name="collides" type="bool" value="false"/>
+   <property name="collides" type="bool" value="true"/>
+   <property name="die" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="130">
   <properties>
-   <property name="collides" type="bool" value="false"/>
+   <property name="collides" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="131">
@@ -740,7 +741,7 @@
  </tile>
  <tile id="146">
   <properties>
-   <property name="collides" type="bool" value="false"/>
+   <property name="collides" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="147">

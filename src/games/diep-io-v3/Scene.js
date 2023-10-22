@@ -1,8 +1,16 @@
 import Phaser from 'phaser'
 import * as Colyseus from "colyseus.js"
 import UiScene from "./UiScene"
-import GUISceneUntouched from "../diep-io-v2/GUISceneUntouched"
+import GUISceneUntouched from "./GUISceneUntouched.js"
 import ContainerWithHealthBar from "../platformer/ContainerWithHealthBar"
+import Tank from "../../assets/Diep.io Skins/Tank.png"
+import Twin from "../../assets/Diep.io Skins/Twin.png"
+import FlankGuard from "../../assets/Diep.io Skins/Flank-Guard.png"
+import MachineGun from "../../assets/Diep.io Skins/Machine_Gun.png"
+import Sniper from "../../assets/Diep.io Skins/Sniper.png"
+import Smasher from "../../assets/Diep.io Skins/Smasher.png"
+import Single from "../../assets/Diep.io Skins/Single.png"
+import Ball from "../../assets/Diep.io Skins/Ball.png"
 
 export default class Scene extends Phaser.Scene {
     constructor() {
@@ -29,7 +37,7 @@ export default class Scene extends Phaser.Scene {
         this.keystate = {}
         // Tank Utilites
         this.tankInfo = null
-        this.myTankName = "Basic"
+        this.myTankName = "Tank"
         // Camera Utilities
         this.guiSceneCreated = false
         // Shoot Utilties
@@ -37,6 +45,21 @@ export default class Scene extends Phaser.Scene {
         this.pointerPosX = 0
         this.pointerPosY = 0
         this.shootInterval = 0
+    }
+
+    preload() {
+        this.load.image("Tank", Tank)
+        this.load.image("Twin", Twin)
+        this.load.image("Flank-Guard", FlankGuard)
+        this.load.image("Machine-Gun", MachineGun)
+        this.load.image("Sniper", Sniper)
+        this.load.image("Smasher", Smasher)
+        this.load.image("Spike", Smasher)
+        this.load.image("Mega-Smasher", Smasher)
+        this.load.image("Single", Single)
+        // this.load.image("Mayhem", Single)
+        // this.load.image("Ratatatata", Single)
+        this.load.image("Ball", Ball)
     }
 
     setupKeys() {
@@ -114,7 +137,7 @@ export default class Scene extends Phaser.Scene {
 
     switchAutoShoot() {
         if (!this.autoShoot) {
-            this.shootInterval = setInterval(() => this.shoot(), ((this.tankInfo[this.myTankName]?.reload * 25) / 1.5))
+            this.shootInterval = setInterval(() => this.shoot(), (this.tankInfo[this.myTankName]?.reload * 25))
             this.autoShoot = true
         } else {
             clearInterval(this.shootInterval)
@@ -251,7 +274,7 @@ export default class Scene extends Phaser.Scene {
         this.canShoot = false
         setTimeout(() => {
             this.canShoot = true
-        }, (this.tankInfo[this.myTankName]?.reload * 25) / 1.5)
+        }, this.tankInfo[this.myTankName]?.reload * 25)
     }
 
     displayUpgrades(change) {
@@ -275,7 +298,7 @@ export default class Scene extends Phaser.Scene {
 
         var client = new Colyseus.Client(serverAdress);
 
-        client.joinOrCreate("diep_io_v2-hybrid", { name: this.name }).then(room_instance => {
+        client.joinOrCreate("diep_io_v2", { name: this.name }).then(room_instance => {
             this.room = room_instance
             this.room.state.listen("tanks", (currentValue, previousValue) => {
                 this.tankInfo = !!currentValue ? JSON.parse(currentValue) : {}
@@ -300,41 +323,27 @@ export default class Scene extends Phaser.Scene {
                     }
                     if (playerCircle.playerId == this.myId) {
                         if (!playerCircle.upgrading) {
-                            this.myTankName = "Basic"
+                            this.myTankName = "Tank"
                         } else {
                             playerCircle.upgrading = false
                         }
                     } else {
-                        this.myTankName = "Basic"
+                        this.myTankName = "Tank"
                     }
                     const statePlayer = this.statePlayers[playerCircle.playerId]
                     if (!statePlayer) return
                     let container = new ContainerWithHealthBar(this, playerCircle.x, playerCircle.y, [], 77, -75, 2, playerCircle.hp);
                     let initialColor = 0xf04f54
                     // You will know that the playerCircle Belongs With This Player If The Players SessionId is The PlayerCircles PlayerId
-                    if (playerCircle.playerId == this.myId) initialColor = 0x00B1DE
+                    if (playerCircle.playerId != this.myId) this.myTankName = "Enemy" + this.myTankName
                     // Get tank attributes
                     const tankAttributes = this.tankInfo[this.myTankName]
-
-                    const circle = this.add.circle(0, 0, 25, initialColor)
-                    if (tankAttributes?.bodyDamage >= 10) {
-                        circle.setStrokeStyle(1 + tankAttributes?.bodyDamage / 50, 0x000000)
-                    } else {
-                        circle.setStrokeStyle()
-                    }
+                    const playerImage = this.add.sprite(0, 0, String(this.myTankName))
                     let text = this.add.text(0, 0, `${statePlayer?.name || "Guest"}`)
-                    const amountOfTurrets = this.tankInfo[this.myTankName]?.turrets
-                    for (let x = 0; x < tankAttributes?.turrets; x++) {
-                        const spacing = (x / 5 - x / 2.5)
-                        const angle = x + spacing + (amountOfTurrets * 0.1)
-                        const turret = this.add.rectangle(0, 0, 45, 25, 0xa9a9a9)
-                        const degreeAngle = Phaser.Math.RadToDeg(angle)
-                        turret.setAngle(degreeAngle)
-                        turret.setOrigin(-0.1, 0.5)
-                        container.add(turret)
-                    }
-                    text.setOrigin(0.5, 0.5);
-                    container.add(circle)
+                    playerImage.setScale(0.24, 0.24)
+                    text.setOrigin(0.5, 3.5);
+                    text.style.setShadow(2, 2, "black")
+                    container.add(playerImage)
                     container.add(text)
                     this.listClients()
                     this.circles[worldId] = container
@@ -350,6 +359,7 @@ export default class Scene extends Phaser.Scene {
                     this.startFollowPlayer(2000)
                     this.startFollowPlayer(2500)
                     this.startFollowPlayer(3000)
+                    this.startFollowPlayer(5000)
                     playerCircle.onChange = updateChanges(playerCircle, worldId, this.tweens, this.circles, 25);
                     this.setupCamera()
                 }
