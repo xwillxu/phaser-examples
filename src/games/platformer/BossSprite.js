@@ -5,7 +5,7 @@ export default class BossSprite extends SpriteWithHealthBar {
 
     shoot(scene, time) {
         const intervalFromLastShot = time - this.lastShootTime
-        const limit = 800 - scene.currentLevel * 200
+        const limit = 800 - scene.currentLevel * 250
         if (intervalFromLastShot < limit) {
             return
         }
@@ -25,7 +25,7 @@ export default class BossSprite extends SpriteWithHealthBar {
 
         let distance = Math.sqrt(xDist * xDist + yDist * yDist)
 
-        if (distance > 800) {
+        if (distance > 700 + scene.currentLevel * 150) {
             return
         }
 
@@ -47,7 +47,7 @@ export default class BossSprite extends SpriteWithHealthBar {
 
         projectile_sprite.setAngle(degree)
 
-        let range = 700 + scene.currentLevel * 250
+        let range = 750 + scene.currentLevel * 150
 
         const self = scene
 
