@@ -176,7 +176,7 @@ export default class Scene extends Phaser.Scene {
     }
 
     jump() {
-        const speed = this.speed * 2.6
+        const speed = this.speed * 1.6
         this.playerSprite.setVelocityY(-speed)
         this.playerSprite.anims.play('idle', true);
         this.canJump = false
@@ -184,7 +184,6 @@ export default class Scene extends Phaser.Scene {
 
     setupCamera() {
         this.cameras.main.startFollow(this.playerSprite)
-        this.cameras.main.zoomTo(0.5)
     }
 
 
@@ -323,7 +322,8 @@ export default class Scene extends Phaser.Scene {
     }
 
     shoot(targetX, targetY) {
-        for (let x = 0; x < 37; x++) {
+        if (this.bulletCount > 36) this.bulletCount = 36
+        for (let x = 0; x < this.bulletCount; x++) {
             const projectile_sprite = this.matter.add.sprite(this.playerSprite.x, this.playerSprite.y, 'box', 0, {
                 isSensor: false, label: 'bullet', ignoreGravity: true, gravityScale: { x: 0, y: 0 }, frictionAir: 0, friction: 0
             })
@@ -633,7 +633,7 @@ export default class Scene extends Phaser.Scene {
                         // Earn Score
                         this.score += 500
                         // @ts-ignore
-                        this.bossKilled += 1
+                        if (this.currentLevel == 5) this.bossKilled += 1
                         // Killed 20 Bosses? You Win!
                         // @ts-ignore
                         if (this.bossKilled >= 20) {
@@ -838,6 +838,7 @@ export default class Scene extends Phaser.Scene {
 
         this.bossKilled = 0
 
+
         const mapKey = 'map' + this.currentLevel
         const map = this.make.tilemap({ key: mapKey })
         this.map = map
@@ -862,7 +863,7 @@ export default class Scene extends Phaser.Scene {
         this.playerSprite.setFixedRotation()
         this.playerSprite.setPosition(200, 200)
 
-        this.speed = 10
+        this.speed = 13
 
         this.canJump = false
 
@@ -877,7 +878,7 @@ export default class Scene extends Phaser.Scene {
         this.createEnemy();
         this.playMusic();
         this.loopBoss();
-        for (let x = 0; x < 70; x++) {
+        for (let x = 0; x < 100; x++) {
             this.MultiShoot()
         }
 
