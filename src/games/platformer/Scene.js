@@ -10,7 +10,9 @@ import map1 from '../../assets/Platformer-Template2.json'
 // @ts-ignore
 import map2 from '../../assets/Platformer-Template3.json'
 // @ts-ignore
-import map3 from '../../assets/Platformer-Template4.json'
+import map3 from '../../assets/Platformer-Template5.json'
+// @ts-ignore
+import map4 from '../../assets/Platformer-Template4.json'
 // @ts-ignore
 import bossMap from '../../assets/Boss-Map.json'
 // @ts-ignore
@@ -110,7 +112,8 @@ export default class Scene extends Phaser.Scene {
         this.load.tilemapTiledJSON('map1', map1)
         this.load.tilemapTiledJSON('map2', map2)
         this.load.tilemapTiledJSON('map3', map3)
-        this.load.tilemapTiledJSON('map4', bossMap)
+        this.load.tilemapTiledJSON('map4', map4)
+        this.load.tilemapTiledJSON('map5', bossMap)
         if (this.spriteChoice == 0) {
             this.load.spritesheet('player', player_image, { frameWidth: 32, frameHeight: 42 });
         } else if (this.spriteChoice == 1) {
@@ -319,12 +322,13 @@ export default class Scene extends Phaser.Scene {
     }
 
     shoot(targetX, targetY) {
-        for (let x = 0; x < 19; x++) {
+        if (this.bulletCount > 36) this.bulletCount = 36
+        for (let x = 0; x < this.bulletCount; x++) {
             const projectile_sprite = this.matter.add.sprite(this.playerSprite.x, this.playerSprite.y, 'box', 0, {
                 isSensor: false, label: 'bullet', ignoreGravity: true, gravityScale: { x: 0, y: 0 }, frictionAir: 0, friction: 0
             })
             projectile_sprite.setScale(0.5, 0.5)
-            const velocity = this.speed * 2
+            const velocity = this.speed * 3
 
             let xDist = targetX - this.playerSprite.x;
             let yDist = targetY - this.playerSprite.y;
@@ -629,10 +633,10 @@ export default class Scene extends Phaser.Scene {
                         // Earn Score
                         this.score += 500
                         // @ts-ignore
-                        this.bossKilled += 1
-                        // Killed 30 Bosses? You Win!
+                        if (this.currentLevel == 5) this.bossKilled += 1
+                        // Killed 20 Bosses? You Win!
                         // @ts-ignore
-                        if (this.bossKilled >= 30) {
+                        if (this.bossKilled >= 20) {
                             // @ts-ignore
                             this.youWon()
                         }
@@ -803,8 +807,10 @@ export default class Scene extends Phaser.Scene {
     }
 
     loopBoss() {
-        let bossSpawn = (this.currentLevel + 1) * 2
-
+        let bossSpawn = (this.currentLevel + 1) * 3
+        if (this.currentLevel == 4) {
+            bossSpawn = 17
+        }
         for (let x = 0; x < bossSpawn; x++) {
             this.createBoss()
         }
@@ -832,6 +838,7 @@ export default class Scene extends Phaser.Scene {
 
         this.bossKilled = 0
 
+
         const mapKey = 'map' + this.currentLevel
         const map = this.make.tilemap({ key: mapKey })
         this.map = map
@@ -856,7 +863,7 @@ export default class Scene extends Phaser.Scene {
         this.playerSprite.setFixedRotation()
         this.playerSprite.setPosition(200, 200)
 
-        this.speed = 10
+        this.speed = 13
 
         this.canJump = false
 
@@ -871,7 +878,7 @@ export default class Scene extends Phaser.Scene {
         this.createEnemy();
         this.playMusic();
         this.loopBoss();
-        for (let x = 0; x < 70; x++) {
+        for (let x = 0; x < 100; x++) {
             this.MultiShoot()
         }
 
