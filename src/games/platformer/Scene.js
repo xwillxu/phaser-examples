@@ -864,7 +864,6 @@ export default class Scene extends Phaser.Scene {
         this.playerSprite.setPosition(200, 200)
 
         this.speed = 16
-        this.bulletCount = 30
         this.canJump = false
 
         // Setup Stuff
