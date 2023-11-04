@@ -14,7 +14,7 @@ import Ball from "../../assets/Diep.io Skins/Ball.png"
 
 export default class Scene extends Phaser.Scene {
     constructor() {
-        super('diep.io-2-phaser')
+        super('diep.io-3-phaser')
         // This Cilents SessionId
         this.myId = null
         // ServerSide Room
@@ -298,7 +298,7 @@ export default class Scene extends Phaser.Scene {
 
         var client = new Colyseus.Client(serverAdress);
 
-        client.joinOrCreate("diep_io_v2", { name: this.name }).then(room_instance => {
+        client.joinOrCreate("diep_io_v3", { name: this.name }).then(room_instance => {
             this.room = room_instance
             this.room.state.listen("tanks", (currentValue, previousValue) => {
                 this.tankInfo = !!currentValue ? JSON.parse(currentValue) : {}
@@ -333,11 +333,9 @@ export default class Scene extends Phaser.Scene {
                     const statePlayer = this.statePlayers[playerCircle.playerId]
                     if (!statePlayer) return
                     let container = new ContainerWithHealthBar(this, playerCircle.x, playerCircle.y, [], 77, -75, 2, playerCircle.hp);
-                    let initialColor = 0xf04f54
                     // You will know that the playerCircle Belongs With This Player If The Players SessionId is The PlayerCircles PlayerId
                     if (playerCircle.playerId != this.myId) this.myTankName = "Enemy" + this.myTankName
                     // Get tank attributes
-                    const tankAttributes = this.tankInfo[this.myTankName]
                     const playerImage = this.add.sprite(0, 0, String(this.myTankName))
                     let text = this.add.text(0, 0, `${statePlayer?.name || "Guest"}`)
                     playerImage.setScale(0.24, 0.24)

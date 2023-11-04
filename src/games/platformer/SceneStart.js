@@ -1,9 +1,15 @@
 import Phaser from 'phaser'
+// @ts-ignore
 import start_image from '../../assets/start-button.png'
+// @ts-ignore
 import start_word_image from '../../assets/start-word.png'
+// @ts-ignore
 import playerChoice1 from '../../assets/dude-cropped.png'
+// @ts-ignore
 import playerChoice2 from '../../assets/dude-cropped-red.png'
+// @ts-ignore
 import playerChoice3 from '../../assets/dude-cropped-blue.png'
+// @ts-ignore
 import ContainerWithHealthBar from './ContainerWithHealthBar'
 
 
