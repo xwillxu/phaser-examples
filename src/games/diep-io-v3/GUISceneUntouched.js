@@ -12,7 +12,7 @@ export default class GUISceneUntouched extends Phaser.Scene {
 
     create(data) {
         this.upgradeData = data.value
-        this.tankInfo = data.tankInfoW
+        this.tankInfo = data.tankInfo
         this.scene.bringToTop()
     }
 

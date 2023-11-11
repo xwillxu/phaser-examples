@@ -137,7 +137,7 @@ export default class Scene extends Phaser.Scene {
 
     switchAutoShoot() {
         if (!this.autoShoot) {
-            this.shootInterval = setInterval(() => this.shoot(), (this.tankInfo[this.myTankName]?.reload * 25))
+            this.shootInterval = setInterval(() => this.shoot(), (this.tankInfo[this.myTankName]?.reload * 100))
             this.autoShoot = true
         } else {
             clearInterval(this.shootInterval)
@@ -274,18 +274,21 @@ export default class Scene extends Phaser.Scene {
         this.canShoot = false
         setTimeout(() => {
             this.canShoot = true
-        }, this.tankInfo[this.myTankName]?.reload * 25)
+        }, this.tankInfo[this.myTankName]?.reload * 100)
     }
 
     displayUpgrades(change) {
         if (!change.value) return
-        const newChange = JSON.parse(String(change.value))
-        if (!this.scene.get("DisplayUpgrades")) {
+        const newChange = String(this.tankInfo)
+        const scene = this.scene.get("DisplayUpgrades")
+        console.log(change, this.tankInfo)
+        if (!scene) {
             this.scene.add("DisplayUpgrades", GUISceneUntouched, true, { value: newChange, tankInfo: this.tankInfo })
         }
 
         // @ts-ignore
-        const tankName = this.scene.get("DisplayUpgrades").listUpgrades(newChange)
+        const tankName = scene.listUpgrades(newChange)
+        // const tankName = this.scene.get("DisplayUpgrades").listUpgrades(newChange)
         return tankName
     }
 
@@ -301,7 +304,8 @@ export default class Scene extends Phaser.Scene {
         client.joinOrCreate("diep_io_v3", { name: this.name }).then(room_instance => {
             this.room = room_instance
             this.room.state.listen("tanks", (currentValue, previousValue) => {
-                this.tankInfo = !!currentValue ? JSON.parse(currentValue) : {}
+                console.log(JSON.parse(currentValue))
+                this.tankInfo = currentValue ? JSON.parse(currentValue) : {}
             });
 
             this.room.state.players.onAdd = (player, sessionId) => {
