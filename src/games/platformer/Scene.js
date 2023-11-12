@@ -327,7 +327,7 @@ export default class Scene extends Phaser.Scene {
             const projectile_sprite = this.matter.add.sprite(this.playerSprite.x, this.playerSprite.y, 'box', 0, {
                 isSensor: false, label: 'bullet', ignoreGravity: true, gravityScale: { x: 0, y: 0 }, frictionAir: 0, friction: 0
             })
-            projectile_sprite.setScale(0.5, 0.5)
+            projectile_sprite.setScale(0.33, 0.33)
             const velocity = this.speed * 3
 
             let xDist = targetX - this.playerSprite.x;

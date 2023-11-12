@@ -54,7 +54,8 @@ export default class GUISceneUntouched extends Phaser.Scene {
                 }
                 console.log("Hello, I'm a diep.io v2 tank that is called the", containerKey, "which has better stats than the previous tank.")
                 upgradeOptionName = containerKey
-                this.scene.get("diep.io-2-phaser").sendUpgradeInfo(upgradeOptionName)
+                // @ts-ignore
+                this.scene.get("diep.io-3-phaser").sendUpgradeInfo(upgradeOptionName)
             })
         }
     }

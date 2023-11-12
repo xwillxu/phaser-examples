@@ -9,8 +9,6 @@ import playerChoice1 from '../../assets/dude-cropped.png'
 import playerChoice2 from '../../assets/dude-cropped-red.png'
 // @ts-ignore
 import playerChoice3 from '../../assets/dude-cropped-blue.png'
-// @ts-ignore
-import ContainerWithHealthBar from './ContainerWithHealthBar'
 
 
 export default class SceneStart extends Phaser.Scene {
