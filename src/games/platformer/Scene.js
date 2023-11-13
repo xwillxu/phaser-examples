@@ -24,7 +24,9 @@ import player_image2 from '../../assets/dude-cropped-red.png'
 // @ts-ignore
 import player_image3 from '../../assets/dude-cropped-blue.png'
 // @ts-ignore
-import box_image from '../../assets/box-item-boxed.png'
+// import box_image from '../../assets/box-item-boxed.png'
+import box_image from '../../assets/Battle.io Skins/Crepes.png'
+// import box_image from '../../assets/logo.png'
 // @ts-ignore
 import slimeBlue from '../../assets/slimeBlue.png'
 // @ts-ignore
