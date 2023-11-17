@@ -23,6 +23,7 @@ import backgroundImage5 from '../../assets/Pancake Platformer/Pancake-Emoji2.JPG
 import backgroundImage6 from '../../assets/Pancake Platformer/Slime-and-bullet.JPG'
 // @ts-ignore
 import backgroundImage7 from '../../assets/Pancake Platformer/With-Boss.JPG'
+import { setTimeout } from 'worker-timers'
 
 
 export default class SceneStart extends Phaser.Scene {
@@ -60,6 +61,7 @@ export default class SceneStart extends Phaser.Scene {
         Phaser.Display.Align.In.Center(this.startButton, this.add.zone(1100, 250, 1600, 800));
 
         let number = 0
+
         const backgroundImageList = [
             'backgroundImage1',
             'backgroundImage2',
@@ -73,6 +75,7 @@ export default class SceneStart extends Phaser.Scene {
         let backgroundImage = backgroundImageList[number]
 
         this.backgroundSprite = this.add.sprite(0, 0, String(backgroundImage))
+        setTimeout(this.createNewNumber(number), 5000)
 
         this.player1 = this.add.sprite(300, 500, 'playerImage1', 4).setInteractive();
         this.player1.setScale(3, 3)
@@ -124,5 +127,9 @@ export default class SceneStart extends Phaser.Scene {
             this.clearTint();
 
         });
+    }
+    createNewNumber(number) {
+        const newNumber = number + 1
+        return newNumber
     }
 }
