@@ -390,7 +390,7 @@ export default class Scene extends Phaser.Scene {
         enemy.setMass(10)
         enemy.setScale(1, 1)
 
-        const velocity = Math.random() * 20 - 10
+        const velocity = random(20, 40)
         enemy.setVelocityX(velocity)
         enemy.setFixedRotation()
         enemy.anims.play('slimeanims' + slimeColor, false)

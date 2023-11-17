@@ -9,6 +9,20 @@ import playerChoice1 from '../../assets/dude-cropped.png'
 import playerChoice2 from '../../assets/dude-cropped-red.png'
 // @ts-ignore
 import playerChoice3 from '../../assets/dude-cropped-blue.png'
+// @ts-ignore
+import backgroundImage1 from '../../assets/Pancake Platformer/Death-to-boss.JPG'
+// @ts-ignore
+import backgroundImage2 from '../../assets/Pancake Platformer/Money-Heaven.JPG'
+// @ts-ignore
+import backgroundImage3 from '../../assets/Pancake Platformer/Multishoot-heaven.JPG'
+// @ts-ignore
+import backgroundImage4 from '../../assets/Pancake Platformer/Pancake-Emoji.JPG'
+// @ts-ignore
+import backgroundImage5 from '../../assets/Pancake Platformer/Pancake-Emoji2.JPG'
+// @ts-ignore
+import backgroundImage6 from '../../assets/Pancake Platformer/Slime-and-bullet.JPG'
+// @ts-ignore
+import backgroundImage7 from '../../assets/Pancake Platformer/With-Boss.JPG'
 
 
 export default class SceneStart extends Phaser.Scene {
@@ -22,6 +36,13 @@ export default class SceneStart extends Phaser.Scene {
         this.load.spritesheet('playerImage1', playerChoice1, { frameWidth: 32, frameHeight: 42 })
         this.load.spritesheet('playerImage2', playerChoice2, { frameWidth: 32, frameHeight: 42 })
         this.load.spritesheet('playerImage3', playerChoice3, { frameWidth: 32, frameHeight: 42 })
+        this.load.image('backgroundImage1', backgroundImage1)
+        this.load.image('backgroundImage2', backgroundImage2)
+        this.load.image('backgroundImage3', backgroundImage3)
+        this.load.image('backgroundImage4', backgroundImage4)
+        this.load.image('backgroundImage5', backgroundImage5)
+        this.load.image('backgroundImage6', backgroundImage6)
+        this.load.image('backgroundImage7', backgroundImage7)
     }
 
     create() {
@@ -37,6 +58,21 @@ export default class SceneStart extends Phaser.Scene {
 
         //  Center the picture in the game
         Phaser.Display.Align.In.Center(this.startButton, this.add.zone(1100, 250, 1600, 800));
+
+        let number = 0
+        const backgroundImageList = [
+            'backgroundImage1',
+            'backgroundImage2',
+            'backgroundImage3',
+            'backgroundImage4',
+            'backgroundImage5',
+            'backgroundImage6',
+            'backgroundImage7'
+        ]
+
+        let backgroundImage = backgroundImageList[number]
+
+        this.backgroundSprite = this.add.sprite(0, 0, String(backgroundImage))
 
         this.player1 = this.add.sprite(300, 500, 'playerImage1', 4).setInteractive();
         this.player1.setScale(3, 3)
