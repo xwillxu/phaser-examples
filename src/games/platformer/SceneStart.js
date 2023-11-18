@@ -23,7 +23,6 @@ import backgroundImage5 from '../../assets/Pancake Platformer/Pancake-Emoji2.JPG
 import backgroundImage6 from '../../assets/Pancake Platformer/Slime-and-bullet.JPG'
 // @ts-ignore
 import backgroundImage7 from '../../assets/Pancake Platformer/With-Boss.JPG'
-import { setTimeout } from 'worker-timers'
 
 
 export default class SceneStart extends Phaser.Scene {
@@ -60,7 +59,7 @@ export default class SceneStart extends Phaser.Scene {
         //  Center the picture in the game
         Phaser.Display.Align.In.Center(this.startButton, this.add.zone(1100, 250, 1600, 800));
 
-        let number = 0
+        this.number = 0
 
         const backgroundImageList = [
             'backgroundImage1',
@@ -68,14 +67,22 @@ export default class SceneStart extends Phaser.Scene {
             'backgroundImage3',
             'backgroundImage4',
             'backgroundImage5',
-            'backgroundImage6',
+            // 'backgroundImage6',
             'backgroundImage7'
         ]
 
-        let backgroundImage = backgroundImageList[number]
+        let backgroundImage = backgroundImageList[this.number]
 
-        this.backgroundSprite = this.add.sprite(0, 0, String(backgroundImage))
-        setTimeout(this.createNewNumber(number), 5000)
+        this.backgroundSprite = this.add.sprite(700, 500, String(backgroundImage))
+        this.backgroundSprite.setScale(0.2, 0.2)
+        setInterval(() => {
+            this.changeNumber()
+            backgroundImage = backgroundImageList[this.number]
+            this.backgroundSprite = null
+            this.backgroundSprite = this.add.sprite(700, 500, String(backgroundImage))
+            this.backgroundSprite.setScale(0.2, 0.2)
+        }, 1500)
+
 
         this.player1 = this.add.sprite(300, 500, 'playerImage1', 4).setInteractive();
         this.player1.setScale(3, 3)
@@ -128,8 +135,13 @@ export default class SceneStart extends Phaser.Scene {
 
         });
     }
-    createNewNumber(number) {
-        const newNumber = number + 1
-        return newNumber
+    changeNumber() {
+        console.log(this.number)
+        if (this.number >= 6) {
+            this.number = 0
+        } else {
+            this.number += 1
+        }
+
     }
 }
