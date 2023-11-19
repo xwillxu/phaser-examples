@@ -73,14 +73,16 @@ export default class SceneStart extends Phaser.Scene {
 
         let backgroundImage = backgroundImageList[this.number]
 
-        this.backgroundSprite = this.add.sprite(700, 500, String(backgroundImage))
-        this.backgroundSprite.setScale(0.2, 0.2)
+        this.backgroundSprite = this.add.sprite(750, 450, String(backgroundImage))
+        this.backgroundSprite.depth = -1
+        this.backgroundSprite.setScale(0.8, 0.8)
         setInterval(() => {
             this.changeNumber()
             backgroundImage = backgroundImageList[this.number]
             this.backgroundSprite.destroy()
-            this.backgroundSprite = this.add.sprite(700, 500, String(backgroundImage))
-            this.backgroundSprite.setScale(0.2, 0.2)
+            this.backgroundSprite = this.add.sprite(750, 650, String(backgroundImage))
+            this.backgroundSprite.setScale(0.8, 0.8)
+            this.backgroundSprite.depth = -1
             this.backgroundSprite.setTint(0xC4C3D0)
         }, 1500)
 
