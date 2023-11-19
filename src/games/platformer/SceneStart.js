@@ -67,7 +67,7 @@ export default class SceneStart extends Phaser.Scene {
             'backgroundImage3',
             'backgroundImage4',
             'backgroundImage5',
-            // 'backgroundImage6',
+            'backgroundImage6',
             'backgroundImage7'
         ]
 
@@ -78,9 +78,10 @@ export default class SceneStart extends Phaser.Scene {
         setInterval(() => {
             this.changeNumber()
             backgroundImage = backgroundImageList[this.number]
-            this.backgroundSprite = null
+            this.backgroundSprite.destroy()
             this.backgroundSprite = this.add.sprite(700, 500, String(backgroundImage))
             this.backgroundSprite.setScale(0.2, 0.2)
+            this.backgroundSprite.setTint(0xC4C3D0)
         }, 1500)
 
 
