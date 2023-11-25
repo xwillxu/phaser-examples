@@ -110,6 +110,12 @@ export default class SceneStart extends Phaser.Scene {
             'backgroundImage10',
             'backgroundImage11',
             'backgroundImage12',
+            'backgroundImage13',
+            'backgroundImage14',
+            'backgroundImage15',
+            'backgroundImage16',
+            'backgroundImage17',
+            'backgroundImage18',
         ]
 
         let backgroundImage = backgroundImageList[this.number]
