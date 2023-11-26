@@ -24,7 +24,7 @@ import player_image2 from '../../assets/dude-cropped-red.png'
 // @ts-ignore
 import player_image3 from '../../assets/dude-cropped-blue.png'
 // @ts-ignore
-import box_image from '../../assets/box-item-boxed.png'
+import box_image from '../../assets/Battle.io Skins/Crepes.png'
 // @ts-ignore
 import slimeBlue from '../../assets/slimeBlue.png'
 // @ts-ignore
@@ -176,7 +176,7 @@ export default class Scene extends Phaser.Scene {
     }
 
     jump() {
-        const speed = this.speed * 1.6
+        const speed = this.speed * 1.3
         this.playerSprite.setVelocityY(-speed)
         this.playerSprite.anims.play('idle', true);
         this.canJump = false
@@ -327,8 +327,8 @@ export default class Scene extends Phaser.Scene {
             const projectile_sprite = this.matter.add.sprite(this.playerSprite.x, this.playerSprite.y, 'box', 0, {
                 isSensor: false, label: 'bullet', ignoreGravity: true, gravityScale: { x: 0, y: 0 }, frictionAir: 0, friction: 0
             })
-            projectile_sprite.setScale(0.5, 0.5)
-            const velocity = this.speed * 3
+            projectile_sprite.setScale(0.33, 0.33)
+            const velocity = this.speed * 1.5
 
             let xDist = targetX - this.playerSprite.x;
             let yDist = targetY - this.playerSprite.y;
@@ -390,7 +390,7 @@ export default class Scene extends Phaser.Scene {
         enemy.setMass(10)
         enemy.setScale(1, 1)
 
-        const velocity = Math.random() * 20 - 10
+        const velocity = random(20, 40)
         enemy.setVelocityX(velocity)
         enemy.setFixedRotation()
         enemy.anims.play('slimeanims' + slimeColor, false)

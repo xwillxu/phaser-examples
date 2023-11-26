@@ -3,13 +3,21 @@ import * as Colyseus from "colyseus.js"
 import UiScene from "./UiScene"
 import GUISceneUntouched from "./GUISceneUntouched.js"
 import ContainerWithHealthBar from "../platformer/ContainerWithHealthBar"
+// @ts-ignore
 import Tank from "../../assets/Diep.io Skins/Tank.png"
+// @ts-ignore
 import Twin from "../../assets/Diep.io Skins/Twin.png"
+// @ts-ignore
 import FlankGuard from "../../assets/Diep.io Skins/Flank-Guard.png"
+// @ts-ignore
 import MachineGun from "../../assets/Diep.io Skins/Machine_Gun.png"
+// @ts-ignore
 import Sniper from "../../assets/Diep.io Skins/Sniper.png"
+// @ts-ignore
 import Smasher from "../../assets/Diep.io Skins/Smasher.png"
+// @ts-ignore
 import Single from "../../assets/Diep.io Skins/Single.png"
+// @ts-ignore
 import Ball from "../../assets/Diep.io Skins/Ball.png"
 
 export default class Scene extends Phaser.Scene {
