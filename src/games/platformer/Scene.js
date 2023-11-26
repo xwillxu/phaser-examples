@@ -877,7 +877,7 @@ export default class Scene extends Phaser.Scene {
         this.createEnemy();
         this.playMusic();
         this.loopBoss();
-        for (let x = 0; x < 100; x++) {
+        for (let x = 0; x < 20; x++) {
             this.MultiShoot()
         }
 

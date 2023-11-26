@@ -47,11 +47,18 @@ import backgroundImage10 from '../../assets/Pancake Platformer/Capture10.JPG'
 import backgroundImage11 from '../../assets/Pancake Platformer/Capture11.JPG'
 // @ts-ignore
 import backgroundImage12 from '../../assets/Pancake Platformer/Capture12.JPG'
+// @ts-ignore
+import backgroundImage13 from '../../assets/Pancake Platformer/Capture13.JPG'
+// @ts-ignore
+import backgroundImage14 from '../../assets/Pancake Platformer/Capture14.JPG'
+// @ts-ignore
+import backgroundImage15 from '../../assets/Pancake Platformer/Capture15.JPG'
+// @ts-ignore
+import backgroundImage16 from '../../assets/Pancake Platformer/Capture16.JPG'
+// @ts-ignore
+import backgroundImage17 from '../../assets/Pancake Platformer/Capture17.JPG'
 // // @ts-ignore
-// import backgroundImage13 from '../../assets/Pancake Platformer/Capture6.JPG'
-// // @ts-ignore
-// import backgroundImage14 from '../../assets/Pancake Platformer/Capture7.JPG'
-
+// import backgroundImage18 from '../../assets/Pancake Platformer/Capture18.JPG'
 
 
 export default class SceneStart extends Phaser.Scene {
@@ -77,6 +84,12 @@ export default class SceneStart extends Phaser.Scene {
         this.load.image('backgroundImage10', backgroundImage10)
         this.load.image('backgroundImage11', backgroundImage11)
         this.load.image('backgroundImage12', backgroundImage12)
+        this.load.image('backgroundImage13', backgroundImage13)
+        this.load.image('backgroundImage14', backgroundImage14)
+        this.load.image('backgroundImage15', backgroundImage15)
+        this.load.image('backgroundImage16', backgroundImage16)
+        this.load.image('backgroundImage17', backgroundImage17)
+        // this.load.image('backgroundImage18', backgroundImage18)
         // this.load.image('backgroundImage6', backgroundImage6)
         // this.load.image('backgroundImage7', backgroundImage7)
     }
@@ -116,6 +129,10 @@ export default class SceneStart extends Phaser.Scene {
             'backgroundImage16',
             'backgroundImage17',
             'backgroundImage18',
+            'backgroundImage19',
+            'backgroundImage20',
+            'backgroundImage21',
+            'backgroundImage22',
         ]
 
         let backgroundImage = backgroundImageList[this.number]
@@ -132,7 +149,7 @@ export default class SceneStart extends Phaser.Scene {
             this.backgroundSprite.setScale(0.495, 0.495)
             this.backgroundSprite.depth = -1
             this.backgroundSprite.setTint(0xC4C3D0)
-        }, 1500)
+        }, 500)
 
 
         this.player1 = this.add.sprite(300, 500, 'playerImage1', 4).setInteractive();
@@ -188,7 +205,7 @@ export default class SceneStart extends Phaser.Scene {
     }
     changeNumber() {
         console.log(this.number)
-        if (this.number >= 11) {
+        if (this.number >= 16) {
             this.number = 0
         } else {
             this.number += 1
