@@ -9,20 +9,6 @@ import playerChoice1 from '../../assets/dude-cropped.png'
 import playerChoice2 from '../../assets/dude-cropped-red.png'
 // @ts-ignore
 import playerChoice3 from '../../assets/dude-cropped-blue.png'
-// // @ts-ignore
-// import backgroundImage1 from '../../assets/Pancake Platformer/Death-to-boss.JPG'
-// // @ts-ignore
-// import backgroundImage2 from '../../assets/Pancake Platformer/Money-Heaven.JPG'
-// // @ts-ignore
-// import backgroundImage3 from '../../assets/Pancake Platformer/Multishoot-heaven.JPG'
-// // @ts-ignore
-// import backgroundImage4 from '../../assets/Pancake Platformer/Pancake-Emoji.JPG'
-// // @ts-ignore
-// import backgroundImage5 from '../../assets/Pancake Platformer/Pancake-Emoji2.JPG'
-// // @ts-ignore
-// import backgroundImage6 from '../../assets/Pancake Platformer/Slime-and-bullet.JPG'
-// // @ts-ignore
-// import backgroundImage7 from '../../assets/Pancake Platformer/With-Boss.JPG'
 // @ts-ignore
 import backgroundImage1 from '../../assets/Pancake Platformer/Capture.JPG'
 // @ts-ignore
@@ -57,8 +43,9 @@ import backgroundImage15 from '../../assets/Pancake Platformer/Capture15.JPG'
 import backgroundImage16 from '../../assets/Pancake Platformer/Capture16.JPG'
 // @ts-ignore
 import backgroundImage17 from '../../assets/Pancake Platformer/Capture17.JPG'
-// // @ts-ignore
-// import backgroundImage18 from '../../assets/Pancake Platformer/Capture18.JPG'
+// @ts-ignore
+import InstructWord from '../../assets/InstuctWord.png'
+
 
 
 export default class SceneStart extends Phaser.Scene {
@@ -72,6 +59,7 @@ export default class SceneStart extends Phaser.Scene {
         this.load.spritesheet('playerImage1', playerChoice1, { frameWidth: 32, frameHeight: 42 })
         this.load.spritesheet('playerImage2', playerChoice2, { frameWidth: 32, frameHeight: 42 })
         this.load.spritesheet('playerImage3', playerChoice3, { frameWidth: 32, frameHeight: 42 })
+        this.load.image('InstructWord', InstructWord)
         this.load.image('backgroundImage1', backgroundImage1)
         this.load.image('backgroundImage2', backgroundImage2)
         this.load.image('backgroundImage3', backgroundImage3)
@@ -89,9 +77,6 @@ export default class SceneStart extends Phaser.Scene {
         this.load.image('backgroundImage15', backgroundImage15)
         this.load.image('backgroundImage16', backgroundImage16)
         this.load.image('backgroundImage17', backgroundImage17)
-        // this.load.image('backgroundImage18', backgroundImage18)
-        // this.load.image('backgroundImage6', backgroundImage6)
-        // this.load.image('backgroundImage7', backgroundImage7)
     }
 
     create() {
@@ -152,13 +137,15 @@ export default class SceneStart extends Phaser.Scene {
         }, 500)
 
 
+        this.instructWord = this.add.sprite(1100, 500, 'InstructWord').setInteractive()
+
         this.player1 = this.add.sprite(300, 500, 'playerImage1', 4).setInteractive();
         this.player1.setScale(3, 3)
 
-        this.player2 = this.add.sprite(700, 500, 'playerImage2', 4).setInteractive();
+        this.player2 = this.add.sprite(400, 500, 'playerImage2', 4).setInteractive();
         this.player2.setScale(2, 2)
 
-        this.player3 = this.add.sprite(1100, 500, 'playerImage3', 4).setInteractive();
+        this.player3 = this.add.sprite(500, 500, 'playerImage3', 4).setInteractive();
         this.player3.setScale(2, 2)
 
         this.selectedSprite = 0
